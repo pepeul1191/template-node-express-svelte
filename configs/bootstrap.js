@@ -3,6 +3,7 @@ import path from 'path';
 import morgan from 'morgan';
 import express from 'express';
 import { fileURLToPath } from 'url';
+import engine from 'ejs-mate';
 
 import webRoutes from '../web/routes.js';
 
@@ -18,6 +19,7 @@ export default function bootstrap(app) {
   app.use(express.urlencoded({ extended: true }));
 
   // Vistas
+  app.engine('ejs', engine);
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, '../views'));
 

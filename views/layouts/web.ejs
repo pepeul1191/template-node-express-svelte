@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>It's </title>
+    <%- block('head').toString() %>
+  </head>
+  <body>
+    <%- include('../partials/header') %>
+    <section>
+      <%- body -%>
+    </section>
+    <%= block('footer').toString() %>
+  </body>
+</html>

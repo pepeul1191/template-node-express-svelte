@@ -1,9 +1,13 @@
-    </main>
-    <footer>
-        <div class="footer-content">
-            <p>&copy; <%= new Date().getFullYear() %> Hola Mundo Express. Todos los derechos reservados.</p>
-            <p>Aplicación creada con <i class="fas fa-heart" style="color:#e74c3c;"></i> usando Express y EJS</p>
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; <%= new Date().getFullYear() %> Mi Sitio Web. Todos los derechos reservados.</p>
+        
+        <!-- Block para contenido adicional en el footer -->
+        <%- block('footer-content') %>
+        
+        <div class="footer-links">
+            <a href="/privacy">Política de privacidad</a>
+            <a href="/terms">Términos de uso</a>
         </div>
-    </footer>
-</body>
-</html>
+    </div>
+</footer>
