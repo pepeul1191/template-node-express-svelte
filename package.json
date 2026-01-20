@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev-expp": "npx nodemon server.js --ignore public/* --ignore src/*",
+    "dev": "npm run dev-expp & npm run svelte",
+    "svelte": "rollup -c -w"
   },
   "keywords": [],
   "author": "",
@@ -15,10 +17,26 @@
     "ejs": "^3.1.9",
     "ejs-mate": "^4.0.0",
     "express": "^5.2.1",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "axios": "^1.6.0",
+    "bootstrap": "^5.3.3",
+    "sirv-cli": "^2.0.0",
+    "svelte": "^4.2.18",
+    "svelte-app": "file:",
+    "svelte-routing": "^2.13.0",
+    "font-awesome": "^4.7.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-terser": "^0.4.0",
+    "rollup": "^3.15.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-css-only": "^4.3.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.1.2",
+    "svelte-preprocess": "^6.0.3"
   },
   "type": "module"
 }

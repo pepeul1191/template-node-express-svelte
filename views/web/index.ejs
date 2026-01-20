@@ -1,15 +1,65 @@
 <% layout('layouts/web.ejs') -%>
-<h1>I am the  template</h1>
 
-<% block('head').append(`
-    <link rel="stylesheet" type="text/css" href="/foo.css">
-    <link rel="stylesheet" type="text/css" href="/foo2a.css">
-    <link rel="stylesheet" type="text/css" href="/foo3a.css">
-    <link rel="stylesheet" type="text/css" href="/foo5a.css">
+<!-- Hero Section -->
+<header class="bg-light py-5 text-center">
+<div class="container">
+    <h1 class="display-4">Bienvenido al Centro de Emprendimiento</h1>
+    <p class="lead">Impulsamos ideas, conectamos emprendedores y fomentamos la innovación.</p>
+    <a href="/sign-in" class="btn btn-primary btn-lg mt-3">Únete hoy</a>
+</div>
+</header>
+
+<!-- Links a secciones principales -->
+<section class="py-5">
+<div class="container">
+    <div class="row g-4 text-center">
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Home</h5>
+            <p class="card-text">Vuelve a la página principal y descubre nuestras novedades.</p>
+            <a href="/" class="btn btn-primary">Ir a Home</a>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">About</h5>
+            <p class="card-text">Conoce nuestra misión, visión y todo sobre nuestro centro.</p>
+            <a href="/about" class="btn btn-primary">Ver About</a>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Contact</h5>
+            <p class="card-text">Contáctanos para dudas, asesorías o colaboración.</p>
+            <a href="/contact" class="btn btn-primary">Contactar</a>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Noticias</h5>
+            <p class="card-text">Mantente al día con nuestras noticias y eventos.</p>
+            <a href="/noticias" class="btn btn-primary">Ver Noticias</a>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</section>
+
+<% block('styles').append(`
+    
 `) %>
 
 <% block('scripts').append(`
-    <script>
-        alert('XD');
-    </script>
+  <script src="/dist/web.js"></script>
+  <script>
+    alert('XD');
+  </script>
 `) %>

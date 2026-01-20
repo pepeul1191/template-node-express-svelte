@@ -1,17 +1,17 @@
-<%- include('../partials/header') %>
+<% layout('layouts/web.ejs') -%>
 
     <div class="hero">
-        <h1><i class="fas fa-info-circle"></i> <%= title %></h1>
+        <h1><i class="fa fa-info-circle"></i> <%= title %></h1>
         <p class="subtitle">Información sobre esta aplicación de ejemplo</p>
     </div>
 
     <div class="content">
         <div class="about-section">
-            <h2><i class="fas fa-cogs"></i> Tecnologías utilizadas</h2>
+            <h2><i class="fa fa-cogs"></i> Tecnologías utilizadas</h2>
             <p><%= description %></p>
             
             <div class="tech-details">
-                <h3><i class="fas fa-list"></i> Stack tecnológico:</h3>
+                <h3><i class="fa fa-list"></i> Stack tecnológico:</h3>
                 <ul>
                     <li><strong>Backend:</strong> Node.js con Express</li>
                     <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript</li>
@@ -23,7 +23,7 @@
             </div>
 
             <div class="project-structure">
-                <h3><i class="fas fa-folder-open"></i> Estructura del proyecto:</h3>
+                <h3><i class="fa fa-folder-open"></i> Estructura del proyecto:</h3>
                 <pre>
 hola-mundo-express/
 ├── server.js          # Punto de entrada de la aplicación
@@ -41,13 +41,11 @@ hola-mundo-express/
 
             <div class="action-buttons">
                 <a href="/" class="btn btn-primary">
-                    <i class="fas fa-arrow-left"></i> Volver al inicio
+                    <i class="fa fa-arrow-left"></i> Volver al inicio
                 </a>
                 <a href="https://expressjs.com/" target="_blank" class="btn btn-secondary">
-                    <i class="fas fa-external-link-alt"></i> Documentación de Express
+                    <i class="fa fa-external-link-alt"></i> Documentación de Express
                 </a>
             </div>
         </div>
     </div>
-
-<%- include('../partials/footer') %>

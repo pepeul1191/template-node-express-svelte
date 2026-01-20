@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= typeof siteTitle !== 'undefined' ? siteTitle : 'Título por defecto' %></title>
-    <%- block('head').toString() %>
+    <link rel="stylesheet" type="text/css" href="/dist/vendor.min.css">
+    <link rel="stylesheet" type="text/css" href="/dist/web.css">
+    <%- block('styles').toString() %>
   </head>
   <body>
-    <%- include('../partials/header') %>
+    <%- include('../partials/web_header') %>
     <section>
       <%- body -%>
     </section>
-    <%- include('../partials/footer') %>
+    <%- include('../partials/web_footer') %>
+    <%- block('scripts').toString() %>
   </body>
 </html>
