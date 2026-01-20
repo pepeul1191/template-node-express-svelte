@@ -29,7 +29,7 @@ export default function bootstrap(app) {
 
   // 404
   app.use((req, res) => {
-    res.status(404).render('web/404', {
+    res.status(404).render('404', {
       title: 'Página no encontrada',
       message: 'La página que buscas no existe.'
     });

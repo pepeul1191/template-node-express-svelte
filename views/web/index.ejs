@@ -1,63 +1,931 @@
-<%- include('../partials/header') %>
-
-    <div class="hero">
-        <h1><i class="fas fa-code"></i> <%= title %></h1>
-        <p class="subtitle">Una aplicación web completa con Node.js, Express y EJS</p>
-    </div>
-
-    <div class="content">
-        <div class="message-box">
-            <h2><i class="fas fa-comment"></i> Mensaje Principal</h2>
-            <p class="welcome-message"><%= message %></p>
-            <div class="date-info">
-                <i class="fas fa-calendar-alt"></i> Hoy es: <%= currentDate %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Emprendimiento | Innovación y Desarrollo</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #1a252f;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 76px; /* Para compensar navbar fijo */
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        
+        /* Navbar personalizado */
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+        
+        .navbar-brand span {
+            color: var(--secondary-color);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.2rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--secondary-color) !important;
+        }
+        
+        .navbar .btn-signin {
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 30px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar .btn-signin:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), 
+                        url('https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+            margin-bottom: 80px;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn-hero {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-hero:hover {
+            background-color: #c0392b;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-hero-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+        
+        .btn-hero-secondary:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        /* Section Styles */
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary-color);
+        }
+        
+        .section-title.text-center:after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .card-service {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-service:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background-color: var(--light-color);
+            padding: 80px 0;
+            margin: 80px 0;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Testimonials */
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        /* Events Section */
+        .event-card {
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .event-date {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-title {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            padding-top: 20px;
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Animation for scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-lightbulb"></i> Emprende<span>Lab</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#events">Eventos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contacto</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="nav-link btn-signin" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="bi bi-person-circle me-1"></i> Ingresar
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
 
-        <div class="features">
-            <h2><i class="fas fa-star"></i> Características de esta aplicación</h2>
-            <ul>
-                <% features.forEach(feature => { %>
-                    <li><i class="fas fa-check-circle"></i> <%= feature %></li>
-                <% }) %>
-            </ul>
-        </div>
-
-        <div class="tech-grid">
-            <div class="tech-card">
-                <div class="tech-icon">
-                    <i class="fab fa-node-js"></i>
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="hero-title">Transformamos ideas en negocios exitosos</h1>
+                    <p class="hero-subtitle">Somos el centro de emprendimiento líder en la región, brindando mentoría, recursos y conexiones para impulsar tu proyecto emprendedor hacia el éxito.</p>
+                    <div class="mt-4">
+                        <a href="#services" class="btn btn-hero">Explorar Servicios</a>
+                        <a href="#contact" class="btn btn-hero btn-hero-secondary">Contactar Ahora</a>
+                    </div>
                 </div>
-                <h3>Node.js</h3>
-                <p>Entorno de ejecución para JavaScript del lado del servidor.</p>
+                <div class="col-lg-5">
+                    <div class="mt-5 mt-lg-0">
+                        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" class="img-fluid rounded shadow-lg" alt="Emprendedores trabajando">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="section-title">Sobre Nosotros</h2>
+                    <p class="lead">EmprendeLab es el centro de emprendimiento e innovación más importante de la región, dedicado a impulsar el desarrollo económico a través del apoyo a emprendedores y startups.</p>
+                    <p>Desde 2010, hemos ayudado a más de 500 emprendedores a transformar sus ideas en negocios exitosos, generando más de 2000 empleos y atrayendo inversiones por más de $50 millones.</p>
+                    <p>Nuestro enfoque integral combina mentoría especializada, acceso a financiamiento, espacios de coworking y una red de contactos invaluable para el crecimiento de tu proyecto.</p>
+                    <a href="#contact" class="btn btn-primary mt-3">Conoce Más</a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="mt-5 mt-lg-0">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center p-4">
+                                        <div class="card-icon">
+                                            <i class="bi bi-people-fill"></i>
+                                        </div>
+                                        <h5 class="card-title">Comunidad Activa</h5>
+                                        <p class="card-text">Más de 2000 emprendedores forman parte de nuestra red de networking y colaboración.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center p-4">
+                                        <div class="card-icon">
+                                            <i class="bi bi-award-fill"></i>
+                                        </div>
+                                        <h5 class="card-title">Premios y Reconocimientos</h5>
+                                        <p class="card-text">Hemos sido galardonados como el mejor centro de emprendimiento por 3 años consecutivos.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center p-4">
+                                        <div class="card-icon">
+                                            <i class="bi bi-building"></i>
+                                        </div>
+                                        <h5 class="card-title">Espacios Modernos</h5>
+                                        <p class="card-text">Más de 2000 m² dedicados a coworking, laboratorios y salas de reuniones.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center p-4">
+                                        <div class="card-icon">
+                                            <i class="bi bi-graph-up-arrow"></i>
+                                        </div>
+                                        <h5 class="card-title">Tasa de Éxito</h5>
+                                        <p class="card-text">El 85% de los emprendimientos que pasan por nuestro programa siguen operando después de 3 años.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center">Nuestros Servicios</h2>
+            <p class="text-center mb-5 lead">Ofrecemos un ecosistema completo para el desarrollo de tu emprendimiento</p>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card card-service">
+                        <div class="card-body p-4">
+                            <div class="card-icon">
+                                <i class="bi bi-person-badge"></i>
+                            </div>
+                            <h4 class="card-title">Mentoría Personalizada</h4>
+                            <p class="card-text">Sesiones one-on-one con mentores expertos en negocios, finanzas, marketing y tecnología para guiar cada paso de tu proyecto.</p>
+                            <a href="#" class="btn btn-outline-primary">Más Información</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card card-service">
+                        <div class="card-body p-4">
+                            <div class="card-icon">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                            <h4 class="card-title">Acceso a Financiamiento</h4>
+                            <p class="card-text">Conectamos emprendedores con inversionistas ángeles, fondos de capital de riesgo y programas de financiamiento gubernamental.</p>
+                            <a href="#" class="btn btn-outline-primary">Más Información</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card card-service">
+                        <div class="card-body p-4">
+                            <div class="card-icon">
+                                <i class="bi bi-laptop"></i>
+                            </div>
+                            <h4 class="card-title">Coworking & Laboratorios</h4>
+                            <p class="card-text">Espacios de trabajo colaborativo equipados con tecnología de punta, laboratorios de prototipado y salas de reuniones.</p>
+                            <a href="#" class="btn btn-outline-primary">Más Información</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card card-service">
+                        <div class="card-body p-4">
+                            <div class="card-icon">
+                                <i class="bi bi-mortarboard"></i>
+                            </div>
+                            <h4 class="card-title">Capacitación Especializada</h4>
+                            <p class="card-text">Talleres, cursos y bootcamps en temas como validación de modelos de negocio, pitch investors y crecimiento escalable.</p>
+                            <a href="#" class="btn btn-outline-primary">Más Información</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card card-service">
+                        <div class="card-body p-4">
+                            <div class="card-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <h4 class="card-title">Incubación & Aceleración</h4>
+                            <p class="card-text">Programas estructurados de 3 a 12 meses para llevar tu startup desde la idea hasta el mercado y el escalamiento.</p>
+                            <a href="#" class="btn btn-outline-primary">Más Información</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card card-service">
+                        <div class="card-body p-4">
+                            <div class="card-icon">
+                                <i class="bi bi-globe"></i>
+                            </div>
+                            <h4 class="card-title">Networking Internacional</h4>
+                            <p class="card-text">Conectamos con ecosistemas de emprendimiento globales y facilitamos participación en eventos internacionales.</p>
+                            <a href="#" class="btn btn-outline-primary">Más Información</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-number">500+</div>
+                    <p class="text-muted">Emprendedores Apoyados</p>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-number">$50M+</div>
+                    <p class="text-muted">Inversión Atraída</p>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-number">2000+</div>
+                    <p class="text-muted">Empleos Generados</p>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-number">85%</div>
+                    <p class="text-muted">Tasa de Supervivencia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center">Próximos Eventos</h2>
+            <p class="text-center mb-5 lead">Participa en nuestros eventos y conecta con la comunidad emprendedora</p>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="event-card">
+                        <div class="event-date">15 Nov, 2023 | 6:00 PM</div>
+                        <h4>Pitch Competition 2023</h4>
+                        <p>La competencia anual de pitches donde 10 startups seleccionadas presentan ante un panel de inversionistas. Premio de $50,000 para el ganador.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Registrarse</a>
+                    </div>
+                    
+                    <div class="event-card">
+                        <div class="event-date">22 Nov, 2023 | 10:00 AM</div>
+                        <h4>Workshop: Finanzas para Startups</h4>
+                        <p>Aprende a manejar las finanzas de tu startup, desde proyecciones hasta ronda de inversión, con expertos en fintech y venture capital.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Registrarse</a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="event-card">
+                        <div class="event-date">30 Nov, 2023 | 4:00 PM</div>
+                        <h4>Networking con Inversionistas Ángeles</h4>
+                        <p>Evento exclusivo para conectar emprendedores con inversionistas ángeles de la región. Espacio para presentar tu proyecto en un ambiente informal.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Registrarse</a>
+                    </div>
+                    
+                    <div class="event-card">
+                        <div class="event-date">5 Dic, 2023 | 9:00 AM</div>
+                        <h4>Bootcamp: Validación de Modelos de Negocio</h4>
+                        <p>Programa intensivo de 3 días para validar tu modelo de negocio, identificar tu mercado objetivo y definir tu propuesta de valor única.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Registrarse</a>
+                    </div>
+                </div>
             </div>
             
-            <div class="tech-card">
-                <div class="tech-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <h3>Express</h3>
-                <p>Framework web rápido, minimalista y flexible para Node.js.</p>
-            </div>
-            
-            <div class="tech-card">
-                <div class="tech-icon">
-                    <i class="fas fa-file-code"></i>
-                </div>
-                <h3>EJS</h3>
-                <p>Motor de plantillas para generar HTML con JavaScript.</p>
+            <div class="text-center mt-5">
+                <a href="#" class="btn btn-primary">Ver Todos los Eventos</a>
             </div>
         </div>
+    </section>
 
-        <div class="instructions">
-            <h2><i class="fas fa-play-circle"></i> Cómo ejecutar esta aplicación</h2>
-            <ol>
-                <li>Instala las dependencias con <code>npm install</code></li>
-                <li>Ejecuta el servidor con <code>npm start</code></li>
-                <li>Abre tu navegador en <code>http://localhost:3000</code></li>
-                <li>Para desarrollo con recarga automática: <code>npm run dev</code></li>
-            </ol>
+    <!-- Testimonials Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center">Testimonios</h2>
+            <p class="text-center mb-5 lead">Lo que dicen nuestros emprendedores</p>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "Gracias al programa de incubación de EmprendeLab, logramos validar nuestro producto y conseguir nuestra primera ronda de inversión de $500,000."
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Ana García">
+                            <div>
+                                <h6 class="mb-0">Ana García</h6>
+                                <small class="text-muted">CEO, TechSolutions</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "El acceso a la red de mentores y la comunidad de emprendedores ha sido invaluable para el crecimiento de nuestra startup en estos primeros años."
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/54.jpg" alt="Carlos Rodríguez">
+                            <div>
+                                <h6 class="mb-0">Carlos Rodríguez</h6>
+                                <small class="text-muted">Fundador, GreenEnergy</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "Participar en la competencia de pitches nos dio visibilidad y nos conectó con inversionistas que creyeron en nuestro proyecto desde el día uno."
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/67.jpg" alt="María Fernández">
+                            <div>
+                                <h6 class="mb-0">María Fernández</h6>
+                                <small class="text-muted">COO, EduTech Pro</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center">Contáctanos</h2>
+            <p class="text-center mb-5 lead">¿Listo para impulsar tu emprendimiento? Escríbenos</p>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-4 p-md-5">
+                            <form id="contactForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="name" class="form-label">Nombre Completo</label>
+                                        <input type="text" class="form-control" id="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Correo Electrónico</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Asunto</label>
+                                    <input type="text" class="form-control" id="subject" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Mensaje</label>
+                                    <textarea class="form-control" id="message" rows="5" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="interest" class="form-label">Área de Interés</label>
+                                    <select class="form-select" id="interest">
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="mentoria">Mentoría</option>
+                                        <option value="financiamiento">Financiamiento</option>
+                                        <option value="coworking">Coworking</option>
+                                        <option value="eventos">Eventos</option>
+                                        <option value="incubacion">Incubación/Aceleración</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">Enviar Mensaje</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="footer-title">
+                        <i class="bi bi-lightbulb"></i> Emprende<span>Lab</span>
+                    </h5>
+                    <p>Transformamos ideas en negocios exitosos. Somos el centro de emprendimiento líder en la región, brindando mentoría, recursos y conexiones para el éxito de tu proyecto.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                        <a href="#"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-title">Enlaces Rápidos</h5>
+                    <div class="footer-links">
+                        <a href="#home">Inicio</a>
+                        <a href="#about">Nosotros</a>
+                        <a href="#services">Servicios</a>
+                        <a href="#events">Eventos</a>
+                        <a href="#contact">Contacto</a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="footer-title">Servicios</h5>
+                    <div class="footer-links">
+                        <a href="#">Mentoría Personalizada</a>
+                        <a href="#">Acceso a Financiamiento</a>
+                        <a href="#">Coworking & Laboratorios</a>
+                        <a href="#">Capacitación Especializada</a>
+                        <a href="#">Incubación & Aceleración</a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 mb-4">
+                    <h5 class="footer-title">Contacto</h5>
+                    <div class="footer-contact">
+                        <p><i class="bi bi-geo-alt me-2"></i> Av. Innovación 123, Zona Tech</p>
+                        <p><i class="bi bi-telephone me-2"></i> +1 (555) 123-4567</p>
+                        <p><i class="bi bi-envelope me-2"></i> info@emprendelab.com</p>
+                        <p><i class="bi bi-clock me-2"></i> Lun-Vie: 9:00 AM - 6:00 PM</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 EmprendeLab. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#home" class="back-to-top" id="backToTop">
+        <i class="bi bi-arrow-up"></i>
+    </a>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">
+                        <i class="bi bi-person-circle me-2"></i> Ingresar a EmprendeLab
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="nombre@ejemplo.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Recordarme</label>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Ingresar</button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <p class="mb-0">¿No tienes cuenta? <a href="#" class="text-decoration-none fw-bold">Regístrate aquí</a></p>
+                </div>
+            </div>
         </div>
     </div>
 
-<%- include('../partials/footer') %>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Script -->
+    <script>
+        // Back to top button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile navbar if open
+                    const navbarToggler = document.querySelector('.navbar-toggler');
+                    const navbarCollapse = document.querySelector('.navbar-collapse');
+                    if (navbarCollapse.classList.contains('show')) {
+                        navbarToggler.click();
+                    }
+                }
+            });
+        });
+        
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto.');
+            this.reset();
+        });
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Inicio de sesión simulado. En una implementación real, esto conectaría con un servidor de autenticación.');
+            
+            // Cerrar el modal
+            const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+            loginModal.hide();
+            
+            this.reset();
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.padding = '10px 0';
+                navbar.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.padding = '15px 0';
+                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+        
+        // Simple fade-in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+        
+        // Add fade-in class to some elements
+        document.querySelectorAll('.card-service, .event-card, .testimonial-card').forEach(el => {
+            el.classList.add('fade-in');
+        });
+        
+        window.addEventListener('scroll', fadeInOnScroll);
+        fadeInOnScroll(); // Check on load
+    </script>
+</body>
+</html>
