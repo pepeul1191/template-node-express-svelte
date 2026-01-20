@@ -1,0 +1,63 @@
+<%- include('../partials/header') %>
+
+    <div class="hero">
+        <h1><i class="fas fa-code"></i> <%= title %></h1>
+        <p class="subtitle">Una aplicación web completa con Node.js, Express y EJS</p>
+    </div>
+
+    <div class="content">
+        <div class="message-box">
+            <h2><i class="fas fa-comment"></i> Mensaje Principal</h2>
+            <p class="welcome-message"><%= message %></p>
+            <div class="date-info">
+                <i class="fas fa-calendar-alt"></i> Hoy es: <%= currentDate %>
+            </div>
+        </div>
+
+        <div class="features">
+            <h2><i class="fas fa-star"></i> Características de esta aplicación</h2>
+            <ul>
+                <% features.forEach(feature => { %>
+                    <li><i class="fas fa-check-circle"></i> <%= feature %></li>
+                <% }) %>
+            </ul>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fab fa-node-js"></i>
+                </div>
+                <h3>Node.js</h3>
+                <p>Entorno de ejecución para JavaScript del lado del servidor.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Express</h3>
+                <p>Framework web rápido, minimalista y flexible para Node.js.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-file-code"></i>
+                </div>
+                <h3>EJS</h3>
+                <p>Motor de plantillas para generar HTML con JavaScript.</p>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h2><i class="fas fa-play-circle"></i> Cómo ejecutar esta aplicación</h2>
+            <ol>
+                <li>Instala las dependencias con <code>npm install</code></li>
+                <li>Ejecuta el servidor con <code>npm start</code></li>
+                <li>Abre tu navegador en <code>http://localhost:3000</code></li>
+                <li>Para desarrollo con recarga automática: <code>npm run dev</code></li>
+            </ol>
+        </div>
+    </div>
+
+<%- include('../partials/footer') %>
