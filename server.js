@@ -1,7 +1,17 @@
 // server.js
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+import morgan from 'morgan';
+import { fileURLToPath } from 'url';
+
+// Reemplazo de __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
+
+// Middleware de logs
+app.use(morgan('dev'));
 
 // Configurar EJS como motor de plantillas
 app.set('view engine', 'ejs');
@@ -28,14 +38,16 @@ app.get('/', (req, res) => {
       day: 'numeric'
     })
   };
+
   res.render('web/index', data);
 });
 
-// Ruta de ejemplo adicional
+// Ruta adicional
 app.get('/about', (req, res) => {
   res.render('web/about', {
     title: 'Acerca de',
-    description: 'Esta es una aplicación de ejemplo creada con Node.js, Express y EJS.'
+    description:
+      'Esta es una aplicación de ejemplo creada con Node.js, Express y EJS.'
   });
 });
 
