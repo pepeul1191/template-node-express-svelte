@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>It's </title>
+    <title><%= typeof siteTitle !== 'undefined' ? siteTitle : 'Título por defecto' %></title>
     <%- block('head').toString() %>
   </head>
   <body>
@@ -9,6 +9,6 @@
     <section>
       <%- body -%>
     </section>
-    <%= block('footer').toString() %>
+    <%- include('../partials/footer') %>
   </body>
 </html>

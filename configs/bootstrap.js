@@ -4,11 +4,14 @@ import morgan from 'morgan';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import engine from 'ejs-mate';
+import dotenv from 'dotenv';
 
 import webRoutes from '../web/routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+dotenv.config();
 
 export default function bootstrap(app) {
   // Logs
@@ -25,6 +28,10 @@ export default function bootstrap(app) {
 
   // Archivos estáticos
   app.use(express.static(path.join(__dirname, '../public')));
+
+  // Variables globales
+  app.locals.siteTitle = process.env.SITE_TITLE || 'Mi sitio web';
+  app.locals.adminEmail = process.env.ADMIN_EMAIL || 'admin@ejemplo.com';
 
   // Rutas Web
   app.use('/', webRoutes);

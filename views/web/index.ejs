@@ -2,8 +2,14 @@
 <h1>I am the  template</h1>
 
 <% block('head').append(`
-    <link type="text/css" href="/foo.css">
-    <link type="text/css" href="/foo2a.css">
-    <link type="text/css" href="/foo3a.css">
-    <link type="text/css" href="/foo5a.css">
+    <link rel="stylesheet" type="text/css" href="/foo.css">
+    <link rel="stylesheet" type="text/css" href="/foo2a.css">
+    <link rel="stylesheet" type="text/css" href="/foo3a.css">
+    <link rel="stylesheet" type="text/css" href="/foo5a.css">
+`) %>
+
+<% block('scripts').append(`
+    <script>
+        alert('XD');
+    </script>
 `) %>

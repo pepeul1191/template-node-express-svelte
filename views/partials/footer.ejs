@@ -2,12 +2,11 @@
     <div class="footer-content">
         <p>&copy; <%= new Date().getFullYear() %> Mi Sitio Web. Todos los derechos reservados.</p>
         
-        <!-- Block para contenido adicional en el footer -->
-        <%- block('footer-content') %>
-        
         <div class="footer-links">
             <a href="/privacy">Política de privacidad</a>
             <a href="/terms">Términos de uso</a>
         </div>
     </div>
 </footer>
+
+<%- block('scripts').toString() %>
