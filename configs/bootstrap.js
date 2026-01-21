@@ -7,6 +7,7 @@ import engine from 'ejs-mate';
 import dotenv from 'dotenv';
 
 import webRoutes from '../web/routes.js';
+import { notFoundHandler, errorHandler } from './middlewares.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,11 +37,9 @@ export default function bootstrap(app) {
   // Rutas Web
   app.use('/', webRoutes);
 
-  // 404
-  app.use((req, res) => {
-    res.status(404).render('404', {
-      title: 'Página no encontrada',
-      message: 'La página que buscas no existe.'
-    });
-  });
+  // Middleware 404 - Solo se ejecuta si no coincidió ninguna ruta anterior
+  app.use(notFoundHandler);
+
+  // Middleware de manejo de errores global
+  app.use(errorHandler);
 }
