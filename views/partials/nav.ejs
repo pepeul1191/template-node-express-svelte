@@ -1,24 +1,34 @@
-<nav class="navbar">
-    <ul class="nav-menu">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Centro de Emprendimiento</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item">
-            <a href="/" class="nav-link <%= title === 'Inicio' ? 'active' : '' %>">
-                Inicio
-            </a>
+          <a class="nav-link" href="#inicio">Inicio</a>
         </li>
         <li class="nav-item">
-            <a href="/about" class="nav-link <%= title === 'Acerca de' ? 'active' : '' %>">
-                Acerca de
-            </a>
+          <a class="nav-link" href="#servicios">Servicios</a>
         </li>
         <li class="nav-item">
-            <a href="/productos" class="nav-link <%= title === 'Productos' ? 'active' : '' %>">
-                Productos
-            </a>
+          <a class="nav-link" href="#programas">Programas</a>
         </li>
         <li class="nav-item">
-            <a href="/contacto" class="nav-link <%= title === 'Contacto' ? 'active' : '' %>">
-                Contacto
-            </a>
+          <a class="nav-link" href="#contacto">Contacto</a>
         </li>
-    </ul>
+
+        <!-- Botón Login -->
+        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+          <a href="/sign-in" class="btn btn-outline-light">
+            Iniciar sesión
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>

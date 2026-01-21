@@ -1,56 +1,92 @@
 <% layout('layouts/web.ejs') -%>
 
-<!-- Hero Section -->
-<header class="bg-light py-5 text-center">
-<div class="container">
-    <h1 class="display-4">Bienvenido al Centro de Emprendimiento</h1>
-    <p class="lead">Impulsamos ideas, conectamos emprendedores y fomentamos la innovación.</p>
-    <a href="/sign-in" class="btn btn-primary btn-lg mt-3">Únete hoy</a>
-</div>
-</header>
+<!-- Hero -->
+<section id="inicio" class="hero text-center">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Impulsamos tus ideas</h1>
+    <p class="lead mt-3">
+      Apoyamos a estudiantes y docentes en la creación de startups, innovación y emprendimiento.
+    </p>
+    <a href="#programas" class="btn btn-light btn-lg mt-4">Conoce nuestros programas</a>
+  </div>
+</section>
 
-<!-- Links a secciones principales -->
-<section class="py-5">
-<div class="container">
-    <div class="row g-4 text-center">
-    <div class="col-md-3">
-        <div class="card h-100 shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">Home</h5>
-            <p class="card-text">Vuelve a la página principal y descubre nuestras novedades.</p>
-            <a href="/" class="btn btn-primary">Ir a Home</a>
-        </div>
-        </div>
+<!-- Servicios -->
+<section id="servicios" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Nuestros Servicios</h2>
+      <p class="text-muted">Acompañamiento integral para emprendedores universitarios</p>
     </div>
-    <div class="col-md-3">
-        <div class="card h-100 shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">About</h5>
-            <p class="card-text">Conoce nuestra misión, visión y todo sobre nuestro centro.</p>
-            <a href="/about" class="btn btn-primary">Ver About</a>
-        </div>
-        </div>
+
+    <div class="row g-4">
+      <div class="col-md-4 text-center">
+        <div class="icon-box mb-3">🚀</div>
+        <h5>Incubación de Proyectos</h5>
+        <p>Apoyo desde la idea hasta el modelo de negocio validado.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <div class="icon-box mb-3">🎓</div>
+        <h5>Mentorías</h5>
+        <p>Asesoría con expertos en innovación, finanzas y marketing.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <div class="icon-box mb-3">🤝</div>
+        <h5>Vinculación</h5>
+        <p>Conexión con empresas, inversionistas y ecosistema emprendedor.</p>
+      </div>
     </div>
-    <div class="col-md-3">
-        <div class="card h-100 shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">Contact</h5>
-            <p class="card-text">Contáctanos para dudas, asesorías o colaboración.</p>
-            <a href="/contact" class="btn btn-primary">Contactar</a>
-        </div>
-        </div>
+  </div>
+</section>
+
+<!-- Programas -->
+<section id="programas" class="bg-light py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h2 class="fw-bold">Programas Destacados</h2>
+        <ul class="list-group list-group-flush mt-3">
+          <li class="list-group-item">✔ Pre-incubación para estudiantes</li>
+          <li class="list-group-item">✔ Aceleración de startups</li>
+          <li class="list-group-item">✔ Hackatones y retos de innovación</li>
+          <li class="list-group-item">✔ Talleres y capacitaciones</li>
+        </ul>
+      </div>
+      <div class="col-md-6 text-center">
+        <img src="https://via.placeholder.com/450x300" class="img-fluid rounded" alt="Emprendimiento">
+      </div>
     </div>
-    <div class="col-md-3">
-        <div class="card h-100 shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">Noticias</h5>
-            <p class="card-text">Mantente al día con nuestras noticias y eventos.</p>
-            <a href="/noticias" class="btn btn-primary">Ver Noticias</a>
-        </div>
-        </div>
+  </div>
+</section>
+
+<!-- Contacto -->
+<section id="contacto" class="py-5">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">Contáctanos</h2>
+      <p class="text-muted">¿Tienes una idea? Hablemos.</p>
     </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Mensaje</label>
+            <textarea class="form-control" rows="4"></textarea>
+          </div>
+          <button class="btn btn-primary w-100">Enviar mensaje</button>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
 </section>
 
 <% block('styles').append(`
@@ -60,6 +96,5 @@
 <% block('scripts').append(`
   <script src="/dist/web.js"></script>
   <script>
-    alert('XD');
   </script>
 `) %>
