@@ -62,3 +62,40 @@ export function errorHandler(err, req, res, next) {
     statusCode: statusCode
   });
 }
+
+export function requireAuth(req, res, next) {
+  // Verificar si es una petición API
+  const isApiRequest = req.path.startsWith('/api/');
+  
+  // Verificar si el usuario tiene sesión activa
+  const isAuthenticated = req.session && req.session.user && req.session.user.id;
+  
+  if (isAuthenticated) {
+    // Si está autenticado, continuar
+    return next();
+  }
+  
+  // Si NO está autenticado y es la ruta raíz '/'
+  if (req.path === '/') {
+    // Redireccionar a sign-in
+    return res.redirect('/sign-in');
+  }
+  
+  // Si NO está autenticado
+  if (isApiRequest || req.method !== 'GET') {
+    // Para APIs o métodos no-GET, devolver JSON
+    return res.status(401).json({
+      success: false,
+      message: 'Acceso no autorizado',
+      data: null,
+      error: 'Error 401: No autenticado'
+    });
+  }
+  
+  // Para peticiones GET no-API, mostrar vista 401
+  return res.status(401).render('401', {
+    title: 'Acceso no autorizado',
+    message: 'Debes iniciar sesión para acceder a esta página.',
+    statusCode: 401
+  });
+}

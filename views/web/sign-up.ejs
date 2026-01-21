@@ -1,0 +1,315 @@
+<% layout('layouts/blank.ejs') -%>
+
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center p-4 bg-white">
+    <div class="w-100" style="max-width: 450px;">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <div class="mb-4">
+                <i class="fa fa-user-plus fa-4x text-primary"></i>
+            </div>
+            <h1 class="h3 fw-bold mb-2">Crear Cuenta</h1>
+            <p class="text-muted mb-0">
+                Regístrate para acceder al Centro de Emprendimiento
+            </p>
+        </div>
+        
+        <!-- Formulario -->
+        <form id="signUpForm" class="needs-validation" novalidate>
+            <!-- Campo: Usuario -->
+            <div class="mb-4">
+                <label for="username" class="form-label fw-bold">
+                    <i class="fa fa-user me-2"></i>Nombre de Usuario
+                </label>
+                <input type="text" 
+                       class="form-control form-control-lg" 
+                       id="username" 
+                       placeholder="juan.perez" 
+                       required
+                       minlength="3"
+                       maxlength="30"
+                       pattern="[a-zA-Z0-9._-]+"
+                       autofocus>
+                <div class="invalid-feedback">
+                    El nombre de usuario debe tener entre 3 y 30 caracteres (solo letras, números, puntos, guiones y guiones bajos).
+                </div>
+                <div class="form-text">
+                    Entre 3 y 30 caracteres. Solo letras, números, ., - y _
+                </div>
+            </div>
+            
+            <!-- Campo: Correo -->
+            <div class="mb-4">
+                <label for="email" class="form-label fw-bold">
+                    <i class="fa fa-envelope me-2"></i>Correo Electrónico
+                </label>
+                <input type="email" 
+                       class="form-control form-control-lg" 
+                       id="email" 
+                       placeholder="usuario@ejemplo.com" 
+                       required>
+                <div class="invalid-feedback">
+                    Por favor ingresa un correo electrónico válido.
+                </div>
+                <div class="form-text">
+                    Debe ser un correo institucional o personal válido.
+                </div>
+            </div>
+            
+            <!-- Campo: Contraseña -->
+            <div class="mb-4">
+                <label for="password" class="form-label fw-bold">
+                    <i class="fa fa-lock me-2"></i>Contraseña
+                </label>
+                <div class="input-group">
+                    <input type="password" 
+                           class="form-control form-control-lg" 
+                           id="password" 
+                           placeholder="••••••••" 
+                           required
+                           minlength="8"
+                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$">
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+                <div class="invalid-feedback">
+                    La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula y un número.
+                </div>
+                <div class="form-text">
+                    Mínimo 8 caracteres con al menos una mayúscula, una minúscula y un número.
+                </div>
+            </div>
+            
+            <!-- Campo: Repetir Contraseña -->
+            <div class="mb-4">
+                <label for="confirmPassword" class="form-label fw-bold">
+                    <i class="fa fa-lock me-2"></i>Confirmar Contraseña
+                </label>
+                <div class="input-group">
+                    <input type="password" 
+                           class="form-control form-control-lg" 
+                           id="confirmPassword" 
+                           placeholder="••••••••" 
+                           required>
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+                <div class="invalid-feedback" id="confirmPasswordFeedback">
+                    Las contraseñas deben coincidir.
+                </div>
+            </div>
+            
+            <!-- Términos y Condiciones -->
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="terms" required>
+                <label class="form-check-label" for="terms">
+                    Acepto los <a href="/terms" class="text-primary text-decoration-none">Términos y Condiciones</a> y la <a href="/privacy" class="text-primary text-decoration-none">Política de Privacidad</a>
+                </label>
+                <div class="invalid-feedback">
+                    Debes aceptar los términos y condiciones para continuar.
+                </div>
+            </div>
+            
+            <!-- Botón Registrar -->
+            <div class="d-grid mb-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fa fa-user-plus me-2"></i>Crear Cuenta
+                </button>
+            </div>
+            
+            <!-- Mensaje de éxito -->
+            <div id="successMessage" class="alert alert-success d-none mb-4" role="alert">
+                <i class="fa fa-check-circle me-2"></i>
+                <strong>¡Cuenta creada exitosamente!</strong> Redirigiendo al inicio de sesión...
+            </div>
+            
+            <!-- Separador -->
+            <div class="position-relative my-4">
+                <hr>
+                <div class="position-absolute top-50 start-50 translate-middle px-3 bg-white">
+                    <span class="text-muted">o continuar con</span>
+                </div>
+            </div>
+            
+            <!-- Botón Google -->
+            <div class="d-grid mb-4">
+                <a href="/auth/google" class="btn btn-outline-danger btn-lg">
+                    <i class="fa fa-google me-2"></i>Registrarse con Google
+                </a>
+            </div>
+            
+            <!-- Enlaces de navegación -->
+            <div class="text-center pt-4 border-top">
+                <div class="d-flex flex-column gap-3">
+                    <a href="/sign-in" class="text-decoration-none">
+                        <i class="fa fa-sign-in me-2"></i>¿Ya tienes cuenta? Inicia Sesión
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% block('scripts').append(`
+<script>
+// Función para alternar visibilidad de contraseña
+function setupPasswordToggle(passwordId, toggleId) {
+    const toggleBtn = document.getElementById(toggleId);
+    const passwordInput = document.getElementById(passwordId);
+    
+    if (!toggleBtn || !passwordInput) return;
+    
+    toggleBtn.addEventListener('click', function() {
+        const icon = this.querySelector('i');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+}
+
+// Configurar toggles para ambas contraseñas
+setupPasswordToggle('password', 'togglePassword1');
+setupPasswordToggle('confirmPassword', 'togglePassword2');
+
+// Validar que las contraseñas coincidan
+function validatePasswordsMatch() {
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const feedback = document.getElementById('confirmPasswordFeedback');
+    
+    if (password.value !== confirmPassword.value) {
+        confirmPassword.setCustomValidity('Las contraseñas no coinciden');
+        feedback.textContent = 'Las contraseñas deben coincidir.';
+        feedback.style.display = 'block';
+        return false;
+    } else {
+        confirmPassword.setCustomValidity('');
+        feedback.style.display = 'none';
+        return true;
+    }
+}
+
+// Validación personalizada para la contraseña
+function validatePassword() {
+    const password = document.getElementById('password');
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+    
+    if (password.value.length < 8) {
+        password.setCustomValidity('La contraseña debe tener al menos 8 caracteres');
+        return false;
+    } else if (!regex.test(password.value)) {
+        password.setCustomValidity('La contraseña debe incluir al menos una mayúscula, una minúscula y un número');
+        return false;
+    } else {
+        password.setCustomValidity('');
+        return true;
+    }
+}
+
+// Validación del formulario
+document.getElementById('signUpForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Validaciones personalizadas
+    const isPasswordValid = validatePassword();
+    const isPasswordMatch = validatePasswordsMatch();
+    
+    if (this.checkValidity() && isPasswordValid && isPasswordMatch) {
+        // Datos del formulario
+        const formData = {
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            terms: document.getElementById('terms').checked
+        };
+        
+        console.log('Datos de registro:', formData);
+        
+        // Mostrar mensaje de éxito
+        const successMessage = document.getElementById('successMessage');
+        successMessage.classList.remove('d-none');
+        
+        // Deshabilitar formulario
+        this.querySelectorAll('input, button').forEach(element => {
+            element.disabled = true;
+        });
+        
+        // Redireccionar después de 3 segundos
+        setTimeout(() => {
+            window.location.href = '/sign-in?message=registered';
+        }, 3000);
+    }
+    
+    this.classList.add('was-validated');
+});
+
+// Validar en tiempo real
+document.getElementById('password').addEventListener('input', validatePassword);
+document.getElementById('confirmPassword').addEventListener('input', validatePasswordsMatch);
+
+// Auto-enfocar el primer campo
+document.getElementById('username').focus();
+</script>
+`) %>
+
+<% block('styles').append(`
+<style>
+    body {
+        background: white;
+    }
+    
+    .form-control-lg {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    
+    .text-decoration-none {
+        color: var(--bs-primary);
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    
+    .text-decoration-none:hover {
+        color: var(--bs-primary-dark);
+        text-decoration: underline !important;
+    }
+    
+    .alert-success {
+        border-radius: 8px;
+        border: none;
+        background-color: rgba(25, 135, 84, 0.1);
+    }
+    
+    .border-top {
+        border-top: 1px solid #dee2e6 !important;
+    }
+    
+    .form-text {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    
+    .input-group .btn-outline-secondary {
+        border-left: 0;
+    }
+    
+    .form-check-label a {
+        text-decoration: none;
+    }
+</style>
+`) %>

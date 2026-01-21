@@ -1,0 +1,207 @@
+<% layout('layouts/blank.ejs') -%>
+
+<div class="container-fluid vh-100 p-0">
+    <div class="row g-0 h-100">
+        <!-- Slider Bootstrap (Izquierda) -->
+        <div class="col-lg-6 d-none d-lg-block">
+            <div id="signInCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+                <!-- Indicadores -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#signInCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#signInCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#signInCarousel" data-bs-slide-to="2"></button>
+                </div>
+                
+                <!-- Slides -->
+                <div class="carousel-inner h-100">
+                    <div class="carousel-item active h-100">
+                        <div class="h-100 d-flex align-items-center justify-content-center bg-primary">
+                            <div class="text-white text-center p-5">
+                                <i class="fa fa-rocket fa-5x mb-4"></i>
+                                <h2 class="display-5 fw-bold">Bienvenido al Centro de Emprendimiento de la Universidad de Lima</h2>
+                                <p class="lead">Accede a herramientas y recursos para impulsar tu proyecto empresarial</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item h-100">
+                        <div class="h-100 d-flex align-items-center justify-content-center bg-secondary">
+                            <div class="text-white text-center p-5">
+                                <i class="fa fa-users fa-5x mb-4"></i>
+                                <h2 class="display-5 fw-bold">Conecta con Emprendedores</h2>
+                                <p class="lead">Forma parte de una comunidad activa de innovadores y creadores</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item h-100">
+                        <div class="h-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #ff5117, #ff7345);">
+                            <div class="text-white text-center p-5">
+                                <i class="fa fa-chart-line fa-5x mb-4"></i>
+                                <h2 class="display-5 fw-bold">Herramientas de Gestión</h2>
+                                <p class="lead">Monitorea el progreso de tu emprendimiento con nuestras herramientas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Controles -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#signInCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#signInCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Formulario de Login (Derecha) -->
+        <div class="col-lg-6">
+            <div class="h-100 d-flex align-items-center justify-content-center p-4">
+                <div class="w-100" style="max-width: 400px;">
+                    <!-- Logo/Header -->
+                    <div class="text-center mb-5">
+                        <h1 class="h3 fw-bold mb-2">Iniciar Sesión</h1>
+                        <p class="text-muted">Ingresa a tu cuenta para continuar</p>
+                    </div>
+                    
+                    <!-- Formulario -->
+                    <form id="loginForm" class="needs-validation" novalidate>
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-bold">
+                                <i class="fa fa-user me-2"></i>Correo Electrónico
+                            </label>
+                            <input type="email" class="form-control form-control-lg" 
+                                   id="email" placeholder="usuario@ejemplo.com" required>
+                            <div class="invalid-feedback">
+                                Por favor ingresa un correo electrónico válido.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-bold">
+                                <i class="fa fa-lock me-2"></i>Contraseña
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control form-control-lg" 
+                                       id="password" placeholder="••••••••" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor ingresa tu contraseña.
+                            </div>
+                        </div>
+                        
+                        <!-- Recordar contraseña -->
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Recordar mis datos
+                            </label>
+                        </div>
+                        
+                        <!-- Botón Ingresar -->
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fa fa-sign-in me-2"></i>Ingresar
+                            </button>
+                        </div>
+                        
+                        <!-- Separador -->
+                        <div class="position-relative my-4">
+                            <hr>
+                            <div class="position-absolute top-50 start-50 translate-middle px-3 bg-white">
+                                <span class="text-muted">o continuar con</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Botón Google -->
+                        <div class="d-grid mb-4">
+                            <a href="/auth/google" class="btn btn-outline-danger btn-lg">
+                                <i class="fa fa-google me-2"></i>Ingresar con Google
+                            </a>
+                        </div>
+                        
+                        <!-- Recuperar contraseña -->
+                        <div class="text-center mb-4">
+                            <a href="/reset-password" class="text-decoration-none">
+                                <i class="fa fa-key me-1"></i>¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+                        
+                        <!-- Registro -->
+                        <div class="text-center">
+                            <p class="text-muted">
+                                ¿No tienes una cuenta? 
+                                <a href="/sign-up" class="text-primary fw-bold text-decoration-none">
+                                    Regístrate aquí
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% block('scripts').append(`
+<script>
+// Toggle para mostrar/ocultar contraseña
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const icon = this.querySelector('i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+});
+
+// Validación de formulario
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    if (!this.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    this.classList.add('was-validated');
+});
+</script>
+`) %>
+
+<% block('styles').append(`
+<style>
+    .carousel-item {
+        transition: transform 0.6s ease-in-out;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 5%;
+    }
+
+    #togglePassword {
+        border-left: 0; 
+    }
+
+    .form-control-lg {
+        padding: 0.75rem 1rem;
+    }
+
+    @media (max-width: 992px) {
+        .container-fluid {
+            height: auto;
+            min-height: 100vh;
+        }
+    }
+</style>
+`) %>

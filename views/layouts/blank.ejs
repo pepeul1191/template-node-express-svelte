@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof siteTitle !== 'undefined' ? siteTitle : 'Título por defecto' %></title>
+    <link rel="stylesheet" type="text/css" href="/dist/vendor.min.css">
+    <link rel="stylesheet" type="text/css" href="/dist/web.css">
+    <%- block('styles').toString() %>
+  </head>
+  <body>
+    <%- body -%>
+    <script src="/dist/vendor.js"></script>
+    <%- block('scripts').toString() %>
+  </body>
+</html>
