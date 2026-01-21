@@ -8,9 +8,10 @@ export function home(req, res) {
 
 export function signIn(req, res) {
   res.render('web/sign-in', {
-    title: 'Bienvenido',
-    description:
-      'Esta es una aplicación de ejemplo creada con Node.js, Express y EJS.'
+    title: 'Iniciar Sesión',
+    error: req.query.error || null,
+    success: req.query.success || null,
+    oldUser: req.query.user || ''
   });
 }
 
@@ -27,5 +28,35 @@ export function signUp(req, res) {
     title: 'Recuperar contraseña',
     description:
       'Esta es una aplicación de ejemplo creada con Node.js, Express y EJS.'
+  });
+}
+
+export function login(req, res) {
+  const { user, password } = req.body;
+  
+  // Credenciales desde .env
+  const validUser = process.env.DEFAULT_USER || 'admin';
+  const validPassword = process.env.DEFAULT_PASSWORD || '123';
+  
+  // Validar credenciales
+  if (user === validUser && password === validPassword) {
+    // Crear sesión
+    req.session.user = {
+      id: 1,
+      username: user,
+      email: `${user}@ejemplo.com`,
+      role: 'admin'
+    };
+    
+    // Redirigir al home
+    return res.redirect('/');
+  }
+  
+  // Si las credenciales son incorrectas, mostrar error
+  res.render('web/sign-in', {
+    title: 'Iniciar Sesión',
+    error: 'Usuario o contraseña incorrectos',
+    oldUser: user,
+    success: null
   });
 }

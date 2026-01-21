@@ -2,12 +2,15 @@
 import { Router } from 'express';
 import * as webController from './controllers.js';
 import { requireAuth } from '../configs/middlewares.js';
+import { redirectIfAuthenticated } from '../configs/middlewares.js'; 
+
 
 const router = Router();
 
 router.get('/', requireAuth, webController.home);
-router.get('/sign-in', webController.signIn);
-router.get('/reset-password', webController.resetPassword);
-router.get('/sign-up', webController.signUp);
+router.get('/sign-in', redirectIfAuthenticated, webController.signIn);
+router.post('/sign-in', redirectIfAuthenticated, webController.login);
+router.get('/reset-password', redirectIfAuthenticated, webController.resetPassword);
+router.get('/sign-up', redirectIfAuthenticated, webController.signUp); 
 
 export default router;

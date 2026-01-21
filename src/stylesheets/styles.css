@@ -147,6 +147,6 @@ a i {
   margin-right: 5px;
 }
 
-.btn, .form-control{
+.btn, .form-control, .alert{
   border-radius: 0px;
 }

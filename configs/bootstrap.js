@@ -2,6 +2,7 @@
 import path from 'path';
 import morgan from 'morgan';
 import express from 'express';
+import session from 'express-session';
 import { fileURLToPath } from 'url';
 import engine from 'ejs-mate';
 import dotenv from 'dotenv';
@@ -22,6 +23,18 @@ export default function bootstrap(app) {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // Configuración de sesiones (ESTO ES IMPORTANTE)
+  app.use(session({
+    secret: process.env.SESSION_SECRET || 'secreto-super-seguro-cambiar-en-produccion',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24, // 1 día
+      httpOnly: true
+    }
+  }));
+
   // Vistas
   app.engine('ejs', engine);
   app.set('view engine', 'ejs');
@@ -41,5 +54,5 @@ export default function bootstrap(app) {
   app.use(notFoundHandler);
 
   // Middleware de manejo de errores global
-  app.use(errorHandler);
+  //app.use(errorHandler);
 }

@@ -99,3 +99,30 @@ export function requireAuth(req, res, next) {
     statusCode: 401
   });
 }
+
+// configs/middlewares.js
+/**
+ * Middleware para redirigir a usuarios autenticados
+ * Si el usuario ya tiene sesión activa, lo redirige a la página principal
+ */
+export function redirectIfAuthenticated(req, res, next) {
+  // Verificar si el usuario tiene sesión activa
+  const isAuthenticated = req.session && req.session.user && req.session.user.id;
+  
+  // Si está autenticado Y está intentando acceder a rutas de autenticación
+  const isAuthRoute = [
+    '/sign-in',
+    '/sign-up',
+    '/login',
+    '/register',
+    '/reset-password'
+  ].some(route => req.path === route);
+  
+  if (isAuthenticated && isAuthRoute) {
+    // Redirigir al home si ya está logueado y quiere acceder a rutas de auth
+    return res.redirect('/');
+  }
+  
+  // Si no está autenticado o no es una ruta de auth, continuar
+  next();
+}
