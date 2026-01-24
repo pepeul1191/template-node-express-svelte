@@ -6,12 +6,14 @@ import session from 'express-session';
 import { fileURLToPath } from 'url';
 import engine from 'ejs-mate';
 import dotenv from 'dotenv';
+import FileStore from 'session-file-store';
 
 import webRoutes from '../web/routes.js';
 import { notFoundHandler, errorHandler } from './middlewares.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const FileStoreSession = FileStore(session);
 
 dotenv.config();
 
@@ -25,12 +27,17 @@ export default function bootstrap(app) {
 
   // Configuración de sesiones (ESTO ES IMPORTANTE)
   app.use(session({
+    store: new FileStoreSession({
+      path: path.join(__dirname, '../../sessions'),
+      retries: 0,
+      ttl: 60 * 60 * 24 // 1 día
+    }),
     secret: process.env.SESSION_SECRET || 'secreto-super-seguro-cambiar-en-produccion',
     resave: false,
     saveUninitialized: false,
     cookie: {
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24, // 1 día
+      maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true
     }
   }));

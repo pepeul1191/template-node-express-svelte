@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "dev-expp": "npx nodemon server.js --ignore public/* --ignore src/*",
-    "dev": "npm run dev-expp & npm run svelte",
+    "prepare:sessions": "node -e \"require('fs').mkdirSync('sessions', { recursive: true })\"",
+    "dev": "npm run prepare:sessions & npm run dev-expp & npm run svelte",
     "svelte": "rollup -c -w"
   },
   "keywords": [],

@@ -60,3 +60,18 @@ export function login(req, res) {
     success: null
   });
 }
+
+export function logout(req, res) {
+  req.session.destroy(err => {
+    if (err) {
+      console.error('Error al cerrar sesión:', err);
+      return res.redirect('/');
+    }
+
+    // Limpia la cookie de sesión (opcional pero recomendado)
+    res.clearCookie('connect.sid');
+
+    // Redirige al login
+    res.redirect('/sign-in');
+  });
+}
