@@ -126,3 +126,24 @@ export function redirectIfAuthenticated(req, res, next) {
   // Si no está autenticado o no es una ruta de auth, continuar
   next();
 }
+
+export const flashSession = (req, res, next) => {
+  // Si existe flash en session, transferirlo a req.flash
+  if (req.session.flash) {
+    if (!req.flash) req.flash = () => {};
+    
+    // Transferir todos los mensajes
+    Object.keys(req.session.flash).forEach(key => {
+      if (Array.isArray(req.session.flash[key])) {
+        req.session.flash[key].forEach(msg => {
+          if (!req.flash[key]) req.flash[key] = [];
+          req.flash[key].push(msg);
+        });
+      }
+    });
+    
+    // Limpiar session flash después de transferir
+    delete req.session.flash;
+  }
+  next();
+};

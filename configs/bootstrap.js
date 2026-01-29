@@ -6,10 +6,11 @@ import session from 'express-session';
 import { fileURLToPath } from 'url';
 import engine from 'ejs-mate';
 import dotenv from 'dotenv';
+import flash from 'connect-flash';
 import FileStore from 'session-file-store';
 
 import webRoutes from '../web/routes.js';
-import { notFoundHandler, errorHandler } from './middlewares.js';
+import { notFoundHandler, errorHandler, flashSession } from './middlewares.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,11 +37,13 @@ export default function bootstrap(app) {
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
+      //secure: process.env.NODE_ENV === 'production',
+      secure: false,
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true
     }
   }));
+  app.use(flash());
 
   // Vistas
   app.engine('ejs', engine);

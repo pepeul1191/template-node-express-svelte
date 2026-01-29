@@ -68,33 +68,23 @@
                     </div>
                     
                     <!-- Mostrar mensajes de error si existen -->
-                    <% if (error) { %>
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <i class="fa fa-exclamation-circle me-2"></i> <%= error %>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <% } %>
-                    
-                    <% if (success) { %>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fa fa-check-circle me-2"></i> <%= success %>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <% } %>
-                    
+                    <%- include('../partials/flash_messages') %>
+
                     <!-- Formulario POST -->
                     <form id="loginForm" method="POST" action="/sign-in" class="needs-validation" novalidate>
                         <div class="mb-4">
                             <label for="user" class="form-label fw-bold">
                                 <i class="fa fa-user me-2"></i>Usuario
                             </label>
-                            <input type="text" 
-                                   name="user" 
-                                   class="form-control form-control-lg" 
-                                   id="user" 
-                                   placeholder="usuario" 
-                                   required
-                                   value="<%= oldUser || '' %>">
+                            <input
+                                type="text"
+                                name="user"
+                                class="form-control form-control-lg"
+                                placeholder="usuario"
+                                id="user"
+                                required
+                                value=""
+                                >
                             <div class="invalid-feedback">
                                 Por favor ingresa un usuario válido.
                             </div>
@@ -191,14 +181,6 @@ document.getElementById('togglePassword').addEventListener('click', function() {
     }
 });
 
-// Validación de formulario
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    if (!this.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    this.classList.add('was-validated');
-});
 </script>
 `) %>
 

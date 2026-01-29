@@ -8,10 +8,7 @@ export function home(req, res) {
 
 export function signIn(req, res) {
   res.render('web/sign-in', {
-    title: 'Iniciar Sesión',
-    error: req.query.error || null,
-    success: req.query.success || null,
-    oldUser: req.query.user || ''
+    title: 'Iniciar Sesión'
   });
 }
 
@@ -33,31 +30,33 @@ export function signUp(req, res) {
 
 export function login(req, res) {
   const { user, password } = req.body;
-  
-  // Credenciales desde .env
   const validUser = process.env.DEFAULT_USER || 'admin';
   const validPassword = process.env.DEFAULT_PASSWORD || '123';
-  
-  // Validar credenciales
+
   if (user === validUser && password === validPassword) {
-    // Crear sesión
     req.session.user = {
       id: 1,
       username: user,
       email: `${user}@ejemplo.com`,
       role: 'admin'
     };
+
+    req.session.flash = {
+      success: 'Bienvenido 👋'
+    };
     
-    // Redirigir al home
     return res.redirect('/');
   }
-  
-  // Si las credenciales son incorrectas, mostrar error
+
+  // ❌ credenciales incorrectas
+  req.session.flash = {
+    error: ['Usuario y/o contraseña incorrecta.'],
+    oldUser: [user]
+  };
+
   res.render('web/sign-in', {
     title: 'Iniciar Sesión',
-    error: 'Usuario o contraseña incorrectos',
-    oldUser: user,
-    success: null
+    flash: req.session.flash || {}
   });
 }
 
