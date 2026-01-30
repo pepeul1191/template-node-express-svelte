@@ -3,12 +3,16 @@ import * as webService from './services.js';
 
 export function home(req, res) {
   const data = webService.getHomeData();
-  res.render('web/index', data);
+  res.render('web/index', {
+    title: 'Iniciar Sesión',
+  });
 }
 
 export function signIn(req, res) {
+  console.log('Flash error set:', req.flash('error'));
+
   res.render('web/sign-in', {
-    title: 'Iniciar Sesión'
+    title: 'Iniciar Sesión',
   });
 }
 
@@ -28,6 +32,7 @@ export function signUp(req, res) {
   });
 }
 
+// controllers/authController.js
 export function login(req, res) {
   const { user, password } = req.body;
   const validUser = process.env.DEFAULT_USER || 'admin';
@@ -41,22 +46,38 @@ export function login(req, res) {
       role: 'admin'
     };
 
-    req.session.flash = {
-      success: 'Bienvenido 👋'
-    };
-    
-    return res.redirect('/');
+    req.flash('success', '¡Bienvenido! Has iniciado sesión correctamente.');
+  
+    return req.session.save(() => {
+      res.redirect('/');
+    });
   }
 
   // ❌ credenciales incorrectas
-  req.session.flash = {
-    error: ['Usuario y/o contraseña incorrecta.'],
-    oldUser: [user]
-  };
+  req.flash('error', 'Credenciales incorrectas');
+  
+  // ✅ Extraer flash messages manualmente antes de renderizar
+  const success_messages = req.flash('success');
+  const error_messages = req.flash('error');
+  const warning_messages = req.flash('warning');
+  const info_messages = req.flash('info');
+  
+  const hasFlashMessages = 
+    success_messages.length > 0 ||
+    error_messages.length > 0 ||
+    warning_messages.length > 0 ||
+    info_messages.length > 0;
 
   res.render('web/sign-in', {
     title: 'Iniciar Sesión',
-    flash: req.session.flash || {}
+    user: user, // Mantener el usuario en el formulario
+    
+    // ✅ Pasar explícitamente los flash messages
+    success_messages,
+    error_messages,
+    warning_messages,
+    info_messages,
+    hasFlashMessages
   });
 }
 

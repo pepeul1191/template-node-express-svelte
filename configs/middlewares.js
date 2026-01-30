@@ -69,7 +69,6 @@ export function requireAuth(req, res, next) {
   
   // Verificar si el usuario tiene sesión activa
   const isAuthenticated = req.session && req.session.user && req.session.user.id;
-  
   if (isAuthenticated) {
     // Si está autenticado, continuar
     return next();
@@ -128,22 +127,76 @@ export function redirectIfAuthenticated(req, res, next) {
 }
 
 export const flashSession = (req, res, next) => {
-  // Si existe flash en session, transferirlo a req.flash
-  if (req.session.flash) {
-    if (!req.flash) req.flash = () => {};
-    
-    // Transferir todos los mensajes
-    Object.keys(req.session.flash).forEach(key => {
-      if (Array.isArray(req.session.flash[key])) {
-        req.session.flash[key].forEach(msg => {
-          if (!req.flash[key]) req.flash[key] = [];
-          req.flash[key].push(msg);
-        });
-      }
-    });
-    
-    // Limpiar session flash después de transferir
-    delete req.session.flash;
+  // 1. Asegurar que session.flash existe
+  if (!req.session.flash) {
+    req.session.flash = {};
   }
+  
+  // 2. Método req.flash() para guardar mensajes
+  req.flash = (type, message) => {
+    // Si es array, unir con los existentes
+    if (Array.isArray(message)) {
+      if (!req.session.flash[type]) {
+        req.session.flash[type] = [];
+      }
+      req.session.flash[type].push(...message);
+    } 
+    // Si es string, guardarlo
+    else if (typeof message === 'string') {
+      if (!req.session.flash[type]) {
+        req.session.flash[type] = [];
+      }
+      req.session.flash[type].push(message);
+    }
+    // Si no hay mensaje, obtener y limpiar
+    else if (message === undefined) {
+      const messages = req.session.flash[type] || [];
+      req.session.flash[type] = []; // Limpiar inmediatamente
+      return messages;
+    }
+    
+    return req.session.flash[type];
+  };
+  
+  // 3. Preparar flash para las vistas ANTES de cada request
+  // Esto es clave: copiar los mensajes actuales a res.locals
+  const currentFlash = {};
+  
+  // Copiar todos los mensajes de session a currentFlash
+  Object.keys(req.session.flash).forEach(type => {
+    if (req.session.flash[type] && req.session.flash[type].length > 0) {
+      currentFlash[type] = [...req.session.flash[type]];
+    }
+  });
+  
+  // 4. Asignar a res.locals para acceso en vistas
+  res.locals.flash = currentFlash;
+  
+  // 5. Limpiar session.flash después de copiar
+  // Los mensajes ya están en res.locals, así que limpiamos session
+  Object.keys(req.session.flash).forEach(type => {
+    req.session.flash[type] = [];
+  });
+  
   next();
 };
+
+export function cleanFlash(req, res, next) {
+  res.on('finish', () => {
+    try {
+      // Verificar que req y session aún existen
+      if (req && req.session) {
+        if (req.session.flashForRemoval) {
+          req.session.flash = {};
+          delete req.session.flashForRemoval;
+        }
+      }
+    } catch (error) {
+      // Silenciar el error en producción, log en desarrollo
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Error limpiando flash:', error.message);
+      }
+    }
+  });
+  next();
+}

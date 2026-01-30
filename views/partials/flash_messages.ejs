@@ -1,41 +1,48 @@
-<% if (flash.success && flash.success.length) { %>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <div class="d-flex align-items-center">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <div>
-            <% flash.success.forEach(msg => { %>
-            <p class="mb-1"><%= msg %></p>
-            <% }) %>
+<!-- views/partials/flash.ejs -->
+<% if (hasFlashMessages) { %>
+  <div class="flash-messages">
+    <!-- Mensajes de éxito -->
+    <% if (success_messages && success_messages.length > 0) { %>
+      <% success_messages.forEach(msg => { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fas fa-check-circle me-2"></i>
+          <%= msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<% } %>
-
-<% if (flash.error && flash.error.length) { %>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <div class="d-flex align-items-center">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        <div>
-            <% flash.error.forEach(msg => { %>
-            <p class="mb-1"><%= msg %></p>
-            <% }) %>
+      <% }) %>
+    <% } %>
+    
+    <!-- Mensajes de error -->
+    <% if (error_messages && error_messages.length > 0) { %>
+      <% error_messages.forEach(msg => { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i>
+          <%= msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<% } %>
-
-<% if (flash.info && flash.info.length) { %>
-<div class="alert alert-info alert-dismissible fade show" role="alert">
-    <div class="d-flex align-items-center">
-        <i class="bi bi-info-circle-fill me-2"></i>
-        <div>
-            <% flash.info.forEach(msg => { %>
-            <p class="mb-1"><%= msg %></p>
-            <% }) %>
+      <% }) %>
+    <% } %>
+    
+    <!-- Mensajes de advertencia -->
+    <% if (warning_messages && warning_messages.length > 0) { %>
+      <% warning_messages.forEach(msg => { %>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          <%= msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+      <% }) %>
+    <% } %>
+    
+    <!-- Mensajes informativos -->
+    <% if (info_messages && info_messages.length > 0) { %>
+      <% info_messages.forEach(msg => { %>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          <i class="fas fa-info-circle me-2"></i>
+          <%= msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
 <% } %>
