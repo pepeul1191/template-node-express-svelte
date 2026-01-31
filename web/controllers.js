@@ -47,7 +47,7 @@ export function login(req, res) {
     };
 
     req.flash('success', '¡Bienvenido! Has iniciado sesión correctamente.');
-  
+    
     return req.session.save(() => {
       res.redirect('/');
     });
