@@ -33,18 +33,17 @@ export function signUp(req, res) {
 }
 
 // controllers/authController.js
-export function login(req, res) {
+export async function login(req, res) {
   const { user, password } = req.body;
   const validUser = process.env.DEFAULT_USER || 'admin';
   const validPassword = process.env.DEFAULT_PASSWORD || '123';
 
-  if (user === validUser && password === validPassword) {
-    req.session.user = {
-      id: 1,
-      username: user,
-      email: `${user}@ejemplo.com`,
-      role: 'admin'
-    };
+  const genericResponse = await webService.loginByUsername(user, password);
+
+  if (genericResponse.success) {
+    req.session.user = genericResponse.data.user;
+    req.session.roles = genericResponse.data.roles;
+    req.session.tokens = genericResponse.data.tokens;
 
     req.flash('success', '¡Bienvenido! Has iniciado sesión correctamente.');
     
