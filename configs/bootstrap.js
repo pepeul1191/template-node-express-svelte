@@ -10,7 +10,7 @@ import flash from 'connect-flash';
 import FileStore from 'session-file-store';
 
 import webRoutes from '../web/routes.js';
-import { notFoundHandler, errorHandler, } from './middlewares.js';
+import { notFoundHandler, errorHandler, viewFlash, viewEnv} from './middlewares.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,21 +45,10 @@ export default function bootstrap(app) {
   }));
   app.use(flash());
   // Middleware para pasar flash messages a las vistas
-  app.use((req, res, next) => {
-    res.locals.success_messages = req.flash('success');
-    res.locals.error_messages = req.flash('error');
-    res.locals.warning_messages = req.flash('warning');
-    res.locals.info_messages = req.flash('info');
-    
-    // Variable global para saber si hay mensajes
-    res.locals.hasFlashMessages = 
-      res.locals.success_messages.length > 0 ||
-      res.locals.error_messages.length > 0 ||
-      res.locals.warning_messages.length > 0 ||
-      res.locals.info_messages.length > 0;
-      
-    next();
-  });
+  app.use(viewFlash);
+
+  // Middleware para pasar .env a las vistas
+  app.use(viewEnv);
 
   // Vistas
   app.engine('ejs', engine);

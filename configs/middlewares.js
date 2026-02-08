@@ -200,3 +200,26 @@ export function cleanFlash(req, res, next) {
   });
   next();
 }
+
+export function viewFlash(req, res, next) {
+  res.locals.success_messages = req.flash('success');
+  res.locals.error_messages = req.flash('error');
+  res.locals.warning_messages = req.flash('warning');
+  res.locals.info_messages = req.flash('info');
+  
+  // Variable global para saber si hay mensajes
+  res.locals.hasFlashMessages = 
+    res.locals.success_messages.length > 0 ||
+    res.locals.error_messages.length > 0 ||
+    res.locals.warning_messages.length > 0 ||
+    res.locals.info_messages.length > 0;
+    
+  next();
+}
+
+export function viewEnv(req, res, next) {
+  res.locals.BASE_URL = process.env.BASE_URL || '/';
+  res.locals.STATIC_URL = process.env.STATIC_URL || '/';
+    
+  next();
+}

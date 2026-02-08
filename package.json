@@ -7,7 +7,10 @@
     "dev-expp": "npx nodemon server.js --ignore public/* --ignore src/*",
     "prepare:sessions": "node -e \"require('fs').mkdirSync('sessions', { recursive: true })\"",
     "dev": "npm run prepare:sessions & npm run dev-expp & npm run svelte",
-    "svelte": "rollup -c -w"
+    "svelte": "rollup -c -w",
+    "dev:access": "bash -c 'cd /home/pepe/Documents/node/access && npm run dev>/dev/null'",
+    "dev:files": "bash -c 'cd /home/pepe/Documents/node/files && npm run dev>/dev/null'",
+    "dev-all": "concurrently -p \"[{name}]\" -n \"MAIN,ACCESS,FILES\" -c \"bgRed.bold,bgGreen.bold,bgBlue.bold,bgOrange.bold\" \"npm run dev\" \"npm run dev:access\" \"npm run dev:files\""
   },
   "keywords": [],
   "author": "",
@@ -16,6 +19,7 @@
   "dependencies": {
     "axios": "^1.6.0",
     "bootstrap": "^5.3.3",
+    "concurrently": "^9.2.1",
     "connect-flash": "^0.1.1",
     "dotenv": "^17.2.3",
     "ejs": "^3.1.9",

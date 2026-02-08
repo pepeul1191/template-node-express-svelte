@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= typeof title !== 'undefined' ? title : 'Título por defecto' %></title>
-    <link rel="stylesheet" type="text/css" href="http://localhost:3000/dist/vendor.min.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost:3000/dist/web.css">
+    <link rel="stylesheet" type="text/css" href="<%=STATIC_URL%>dist/vendor.min.css">
+    <link rel="stylesheet" type="text/css" href="<%=STATIC_URL%>dist/web.css">
     <%- block('styles').toString() %>
   </head>
   <body>
