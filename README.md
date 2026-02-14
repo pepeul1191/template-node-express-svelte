@@ -26,3 +26,6 @@ Una aplicación web simple que muestra "Hola Mundo" utilizando Express, EJS como
     # FILES SERVICE
     URL_FILES_SERVICE=http://localhost:5010
     X_AUTH_FILES_SERVICE=dXNlci1zdGlja3lfc2VjcmV0XzEyMzQ1Njc
+    # PATHS
+    ACCESS_PATH=/home/pepe/Documentos/node/access
+    FILES_PATH=/home/pepe/Documentos/node/files
