@@ -4,12 +4,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
+    "test:env": "npx dotenv-cli -e .env -- printenv TEST_VAR",
     "dev-expp": "npx nodemon server.js --ignore public/* --ignore src/*",
     "prepare:sessions": "node -e \"require('fs').mkdirSync('sessions', { recursive: true })\"",
     "dev": "npm run prepare:sessions & npm run dev-expp & npm run svelte",
     "svelte": "rollup -c -w",
-    "dev:access": "bash -c 'cd /home/pepe/Documents/node/access && npm run dev>/dev/null'",
-    "dev:files": "bash -c 'cd /home/pepe/Documents/node/files && npm run dev>/dev/null'",
+    "dev:access": "npx dotenv-cli -e .env -- bash -c 'cd \"$ACCESS_PATH\" && npm run dev'",
+    "dev:files": "npx dotenv-cli -e .env -- bash -c 'cd \"$FILES_PATH\" && npm run dev'",
     "dev-all": "concurrently -p \"[{name}]\" -n \"MAIN,ACCESS,FILES\" -c \"bgRed.bold,bgGreen.bold,bgBlue.bold,bgOrange.bold\" \"npm run dev\" \"npm run dev:access\" \"npm run dev:files\""
   },
   "keywords": [],
@@ -38,6 +39,7 @@
     "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-terser": "^0.4.0",
+    "dotenv-cli": "^11.0.0",
     "nodemon": "^3.0.1",
     "rollup": "^3.15.0",
     "rollup-plugin-copy": "^3.5.0",

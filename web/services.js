@@ -1,5 +1,6 @@
 // web/services.js
 import axios from 'axios';
+import dotenv from 'dotenv';
 
 import * as webModel from './models.js';
 
@@ -129,6 +130,8 @@ const makeAuthFilesRequest = async (user, roles) => {
 };
 
 const makeAuthAccessRequest = async (username, password) => {
+  dotenv.config();
+  
   const url = process.env.URL_ACCESS_SERVICE;
   const xAuthHeader = process.env.X_AUTH_ACCESS_SERVICE;
   const systemIdStr = process.env.SYSTEM_ID;
