@@ -1,17 +1,28 @@
 <!-- SIDEBAR -->
-<div id="sidebar" class="bg-secondary text-white d-flex flex-column">
+<div id="sidebar" class="bg-secondary text-white d-flex flex-column vh-100">
 
-    <!-- CONTENIDO SUPERIOR -->
-    <div>
-        <h5 class="p-3">Menú</h5>
-        <a href="#" class="sidebar-link">Inicio</a>
-        <a href="#" class="sidebar-link">Usuarios</a>
-        <a href="#" class="sidebar-link">Reportes</a>
-        <a href="#" class="sidebar-link">Configuración</a>
+    <div class="flex-grow-1">
+
+        <h5 class="p-3 mb-0">Menú</h5>
+
+        <!-- MÓDULO CON SUBMENU (ACTIVO) -->
+        <div class="sidebar-module active">
+            <div class="module-title">Dashboard</div>
+            <div class="module-items">
+                <a href="#" class="sidebar-link .sidebar-link-active">Inicio</a>
+                <a href="#" class="sidebar-link">Estadísticas</a>
+            </div>
+        </div>
+
+        <!-- MÓDULOS SIMPLES -->
+        <a href="#" class="sidebar-module-link ">Administración</a>
+        <a href="#" class="sidebar-module-link">Reportes</a>
+        <a href="#" class="sidebar-module-link">Configuración</a>
+
     </div>
 
-    <!-- FOOTER DEL SIDEBAR -->
-    <div class="mt-auto p-3 border-top border-light small text-white-50">
+    <!-- FOOTER -->
+    <div class="p-3 border-top border-light small text-white-50">
         <div><strong>Mi Dashboard</strong></div>
         <div>Powered by Bootstrap 5</div>
         <div>Versión 1.0.0</div>
