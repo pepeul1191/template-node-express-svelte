@@ -1,5 +1,7 @@
 @startuml
 
+left to right direction
+
 package "Sistema de Gestión Académica" {
   abstract class Person {
     - _id: ObjectId
