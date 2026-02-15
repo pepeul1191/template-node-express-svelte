@@ -71,12 +71,25 @@
 <div class="d-flex">
 
     <!-- SIDEBAR -->
-    <div id="sidebar" class="bg-secondary text-white">
-        <h5 class="p-3">Menú</h5>
-        <a href="#" class="sidebar-link">Inicio</a>
-        <a href="#" class="sidebar-link">Usuarios</a>
-        <a href="#" class="sidebar-link">Reportes</a>
-        <a href="#" class="sidebar-link">Configuración</a>
+    <div id="sidebar" class="bg-secondary text-white d-flex flex-column">
+
+        <!-- CONTENIDO SUPERIOR -->
+        <div>
+            <h5 class="p-3">Menú</h5>
+            <a href="#" class="sidebar-link">Inicio</a>
+            <a href="#" class="sidebar-link">Usuarios</a>
+            <a href="#" class="sidebar-link">Reportes</a>
+            <a href="#" class="sidebar-link">Configuración</a>
+        </div>
+
+        <!-- FOOTER DEL SIDEBAR -->
+        <div class="mt-auto p-3 border-top border-light small text-white-50">
+            <div><strong>Mi Dashboard</strong></div>
+            <div>Powered by Bootstrap 5</div>
+            <div>Versión 1.0.0</div>
+            <div class="mt-2">© 2026 Tu Empresa</div>
+        </div>
+
     </div>
 
     <!-- CONTENT -->
@@ -121,7 +134,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
     const sidebar = document.getElementById("sidebar");
     const toggleBtn = document.getElementById("toggleSidebar");
 
@@ -141,8 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("sidebarState", "expanded");
         }
     });
-
-
 });
 </script>
 

@@ -1,14 +1,21 @@
-<aside class="sidebar">
-    <div class="sidebar-widget">
-        <h3>Categorías</h3>
-        <ul class="category-list">
-            <li><a href="/productos">Todos</a></li>
-            <li><a href="/productos?categoria=Tecnología">Tecnología</a></li>
-            <li><a href="/productos?categoria=Hogar">Hogar</a></li>
-            <li><a href="/productos?categoria=Oficina">Oficina</a></li>
-        </ul>
+<!-- SIDEBAR -->
+<div id="sidebar" class="bg-secondary text-white d-flex flex-column">
+
+    <!-- CONTENIDO SUPERIOR -->
+    <div>
+        <h5 class="p-3">Menú</h5>
+        <a href="#" class="sidebar-link">Inicio</a>
+        <a href="#" class="sidebar-link">Usuarios</a>
+        <a href="#" class="sidebar-link">Reportes</a>
+        <a href="#" class="sidebar-link">Configuración</a>
     </div>
-    
-    <!-- Block para widgets adicionales -->
-    <%- block('sidebar-widgets') %>
-</aside>
+
+    <!-- FOOTER DEL SIDEBAR -->
+    <div class="mt-auto p-3 border-top border-light small text-white-50">
+        <div><strong>Mi Dashboard</strong></div>
+        <div>Powered by Bootstrap 5</div>
+        <div>Versión 1.0.0</div>
+        <div class="mt-2">© 2026 Tu Empresa</div>
+    </div>
+
+</div>

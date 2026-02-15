@@ -1,95 +1,8 @@
 <% layout('layouts/web.ejs') -%>
 
-<!-- Hero -->
-<section id="inicio" class="hero text-center">
-  <div class="container">
-    <h1 class="display-4 fw-bold">Impulsamos tus ideas <%= BASE_URL %></h1>
-    <p class="lead mt-3">
-      Apoyamos a estudiantes y docentes en la creación de startups, innovación y emprendimiento.
-    </p>
-    <a href="#programas" class="btn btn-light btn-lg mt-4">Conoce nuestros programas</a>
-  </div>
-</section>
 
-<!-- Servicios -->
-<section id="servicios" class="py-5">
-  <div class="container">
-    <!-- Mostrar mensajes de error si existen -->
-    <%- include('../partials/flash_messages') %>
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">Nuestros Servicios</h2>
-      <p class="text-muted">Acompañamiento integral para emprendedores universitarios</p>
-    </div>
 
-    <div class="row g-4">
-      <div class="col-md-4 text-center">
-        <div class="icon-box mb-3">🚀</div>
-        <h5>Incubación de Proyectos</h5>
-        <p>Apoyo desde la idea hasta el modelo de negocio validado.</p>
-      </div>
-      <div class="col-md-4 text-center">
-        <div class="icon-box mb-3">🎓</div>
-        <h5>Mentorías</h5>
-        <p>Asesoría con expertos en innovación, finanzas y marketing.</p>
-      </div>
-      <div class="col-md-4 text-center">
-        <div class="icon-box mb-3">🤝</div>
-        <h5>Vinculación</h5>
-        <p>Conexión con empresas, inversionistas y ecosistema emprendedor.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Programas -->
-<section id="programas" class="bg-light py-5">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <h2 class="fw-bold">Programas Destacados</h2>
-        <ul class="list-group list-group-flush mt-3">
-          <li class="list-group-item">✔ Pre-incubación para estudiantes</li>
-          <li class="list-group-item">✔ Aceleración de startups</li>
-          <li class="list-group-item">✔ Hackatones y retos de innovación</li>
-          <li class="list-group-item">✔ Talleres y capacitaciones</li>
-        </ul>
-      </div>
-      <div class="col-md-6 text-center">
-        <img src="<%=STATIC_URL%>img/pexels-francesco-ungaro-3254574.jpg" class="img-fluid rounded" alt="Emprendimiento">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Contacto -->
-<section id="contacto" class="py-5">
-  <div class="container">
-    <div class="text-center mb-4">
-      <h2 class="fw-bold">Contáctanos</h2>
-      <p class="text-muted">¿Tienes una idea? Hablemos.</p>
-    </div>
-
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">Nombre</label>
-            <input type="text" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Correo</label>
-            <input type="email" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Mensaje</label>
-            <textarea class="form-control" rows="4"></textarea>
-          </div>
-          <button class="btn btn-primary w-100">Enviar mensaje</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
+hola
 
 <% if (hasRole('File Managment')) { %>
   <a href="/files">Administrador de archivos</a>
@@ -102,5 +15,26 @@
 <% block('scripts').append(`
   <script src="/dist/web.js"></script>
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("sidebar");
+        const toggleBtn = document.getElementById("toggleSidebar");
+
+        // 1️⃣ Aplicar estado guardado al cargar
+        const sidebarState = localStorage.getItem("sidebarState");
+        if (sidebarState === "collapsed") {
+            sidebar.classList.add("collapsed");
+        }
+
+        // 2️⃣ Evento toggle + guardar estado
+        toggleBtn.addEventListener("click", function () {
+            sidebar.classList.toggle("collapsed");
+
+            if (sidebar.classList.contains("collapsed")) {
+                localStorage.setItem("sidebarState", "collapsed");
+            } else {
+                localStorage.setItem("sidebarState", "expanded");
+            }
+        });
+    });
   </script>
 `) %>
