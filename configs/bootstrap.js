@@ -10,8 +10,8 @@ import flash from 'connect-flash';
 import FileStore from 'session-file-store';
 
 import webRoutes from '../web/routes.js';
-import { notFoundHandler, errorHandler, viewFlash, viewEnv} from './middlewares.js';
 
+import { notFoundHandler, errorHandler, viewFlash, viewEnv, viewSession, viewHelpers } from './middlewares.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const FileStoreSession = FileStore(session);
@@ -49,6 +49,10 @@ export default function bootstrap(app) {
 
   // Middleware para pasar .env a las vistas
   app.use(viewEnv);
+  // Middleware para pasar session a las vistas
+  app.use(viewSession);
+  // Middleware para pasar helpers a las vistas
+  app.use(viewHelpers);
 
   // Vistas
   app.engine('ejs', engine);

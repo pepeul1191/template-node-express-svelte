@@ -6,6 +6,10 @@
     <title><%= typeof title !== 'undefined' ? title : 'Título por defecto' %></title>
     <link rel="stylesheet" type="text/css" href="<%=STATIC_URL%>dist/vendor.min.css">
     <link rel="stylesheet" type="text/css" href="<%=STATIC_URL%>dist/web.css">
+    <script>
+      const BASE_URL = "<%=BASE_URL%>";
+      const STATIC_URL = "<%=STATIC_URL%>";
+    </script>
     <%- block('styles').toString() %>
   </head>
   <body>
@@ -13,6 +17,7 @@
     <section>
       <%- body -%>
     </section>
+    <%= session.user.email %>
     <%- include('../partials/web_footer') %>
     <script src="<%=STATIC_URL%>js/tokens.js"></script>
     <%- block('scripts').toString() %>

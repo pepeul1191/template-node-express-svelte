@@ -1,5 +1,6 @@
 // configs/middlewares.js
-// configs/middlewares.js
+
+import { hasRole } from '../configs/helpers.js';
 
 /**
  * Middleware para manejar errores 404
@@ -217,9 +218,26 @@ export function viewFlash(req, res, next) {
   next();
 }
 
+export function viewSession(req, res, next) {
+  res.locals.session = req.session;
+  res.locals.user = req.session?.user || null;
+  res.locals.isAuthenticated = !!req.session?.user?.id;
+
+  next();
+}
+
 export function viewEnv(req, res, next) {
   res.locals.BASE_URL = process.env.BASE_URL || '/';
   res.locals.STATIC_URL = process.env.STATIC_URL || '/';
     
+  next();
+}
+
+export function viewHelpers(req, res, next) {
+  res.locals.hasRole = (roleName) => 
+    hasRole(req.session, roleName);
+  res.locals.roleHasPermission = (role, permission) =>
+    roleHasPermission(req.session, role, permission);
+
   next();
 }

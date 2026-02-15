@@ -55,7 +55,7 @@
         </ul>
       </div>
       <div class="col-md-6 text-center">
-        <img src="https://via.placeholder.com/450x300" class="img-fluid rounded" alt="Emprendimiento">
+        <img src="<%=STATIC_URL%>img/pexels-francesco-ungaro-3254574.jpg" class="img-fluid rounded" alt="Emprendimiento">
       </div>
     </div>
   </div>
@@ -90,6 +90,10 @@
     </div>
   </div>
 </section>
+
+<% if (hasRole('File Managment')) { %>
+  <a href="/files">Administrador de archivos</a>
+<% } %>
 
 <% block('styles').append(`
     
