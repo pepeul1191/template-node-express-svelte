@@ -1,4 +1,4 @@
-/* custom.css - Coloca ESTO después de bootstrap.min.css */
+/* src/stylesheets/styles.css */
 :root {
   /* COLOR PRIMARIO (#ff5117 - naranja) */
   --bs-primary: #ff5117;
