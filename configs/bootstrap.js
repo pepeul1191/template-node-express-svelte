@@ -12,7 +12,7 @@ import FileStore from 'session-file-store';
 import webRoutes from '../web/routes.js';
 import managementRoutes from '../management/configs/routes.js';
 
-import { notFoundHandler, errorHandler, viewFlash, viewEnv, viewSession, viewHelpers } from './middlewares.js';
+import { notFoundHandler, errorHandler, viewFlash, viewEnv, viewSession, viewHelpers, } from './middlewares.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const FileStoreSession = FileStore(session);
@@ -45,9 +45,9 @@ export default function bootstrap(app) {
     }
   }));
   app.use(flash());
+
   // Middleware para pasar flash messages a las vistas
   app.use(viewFlash);
-
   // Middleware para pasar .env a las vistas
   app.use(viewEnv);
   // Middleware para pasar session a las vistas

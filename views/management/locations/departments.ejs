@@ -1,0 +1,79 @@
+<% layout('layouts/web.ejs') -%>
+
+<div class="container-fluid">
+  <div class="header-route">
+    <h3 class="mb-4">
+      <i class="fa fa-map-marker me-2"></i>
+      <a href="/">Administración </a> / <a href="/">Datos Maestros </a> / <a href="/management/locations">Gestión de Locaciones</a> / <%= editing ? 'Editar' : 'Agregar' %> Departamento
+    </h3>
+  </div>
+
+  <!-- Mostrar mensajes de error si existen -->
+  <%- include('../../partials/flash_messages') %>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h6 class="mb-0">
+        <i class="fa fa-list me-2"></i>
+        Detalle del Departamento
+      </h6>
+    </div>
+
+    <div class="card-body p-4">
+
+      <form method="post"
+        action="<%= editing 
+          ? `/management/locations/${form?.id || ''}/edit` 
+          : '/management/locations/departments' %>">
+
+        <% if (form?.id) { %>
+          <input type="hidden" name="id" value="<%= form.id %>">
+        <% } %>
+
+        <div class="row">
+
+          <!-- Campo Nombre -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nombre del Departamento</label>
+            <input type="text"
+                   name="name"
+                   value="<%= form?.name || '' %>"
+                   class="form-control <%= errors?.name ? 'is-invalid' : '' %>"
+                   placeholder="Ej: Lima"
+                   required
+                   maxlength="100">
+
+            <% if (errors?.name) { %>
+              <div class="invalid-feedback">
+                <%= errors.name %>
+              </div>
+            <% } %>
+          </div>
+
+          <!-- Botones -->
+          <div class="col-md-6 gap-2 mb-3 btn-padding">
+            <a href="/management/locations" class="btn btn-secondary">
+              <i class="fa fa-times me-1"></i> Cancelar
+            </a>
+
+            <button type="submit" class="btn btn-primary">
+              <i class="fa fa-save me-1"></i>
+              <%= editing ? 'Actualizar' : 'Guardar' %>
+            </button>
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<% block('styles').append(`
+
+`) %>
+
+<% block('scripts').append(`
+
+`) %>

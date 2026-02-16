@@ -22,6 +22,10 @@ Una aplicación web simple que muestra "Hola Mundo" utilizando Express, EJS como
     STATIC_URL=http://localhost:3000/
     # DBMATE
     DATABASE_URL=mysql://root:123@localhost:3306/classroom
+    # SEQUELIZE
+    DB_NAME=classroom
+    DB_USER=root
+    DB_PASS=123
     # ACCESS SERVICE
     SYSTEM_ID=2
     X_AUTH_ACCESS_SERVICE=dXNlci1zdGlja3lfc2VjcmV0XzEyMzQ1Njc

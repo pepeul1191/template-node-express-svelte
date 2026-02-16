@@ -35,6 +35,34 @@ const Web = {
 	}
 };
 
+const Admin = {
+	input: 'src/entries/admin.js',
+	output: {
+		sourcemap: true,
+		format: 'iife',
+		name: 'admin',
+		file: production ? 'public/dist/admin.min.js' : 'public/dist/admin.js',
+	},
+	plugins: [
+		svelte({
+			compilerOptions: {
+				dev: !production
+			}
+		}),
+		css({ output: production ?  'admin.min.css' : 'admin.css' }),
+		resolve({
+			browser: true,
+			dedupe: ['svelte'],
+			exportConditions: ['svelte']
+		}),
+		commonjs(),
+		production && terser()
+	],
+	watch: {
+		clearScreen: false
+	}
+};
+
 const Vendor = {
 	input: 'src/entries/vendor.js',
 	output: {
@@ -79,4 +107,4 @@ const Vendor = {
 	}
 };
 
-export default [Web, Vendor, ];
+export default [Web, Vendor, Admin, ];
