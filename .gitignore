@@ -49,3 +49,4 @@ public/fonts
 tmp
 uploads
 sessions
+backup.sql

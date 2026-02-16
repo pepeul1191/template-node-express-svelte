@@ -32,3 +32,6 @@ Una aplicación web simple que muestra "Hola Mundo" utilizando Express, EJS como
     # PATHS
     ACCESS_PATH=/home/pepe/Documentos/node/access
     FILES_PATH=/home/pepe/Documentos/node/files
+
+## Dump y Restore de la DB
+

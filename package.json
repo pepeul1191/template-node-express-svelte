@@ -15,7 +15,9 @@
     "db:new": "npx dbmate -d \"db/migrations\" -e \"DATABASE_URL\" new ",
     "db:up": "npx dbmate -d \"db/migrations\" -e \"DATABASE_URL\" up",
     "db:rollback": "npx dbmate -d \"db/migrations\" -e \"DATABASE_URL\" rollback",
-    "db:dump": "npx dbmate -d \"db/migrations\" -e \"DATABASE_URL\" dump "
+    "db:schema": "npx dbmate -d \"db/migrations\" -e \"DATABASE_URL\" dump ",
+    "db:dump": "mysqldump -u root -p classroom > db/backup.sql",
+    "db:restore": "mysql -u root -p classroom < db/backup.sql"
   },
   "keywords": [],
   "author": "",
