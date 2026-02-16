@@ -8,12 +8,13 @@ import { redirectIfAuthenticated } from '../configs/middlewares.js';
 
 const router = Router();
 
-router.get('/', requireAuth, webController.home);
 router.get('/sign-in', redirectIfAuthenticated, webController.signIn);
 router.get('/sign-out', requireAuth, webController.logout);
 router.post('/sign-in', redirectIfAuthenticated, webController.login);
 router.get('/reset-password', redirectIfAuthenticated, webController.resetPassword);
 router.get('/sign-up', redirectIfAuthenticated, webController.signUp);
+router.get('/', requireAuth, webController.home);
+router.get('/management/locations', requireAuth, webController.home);
 router.get('/api/v1/session', requireAuth, apis.sessionInfo); 
 
 router.get('/flash-test', (req, res) => {

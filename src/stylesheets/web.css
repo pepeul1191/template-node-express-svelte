@@ -11,6 +11,10 @@ body {
   background-color: var(--bs-primary) !important;
 }
 
+.app-content{
+  padding-top: 56px !important;
+}
+
 #sidebar.collapsed {
   margin-left: -250px;
 }
@@ -18,7 +22,6 @@ body {
 #content {
   transition: all 0.3s;
   width: 100%;
-  padding-top: 80px !important;
 }
 
 .sidebar-link {
@@ -91,4 +94,5 @@ body {
 
 .card-icon > i{
   color: var(--bs-primary) !important;
+  font-size: 40px;
 }

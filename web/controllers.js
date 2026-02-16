@@ -3,6 +3,13 @@ import * as webService from './services.js';
 
 export function home(req, res) {
   const data = webService.getHomeData();
+  res.render('web/admin', {
+    title: 'Innova ULima',
+  });
+}
+
+export function home2(req, res) {
+  const data = webService.getHomeData();
   res.render('web/index', {
     title: 'Innova ULima',
   });

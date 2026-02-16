@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Título por defecto' %></title>
+    <link rel="stylesheet" type="text/css" href="<%=STATIC_URL%>dist/vendor.min.css">
+    <link rel="stylesheet" type="text/css" href="<%=STATIC_URL%>dist/web.css">
+    <script>
+      const BASE_URL = "<%=BASE_URL%>";
+      const STATIC_URL = "<%=STATIC_URL%>";
+    </script>
+    <%- block('styles').toString() %>
+  </head>
+  <body>
+    
+    <script src="<%=STATIC_URL%>dist/vendor.js"></script>
+    <script src="<%=STATIC_URL%>js/tokens.js"></script>
+    <script src="<%=STATIC_URL%>dist/admin.js"></script>
+    <%- block('scripts').toString() %>
+  </body>
+</html>
