@@ -1,40 +1,83 @@
 <% layout('layouts/web.ejs') -%>
 
+<div class="container-fluid">
+  <div class="header-route">
+    <h3 class="mb-4">
+      <i class="fa fa-tachometer me-2"></i>
+      <a href="/">Administración </a> / Datos Maestros </h3>
+  </div>
 
+  <div class="row g-4">
+    <!-- Card Locaciones -->
+    <div class="col-md-3 col-sm-6">
+      <div class="card dashboard-card">
+        <div class="card-body text-center">
+          <div class="card-icon mb-3">
+            <i class="fa fa-map-marker"></i>
+          </div>
+          <h5 class="card-title">Locaciones</h5>
+          <p class="card-text">Gestiona departamentos, provincias y distritos</p>
+          <a href="/management/locations" class="btn btn-primary btn-sm">Ir a Gestión</a>
+        </div>
+      </div>
+    </div>
 
-hola
+    <!-- Card Roles de Empleados -->
+    <div class="col-md-3 col-sm-6">
+      <div class="card dashboard-card">
+        <div class="card-body text-center">
+          <div class="card-icon mb-3">
+            <i class="fa fa-user"></i>
+          </div>
+          <h5 class="card-title">Roles de Empleados</h5>
+          <p class="card-text">Gestiona los roles y permisos de los empleados</p>
+          <a href="/management/employee-roles" class="btn btn-primary btn-sm">Ir a Gestión</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Roles de Apoderados -->
+    <div class="col-md-3 col-sm-6">
+      <div class="card dashboard-card">
+        <div class="card-body text-center">
+          <div class="card-icon mb-3">
+            <i class="fa fa-users"></i>
+          </div>
+          <h5 class="card-title">Roles de Apoderados</h5>
+          <p class="card-text">Gestiona los roles y permisos de los apoderados</p>
+          <a href="/management/guardian-roles" class="btn btn-primary btn-sm">Ir a Gestión</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card adicional vacío para completar 4 columnas -->
+    <div class="col-md-3 col-sm-6">
+      <div class="card dashboard-card border-0 bg-transparent"></div>
+    </div>
+  </div>
+</div>
+
 
 <% if (hasRole('File Managment')) { %>
   <a href="/files">Administrador de archivos</a>
 <% } %>
 
 <% block('styles').append(`
-    
+  <style>
+    .dashboard-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .dashboard-card .card-icon {
+      font-size: 2.5rem;
+      color: #0d6efd;
+    }
+  </style>
 `) %>
 
 <% block('scripts').append(`
-  <script src="/dist/web.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const sidebar = document.getElementById("sidebar");
-        const toggleBtn = document.getElementById("toggleSidebar");
-
-        // 1️⃣ Aplicar estado guardado al cargar
-        const sidebarState = localStorage.getItem("sidebarState");
-        if (sidebarState === "collapsed") {
-            sidebar.classList.add("collapsed");
-        }
-
-        // 2️⃣ Evento toggle + guardar estado
-        toggleBtn.addEventListener("click", function () {
-            sidebar.classList.toggle("collapsed");
-
-            if (sidebar.classList.contains("collapsed")) {
-                localStorage.setItem("sidebarState", "collapsed");
-            } else {
-                localStorage.setItem("sidebarState", "expanded");
-            }
-        });
-    });
-  </script>
+  
 `) %>

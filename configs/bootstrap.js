@@ -10,6 +10,7 @@ import flash from 'connect-flash';
 import FileStore from 'session-file-store';
 
 import webRoutes from '../web/routes.js';
+import managementRoutes from '../management/configs/routes.js';
 
 import { notFoundHandler, errorHandler, viewFlash, viewEnv, viewSession, viewHelpers } from './middlewares.js';
 const __filename = fileURLToPath(import.meta.url);
@@ -68,6 +69,7 @@ export default function bootstrap(app) {
 
   // Rutas Web
   app.use('/', webRoutes);
+  app.use('/management', managementRoutes);
 
   // Middleware 404 - Solo se ejecuta si no coincidió ninguna ruta anterior
   app.use(notFoundHandler);

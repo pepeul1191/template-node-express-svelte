@@ -12,8 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
         sidebar.classList.add("collapsed");
     }
 
-    console.log(toggleBtn)
-
     // 2️⃣ Evento toggle + guardar estado
     toggleBtn.addEventListener("click", function () {
         sidebar.classList.toggle("collapsed");

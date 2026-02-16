@@ -41,36 +41,54 @@ body {
 }
 
 .sidebar-module {
-    padding: 10px 15px;
+  padding: 5px 0px;
 }
 
 .module-title {
-    font-weight: 600;
-    padding: 8px 0;
+  font-weight: 600;
+  padding: 8px 0;
+  padding: 10px 15px;
+  padding-bottom: 5px;
 }
 
 .module-items {
-    padding-left: 15px;
-    margin-top: 5px;
+  padding-left: 0px;
+  margin-top: 5px;
+}
+
+.module-items > a {
+  padding-left: 25px;
 }
 
 .sidebar-link {
-    display: block;
-    color: #fff;
-    text-decoration: none;
-    padding: 5px 0;
-    font-size: 0.9rem;
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 0;
+  font-size: 0.9rem;
 }
 
 .sidebar-module-link {
-    display: block;
-    padding: 12px 15px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
+  display: block;
+  padding: 12px 15px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .sidebar-module-link:hover {
   background-color: rgba(255,255,255,0.1);
   color: white;
+}
+
+.header-route > h3 > i{
+  color: var(--bs-primary) !important;
+}
+
+.header-route > h3 > a{
+  text-decoration: none;
+}
+
+.card-icon > i{
+  color: var(--bs-primary) !important;
 }

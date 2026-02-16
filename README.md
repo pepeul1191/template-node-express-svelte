@@ -14,13 +14,16 @@ Una aplicación web simple que muestra "Hola Mundo" utilizando Express, EJS como
 
 ## Estructura del proyecto
 
-
     SITE_TITLE=Mi sitio web
     ADMIN_EMAIL=admin@ejemplo.com
     DEFAULT_USER=admin
     DEFAULT_PASSWORD=123
+    BASE_URL=http://localhost:3000/
+    STATIC_URL=http://localhost:3000/
+    # DBMATE
+    DATABASE_URL=mysql://root:123@localhost:3306/classroom
     # ACCESS SERVICE
-    SYSTEM_ID=1
+    SYSTEM_ID=2
     X_AUTH_ACCESS_SERVICE=dXNlci1zdGlja3lfc2VjcmV0XzEyMzQ1Njc
     URL_ACCESS_SERVICE=http://localhost:5000
     # FILES SERVICE
