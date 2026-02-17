@@ -1,10 +1,11 @@
 -- migrate:up
 
 CREATE TABLE departments (
-  id INT NOT NULL AUTO_INCREMENT,
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(40) NOT NULL,
   PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- migrate:down
 
 DROP TABLE departments;

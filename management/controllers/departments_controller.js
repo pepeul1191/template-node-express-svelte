@@ -1,7 +1,6 @@
 // management/controllers/deparments_controller.js
 
 import * as service from '../services/department_service.js';
-import DepartmentForm from '../forms/department_form.js';
 
 export const fetchAll = async (req, res) => {
   try {
