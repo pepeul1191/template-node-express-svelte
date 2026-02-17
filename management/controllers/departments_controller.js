@@ -3,51 +3,46 @@
 import * as service from '../services/department_service.js';
 import DepartmentForm from '../forms/department_form.js';
 
-export async function add(req, res) {
-  const errorMessage = req.flash('error');
-  const successMessage = req.flash('success');
-  console.log('1 ++++++++++++++++++++++++++++++++++++')
-  console.log(errorMessage)
-  console.log(successMessage)
-  console.log('2 ++++++++++++++++++++++++++++++++++++')
-  // response
-  res.render('management/locations/departments', {
-    title: 'Agregar Deparamento',
-    form: undefined,
-    editing: false,
-    errors: undefined,
-    successMessage,
-    errorMessage,
-  });
-}
-
-export async function create(req, res) {
+export const fetchAll = async (req, res) => {
   try {
-    const form = new DepartmentForm(req.body);
+    const departments = await service.fetchAll();
 
-    if (!form.isValid()) {
-      //console.log(form);
-      // flash
-      req.flash('error', `Error al crear departamento - Formulario no válido`);
-      req.flash('form', form.erros);
-      return res.redirect('/management/locations/departments');
-    }
-
-    // ✅ Si pasa validación
-    await service.create(form.cleanedData);
-
-    req.flash('success', 'Departamento creado correctamente');
-    const successMessage = req.flash('success');
-
-
-    return res.redirect('/management/locations');
+    return res.status(200).json({
+      success: true,
+      message: 'Lista de departamentos',
+      data: {
+        list: departments
+      },
+      error: '',
+    });
 
   } catch (error) {
-    console.error(error.stack);
-    // flash
-    req.flash('error', `Error al crear departamento - ${error.message}`);
-    req.flash('form', {});
-
-    return res.redirect('/management/locations/departments');
+    return res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      data: null,
+      error: error.message,
+    });
   }
-}
+};
+
+export const save = async (req, res) => {
+  try {
+    const response = await service.saveMany(req.body);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Departamentos guardados correctamente',
+      data: response,
+      error: '',
+    });
+
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      success: false,
+      message: error.message || 'Error interno del servidor',
+      data: null,
+      error: error.error || error.message,
+    });
+  }
+};

@@ -10,7 +10,7 @@ const Department = sequelize.define('Department', {
     primaryKey: true,
     allowNull: false
   },
-  named: {
+  name: {
     type: DataTypes.STRING(40),
     allowNull: false
   }

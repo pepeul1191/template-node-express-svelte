@@ -96,3 +96,10 @@ body {
   color: var(--bs-primary) !important;
   font-size: 40px;
 }
+
+/* datatable */
+
+.data-td > input[type="text"]{
+  border-color: transparent !important;
+  background-color: transparent !important;
+}

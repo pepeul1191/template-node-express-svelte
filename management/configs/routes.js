@@ -8,8 +8,7 @@ import { redirectIfAuthenticated } from '../../configs/middlewares.js';
 
 const router = Router();
 
-//router.get('/locations', requireAuth, locationController.index);
-//router.get('/locations/departments', requireAuth, departmentController.add);
-router.post('/locations/departments', requireAuth, departmentController.create);
+router.get('/api/v1/departments', requireAuth, departmentController.fetchAll);
+router.post('/api/v1/departments', requireAuth, departmentController.save);
 
 export default router;

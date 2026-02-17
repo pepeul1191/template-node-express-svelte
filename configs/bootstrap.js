@@ -69,7 +69,7 @@ export default function bootstrap(app) {
 
   // Rutas Web
   app.use('/', webRoutes);
-  app.use('/management', managementRoutes);
+  app.use('/', managementRoutes);
 
   // Middleware 404 - Solo se ejecuta si no coincidió ninguna ruta anterior
   app.use(notFoundHandler);
