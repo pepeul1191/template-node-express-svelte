@@ -43,6 +43,12 @@ body {
   color: black !important;
 }
 
+.sidebar-link-active:hover{
+  background-color: #fff;
+  color: black !important;
+  font-weight: 500;
+}
+
 .sidebar-module {
   padding: 5px 0px;
 }

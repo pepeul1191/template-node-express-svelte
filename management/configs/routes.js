@@ -3,6 +3,7 @@ import { Router } from 'express';
 import * as departmentController from '../controllers/departments_controller.js';
 import * as provinceController from '../controllers/provinces_controller.js';
 import * as districtController from '../controllers/districts_controller.js';
+import * as employeeRoleController from '../controllers/employe_roles_controller.js';
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
 
@@ -15,5 +16,7 @@ router.get('/api/v1/provinces/:departmentId', requireAuth, provinceController.fe
 router.post('/api/v1/provinces/:departmentId', requireAuth, provinceController.save);
 router.get('/api/v1/districts/:provinceId', requireAuth, districtController.fetchAll);
 router.post('/api/v1/districts/:provinceId', requireAuth, districtController.save);
+router.get('/api/v1/employee-roles', requireAuth, employeeRoleController.fetchAll);
+router.post('/api/v1/employee-roles', requireAuth, employeeRoleController.save);
 
 export default router;

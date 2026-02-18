@@ -24,6 +24,24 @@
       description: "Gestiona los roles y permisos de los apoderados",
       icon: "fa-users",
       route: "/management/guardian-roles"
+    },
+    {
+      title: "Tipos de Documento",
+      description: "Gestiona los tipos de documento para las personas",
+      icon: "fa-id-card",
+      route: "/management/document-types"
+    },
+    {
+      title: "Niveles",
+      description: "Gestiona los niveles académicos de los cursos",
+      icon: "fa-sitemap",
+      route: "/management/levels"
+    },
+    {
+      title: "Tipos de Evaluación",
+      description: "Gestiona las categorías de evaluaciones académicas",
+      icon: "fa-check-square-o",
+      route: "/management/evaluation-types"
     }
   ];
 </script>
