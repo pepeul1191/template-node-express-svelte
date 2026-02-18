@@ -4,6 +4,12 @@ left to right direction
 ' -------------------------
 ' Entidades principales
 ' -------------------------
+entity sexs {
+  * id : INT <<PK>>
+  --
+  name : VARCHAR(45)
+}
+
 entity departments {
   * id : INT <<PK>>
   --
@@ -246,6 +252,8 @@ entity submission_documents {
 ' -------------------------
 ' Relaciones existentes
 ' -------------------------
+sexs   ||--o{ persons : has
+
 document_types   ||--o{ persons : has
 
 persons ||--o{ addresses : has

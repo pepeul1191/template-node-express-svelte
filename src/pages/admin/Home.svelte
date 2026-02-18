@@ -42,6 +42,12 @@
       description: "Gestiona las categorías de evaluaciones académicas",
       icon: "fa-check-square-o",
       route: "/management/evaluation-types"
+    },
+    {
+      title: "Sexos",
+      description: "Gestiona los tipos de sexo registrados en el sistema",
+      icon: "fa-venus-mars",
+      route: "/management/sexes"
     }
   ];
 </script>

@@ -5,6 +5,7 @@
 
   import Home from "../pages/admin/Home.svelte";
   import Locations from "../pages/admin/Locations.svelte";
+	import EmployeeRoles from "../pages/admin/EmployeeRoles.svelte";
   // import Students from "../pages/admin/Students.svelte";
 </script>
 
@@ -18,6 +19,7 @@
     <main class="main-content p-4" id="content">
       <Route path="/" component={Home} />
       <Route path="/management/locations" component={Locations} />
+      <Route path="/management/employee-roles" component={EmployeeRoles} />
       <!-- <Route path="/students" component={Students} /> -->
     </main>
 
