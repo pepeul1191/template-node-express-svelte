@@ -6,6 +6,7 @@
   import Home from "../pages/admin/Home.svelte";
   import Locations from "../pages/admin/Locations.svelte";
 	import EmployeeRoles from "../pages/admin/EmployeeRoles.svelte";
+  import RepresentativeRoles from "../pages/admin/RepresentativeRoles.svelte";
   // import Students from "../pages/admin/Students.svelte";
 </script>
 
@@ -20,6 +21,7 @@
       <Route path="/" component={Home} />
       <Route path="/management/locations" component={Locations} />
       <Route path="/management/employee-roles" component={EmployeeRoles} />
+      <Route path="/management/representative-roles" component={RepresentativeRoles} />
       <!-- <Route path="/students" component={Students} /> -->
     </main>
 

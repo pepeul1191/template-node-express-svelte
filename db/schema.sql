@@ -68,6 +68,19 @@ CREATE TABLE `provinces` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `representative_roles`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `representative_roles` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `schema_migrations`
 --
 
@@ -137,5 +150,7 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20250731023121'),
   ('20250731033025'),
   ('20260217235826'),
-  ('20260217235843');
+  ('20260217235843'),
+  ('20260218235342'),
+  ('20260218235347');
 UNLOCK TABLES;

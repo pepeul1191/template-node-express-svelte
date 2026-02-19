@@ -23,7 +23,7 @@
       title: "Roles de Apoderados",
       description: "Gestiona los roles y permisos de los apoderados",
       icon: "fa-users",
-      route: "/management/guardian-roles"
+      route: "/management/representative-roles"
     },
     {
       title: "Tipos de Documento",
