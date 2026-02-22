@@ -38,12 +38,12 @@
           Datos Maestros
         </Link>
 
-        <Link to="/management/students" getProps={activeClass("/students")}>
-          Estudiantes
-        </Link>
-
         <Link to="/management/workers" getProps={activeClass("/workers")}>
           Trabajadores
+        </Link>
+
+        <Link to="/management/students" getProps={activeClass("/students")}>
+          Estudiantes
         </Link>
 
         <Link to="/management/representatives" getProps={activeClass("/representatives")}>

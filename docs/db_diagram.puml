@@ -48,13 +48,19 @@ entity persons {
   names : VARCHAR(45)
   lastNames : VARCHAR(45)
   documentNumber : VARCHAR(12)
+  imageUrl: VARCHAR(70)
+  birthDate : DATE
   created : DATETIME
   updated : DATETIME
+  sex_id: INT
+  document_type_id: INT
 }
 
 entity workers {
   * id : INT <<PK>>
   --
+  code: INT
+  bio: TEXT
   person_id : INT <<FK>>
 }
 
@@ -67,6 +73,7 @@ entity representatives {
 entity students {
   * id : INT <<PK>>
   --
+  code: INT
   person_id : INT <<FK>>
 }
 

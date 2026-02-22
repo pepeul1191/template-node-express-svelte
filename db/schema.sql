@@ -10,6 +10,23 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `addresses`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `addresses` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `person_id` int unsigned NOT NULL,
+  `description` varchar(40) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_addresses_person` (`person_id`),
+  CONSTRAINT `fk_addresses_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `departments`
 --
 
@@ -91,6 +108,48 @@ CREATE TABLE `levels` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `persons`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `persons` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `names` varchar(45) NOT NULL,
+  `lastNames` varchar(45) NOT NULL,
+  `documentNumber` varchar(12) NOT NULL,
+  `sex_id` int unsigned NOT NULL,
+  `document_type_id` int unsigned NOT NULL,
+  `imageUrl` varchar(70) NOT NULL DEFAULT '/img/user.png',
+  `birthDate` date NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_persons_sex` (`sex_id`),
+  KEY `fk_persons_document_type` (`document_type_id`),
+  CONSTRAINT `fk_persons_document_type` FOREIGN KEY (`document_type_id`) REFERENCES `document_types` (`id`),
+  CONSTRAINT `fk_persons_sex` FOREIGN KEY (`sex_id`) REFERENCES `sexs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `phones`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `phones` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `person_id` int unsigned NOT NULL,
+  `description` varchar(40) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_phones_person` (`person_id`),
+  CONSTRAINT `fk_phones_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `provinces`
 --
 
@@ -156,6 +215,23 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `workers`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `workers` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `code` int NOT NULL,
+  `bio` text,
+  `person_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_workers_person` (`person_id`),
+  CONSTRAINT `fk_workers_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping routines for database 'classroom'
 --
 
@@ -212,5 +288,10 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260222015957'),
   ('20260222020003'),
   ('20260222020014'),
-  ('20260222020021');
+  ('20260222020021'),
+  ('20260222032817'),
+  ('20260222033526'),
+  ('20260222033535'),
+  ('20260222033542'),
+  ('20260222034304');
 UNLOCK TABLES;
