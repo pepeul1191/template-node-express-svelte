@@ -1,4 +1,5 @@
 <script>
+  // src/components/navigation/Navbar.svelte
   import { sidebarCollapsed } from "../../stores/sidebarStore";
 
   function toggleSidebar() {

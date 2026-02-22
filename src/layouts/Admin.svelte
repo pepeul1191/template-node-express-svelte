@@ -11,6 +11,9 @@
   import Levels from "../pages/admin/Levels.svelte";
   import EvaluationTypes from "../pages/admin/EvaluationTypes.svelte";
   import Sexs from "../pages/admin/Sexs.svelte";
+  import Students from "../pages/admin/Students.svelte";
+	import Workers from "../pages/admin/Workers.svelte";
+	import Representatives from "../pages/admin/Representatives.svelte";
   // import Students from "../pages/admin/Students.svelte";
 </script>
 
@@ -30,7 +33,9 @@
       <Route path="/management/levels" component={Levels} />
       <Route path="/management/sexs" component={Sexs} />
       <Route path="/management/evaluation-types" component={EvaluationTypes} />
-      <!-- <Route path="/students" component={Students} /> -->
+      <Route path="/management/students" component={Students} />
+      <Route path="/management/workers" component={Workers} />
+      <Route path="/management/representatives" component={Representatives} />
     </main>
 
   </div>

@@ -1,3 +1,4 @@
+// src/stores/sidebarStore.js
 import { writable } from "svelte/store";
 
 const savedState = localStorage.getItem("sidebarState") === "collapsed";

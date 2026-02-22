@@ -109,3 +109,9 @@ body {
   border-color: transparent !important;
   background-color: transparent !important;
 }
+
+/* sidebar */
+
+.sidebar-link-active{
+  font-size: 1rem;
+}

@@ -1,5 +1,21 @@
 <script>
+  // src/components/navigation/Sidebar.svelte
   import { sidebarCollapsed } from "../../stores/sidebarStore";
+  import { Link } from "svelte-routing";
+
+  const activeClass = (path) => ({ isCurrent, isPartiallyCurrent }) => {
+    const isRoot = path === "/";
+
+    const active = isRoot
+      ? isCurrent                    // solo exact match para "/"
+      : isCurrent || isPartiallyCurrent;
+
+    return {
+      class: active
+        ? "sidebar-link sidebar-link-active"
+        : "sidebar-link"
+    };
+  };
 </script>
 
 <!-- SIDEBAR -->
@@ -18,21 +34,25 @@
       </div>
 
       <div class="module-items">
-        <a href="/" class="sidebar-link sidebar-link-active">
+        <Link to="/" getProps={activeClass("/")}>
           Datos Maestros
-        </a>
-        <a href="/students" class="sidebar-link">
+        </Link>
+
+        <Link to="/management/students" getProps={activeClass("/students")}>
           Estudiantes
-        </a>
-        <a href="/workers" class="sidebar-link">
+        </Link>
+
+        <Link to="/management/workers" getProps={activeClass("/workers")}>
           Trabajadores
-        </a>
-        <a href="/representatives" class="sidebar-link">
+        </Link>
+
+        <Link to="/management/representatives" getProps={activeClass("/representatives")}>
           Apoderados
-        </a>
-        <a href="/academic" class="sidebar-link">
+        </Link>
+
+        <Link to="/academic" getProps={activeClass("/academic")}>
           Académico
-        </a>
+        </Link>
       </div>
     </div>
 
@@ -85,5 +105,9 @@
   .sidebar-link:hover,
   .sidebar-module-link:hover {
     background: rgba(255, 255, 255, 0.1);
+  }
+
+  .sidebar-link-active{
+    font-size: 18px;
   }
 </style>
