@@ -537,7 +537,7 @@
         {#each columnKeys as key, i}
           <td class="data-td {columnClasses[i]}" style="{tdStyles[i]}">
             {#if columnTypes[i] == 'input[text]'}
-              <input type="text" key="{key}" on:keydown={inputTextKeyDown} bind:value={record[key]} />
+              <input type="text" key="{key}" on:keydown={inputTextKeyDown} bind:value={record[key]} style="width: 100%;" />
             {:else if columnTypes[i] == 'td-datetime'}
               {record[key]}
             {:else if columnTypes[i] == 'radiobutton' || columnTypes[i] == 'radiobuttonAll'}

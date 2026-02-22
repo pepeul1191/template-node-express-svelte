@@ -17,6 +17,7 @@ router.get('/', requireAuth, webController.home);
 router.get('/management/locations', requireAuth, webController.home);
 router.get('/management/employee-roles', requireAuth, webController.home);
 router.get('/management/representative-roles', requireAuth, webController.home);
+router.get('/management/document-types', requireAuth, webController.home);
 router.get('/api/v1/session', requireAuth, apis.sessionInfo); 
 
 router.get('/flash-test', (req, res) => {

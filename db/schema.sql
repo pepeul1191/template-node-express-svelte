@@ -39,6 +39,19 @@ CREATE TABLE `districts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `document_types`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `document_types` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `employee_roles`
 --
 
@@ -152,5 +165,7 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260217235826'),
   ('20260217235843'),
   ('20260218235342'),
-  ('20260218235347');
+  ('20260218235347'),
+  ('20260222003205'),
+  ('20260222003210');
 UNLOCK TABLES;
