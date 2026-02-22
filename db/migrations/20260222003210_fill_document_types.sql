@@ -7,4 +7,4 @@ INSERT INTO document_types (id, name) VALUES
 
 -- migrate:down
 
-DROP TABLE document_types;
+DELETE FROM document_types;

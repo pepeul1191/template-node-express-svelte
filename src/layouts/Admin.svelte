@@ -8,6 +8,7 @@
 	import EmployeeRoles from "../pages/admin/EmployeeRoles.svelte";
   import RepresentativeRoles from "../pages/admin/RepresentativeRoles.svelte";
   import DocumentTypes from "../pages/admin/DocumentTypes.svelte";
+  import Levels from "../pages/admin/Levels.svelte";
   // import Students from "../pages/admin/Students.svelte";
 </script>
 
@@ -24,6 +25,7 @@
       <Route path="/management/employee-roles" component={EmployeeRoles} />
       <Route path="/management/representative-roles" component={RepresentativeRoles} />
       <Route path="/management/document-types" component={DocumentTypes} />
+      <Route path="/management/levels" component={Levels} />
       <!-- <Route path="/students" component={Students} /> -->
     </main>
 
