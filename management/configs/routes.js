@@ -7,6 +7,8 @@ import * as employeeRoleController from '../controllers/employee_roles_controlle
 import * as representativeRoleController from '../controllers/reprsentative_roles_controller.js';
 import * as documentTypeController from '../controllers/document_types_controller.js';
 import * as levelController from '../controllers/levels_controller.js';
+import * as evaluationTypeController from '../controllers/evalutation_types_controller.js';
+import * as sexController from '../controllers/sexs_controller.js';
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
 
@@ -33,5 +35,11 @@ router.get('/api/v1/document-types', requireAuth, documentTypeController.fetchAl
 // levels
 router.get('/api/v1/levels', requireAuth, levelController.fetchAll);
 router.post('/api/v1/levels', requireAuth, levelController.save);
+// levels
+router.get('/api/v1/evaluation-types', requireAuth, evaluationTypeController.fetchAll);
+router.post('/api/v1/evaluation-types', requireAuth, evaluationTypeController.save);
+// sexs
+router.get('/api/v1/sexs', requireAuth, sexController.fetchAll);
+router.post('/api/v1/sexs', requireAuth, sexController.save);
 
 export default router;

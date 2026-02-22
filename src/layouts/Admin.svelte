@@ -9,6 +9,8 @@
   import RepresentativeRoles from "../pages/admin/RepresentativeRoles.svelte";
   import DocumentTypes from "../pages/admin/DocumentTypes.svelte";
   import Levels from "../pages/admin/Levels.svelte";
+  import EvaluationTypes from "../pages/admin/EvaluationTypes.svelte";
+  import Sexs from "../pages/admin/Sexs.svelte";
   // import Students from "../pages/admin/Students.svelte";
 </script>
 
@@ -26,6 +28,8 @@
       <Route path="/management/representative-roles" component={RepresentativeRoles} />
       <Route path="/management/document-types" component={DocumentTypes} />
       <Route path="/management/levels" component={Levels} />
+      <Route path="/management/sexs" component={Sexs} />
+      <Route path="/management/evaluation-types" component={EvaluationTypes} />
       <!-- <Route path="/students" component={Students} /> -->
     </main>
 

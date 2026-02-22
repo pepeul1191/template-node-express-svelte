@@ -19,6 +19,9 @@ router.get('/management/employee-roles', requireAuth, webController.home);
 router.get('/management/representative-roles', requireAuth, webController.home);
 router.get('/management/document-types', requireAuth, webController.home);
 router.get('/management/levels', requireAuth, webController.home);
+router.get('/management/evaluation-types', requireAuth, webController.home);
+router.get('/management/sexs', requireAuth, webController.home);
+
 router.get('/api/v1/session', requireAuth, apis.sessionInfo); 
 
 router.get('/flash-test', (req, res) => {

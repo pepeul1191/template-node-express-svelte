@@ -47,7 +47,7 @@
       title: "Sexos",
       description: "Gestiona los tipos de sexo registrados en el sistema",
       icon: "fa-venus-mars",
-      route: "/management/sexes"
+      route: "/management/sexs"
     }
   ];
 </script>
