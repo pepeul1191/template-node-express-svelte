@@ -6,6 +6,8 @@ import Person from '../management/models/persons.js';
 import Worker from '../management/models/workers.js';
 import Sex from '../management/models/sex.js';
 import DocumentType from '../management/models/document_type.js';
+import Phone from '../management/models/phones.js';
+import Address from '../management/models/addresses.js';
 
 Department.hasMany(Province, {
   foreignKey: 'department_id',
@@ -59,6 +61,39 @@ Person.belongsTo(DocumentType, {
   as: 'document_type'
 });
 
+// Person -> Phone (1:N) - Person has many phones
+Person.hasMany(Phone, {
+  foreignKey: 'person_id',
+  as: 'phones'
+});
+
+Phone.belongsTo(Person, {
+  foreignKey: 'person_id',
+  as: 'person'
+});
+
+// Person -> Address (1:N) - Person has many addresses
+Person.hasMany(Address, {
+  foreignKey: 'person_id',
+  as: 'addresses'
+});
+
+Address.belongsTo(Person, {
+  foreignKey: 'person_id',
+  as: 'person'
+});
+
+// District -> Address (1:N) - District has many addresses
+District.hasMany(Address, {
+  foreignKey: 'district_id',
+  as: 'addresses'
+});
+
+Address.belongsTo(District, {
+  foreignKey: 'district_id',
+  as: 'district'
+});
+
 export {
   Department,
   Province,
@@ -66,5 +101,7 @@ export {
   Person,
   Worker,
   Sex,
-  DocumentType
+  DocumentType,
+  Phone,
+  Address
 };

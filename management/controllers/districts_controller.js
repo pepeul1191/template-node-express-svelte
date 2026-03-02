@@ -77,3 +77,40 @@ export const save = async (req, res) => {
     });
   }
 };
+
+/**
+ * Buscar ubicaciones por nombre
+ */
+export const searchLocations = async (req, res) => {
+  try {
+    const { name = '', limit = 10 } = req.query;
+
+    if (!name || typeof name !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Parámetro "name" inválido o vacío',
+        data: null,
+        error: '',
+      });
+    }
+
+    const locations = await service.searchLocations(name, limit);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Búsqueda de ubicaciones',
+      data: {
+        list: locations
+      },
+      error: '',
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      data: null,
+      error: error.message,
+    });
+  }
+};

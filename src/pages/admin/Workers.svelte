@@ -1,12 +1,18 @@
 <script>
+  // src/pages/admin/Workers.svelte
+  // IMPORTS
   import { onMount } from 'svelte';
   import { Link } from "svelte-routing";
   import DataTable from "../../components/widgets/DataTable.svelte";
   import WorkerDetail from '../../components/forms/WorkerDetail.svelte';
   import WorkersFilter from '../../components/forms/WorkersFilter.svelte';
+  import { Modal } from 'bootstrap';
 
   let workerDataTable;
-  let workerModal;
+  let workerDetailModalEl;
+  let workerModalInstance;
+  let workerFormInstance;
+  let modalTitle = '';
 
   // Alertas
   let alertMessage = {
@@ -62,19 +68,32 @@
 
   const openEditModal = (record) => {
     // record may include nested Person object
-    workerModal.showEdit(record);
+    modalTitle = 'Editar Trabajador';
+    if (workerFormInstance && typeof workerFormInstance.showEdit === 'function') {
+      workerFormInstance.showEdit(record);
+    }
+    if (workerModalInstance) workerModalInstance.show();
   };
 
   const openCreateModal = () => {
-    workerModal.showCreate();
+    modalTitle = 'Nuevo Trabajador';
+    if (workerFormInstance && typeof workerFormInstance.showCreate === 'function') {
+      workerFormInstance.showCreate();
+    }
+    if (workerModalInstance) workerModalInstance.show();
   };
 
   // Callback when modal saves a worker
   const handleSaved = (event) => {
     const saved = event.detail;
     alertMessage = { text: 'Trabajador guardado correctamente', status: 'success' };
+    if (workerModalInstance) workerModalInstance.hide();
     workerDataTable.list();
     setTimeout(() => alertMessage = { text: '', status: '' }, 4000);
+  };
+
+  const handleModalClose = () => {
+    if (workerModalInstance) workerModalInstance.hide();
   };
 
   const handleSearch = (event) => {
@@ -99,6 +118,10 @@
     // enable pagination
     workerDataTable.pagination.display = true;
     workerDataTable.pagination.actualPage = 1;
+    // initialize bootstrap modal instance for the worker detail modal
+    if (workerDetailModalEl) {
+      workerModalInstance = new Modal(workerDetailModalEl, { backdrop: 'static' });
+    }
   });
 </script>
 
@@ -162,3 +185,23 @@
     </div>
   </div>
 </div>
+
+<!-- Modal wrapper for WorkerDetail -->
+<div bind:this={workerDetailModalEl} class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{modalTitle}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <WorkerDetail bind:this={workerFormInstance} on:saved={handleSaved} on:close={handleModalClose} />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style> 
+
+</style>

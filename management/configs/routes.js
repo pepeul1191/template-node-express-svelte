@@ -23,6 +23,7 @@ router.post('/api/v1/departments', requireAuth, departmentController.save);
 router.get('/api/v1/provinces/:departmentId', requireAuth, provinceController.fetchAll);
 router.post('/api/v1/provinces/:departmentId', requireAuth, provinceController.save);
 // districts
+router.get('/api/v1/districts/search', requireAuth, districtController.searchLocations);
 router.get('/api/v1/districts/:provinceId', requireAuth, districtController.fetchAll);
 router.post('/api/v1/districts/:provinceId', requireAuth, districtController.save);
 // employee-roles

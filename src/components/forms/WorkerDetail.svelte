@@ -1,12 +1,10 @@
 <script>
-  import { onMount, createEventDispatcher } from 'svelte';
+  // src/components/forms/WorkerDetail.svelte
+  import { createEventDispatcher } from 'svelte';
   import axios from 'axios';
-  import { Modal } from 'bootstrap';
 
   const API = typeof API_URL !== 'undefined' ? API_URL : (window && window.API_URL) || '';
 
-  let modalEl;
-  let modalInstance;
   const dispatch = createEventDispatcher();
 
   // mode: 'create' | 'edit'
@@ -19,14 +17,10 @@
     bio: ''
   };
 
-  onMount(() => {
-    modalInstance = new Modal(modalEl, { backdrop: 'static' });
-  });
-
+  // Called by parent (modal wrapper) to prepare the form; parent shows the modal UI
   export function showCreate() {
     mode = 'create';
     form = { id: null, person_id: '', person: null, code: '', bio: '' };
-    modalInstance.show();
   }
 
   export function showEdit(worker) {
@@ -37,7 +31,6 @@
     form.person = worker.person ?? null;
     form.code = worker.code ?? '';
     form.bio = worker.bio ?? '';
-    modalInstance.show();
   }
 
   const save = async () => {
@@ -53,12 +46,10 @@
 
         const res = await axios.post(`${API}api/v1/workers`, payload, { headers: { Authorization: `Bearer ${jwt}` } });
         dispatch('saved', res.data.data || res.data);
-        modalInstance.hide();
       } else {
         const payload = { code: form.code, bio: form.bio };
         const res = await axios.put(`${API}api/v1/workers/${form.id}`, payload, { headers: { Authorization: `Bearer ${jwt}` } });
         dispatch('saved', res.data.data || res.data);
-        modalInstance.hide();
       }
     } catch (error) {
       console.error(error);
@@ -67,51 +58,40 @@
     }
   };
 
-  const close = () => modalInstance.hide();
+  // Parent modal should hide; dispatch close so parent can react if needed
+  const close = () => dispatch('close');
 </script>
 
-<!-- Modal markup -->
-<div class="modal fade" tabindex="-1" bind:this={modalEl}>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{mode === 'create' ? 'Nuevo Trabajador' : 'Editar Trabajador'}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" on:click={close}></button>
-      </div>
-      <div class="modal-body">
-        <form on:submit|preventDefault={save}>
-          <div class="mb-3">
-            <label class="form-label">Person ID</label>
-            <input
-                class="form-control"
-                bind:value={form.person_id}
-                placeholder="ID de la persona"
-                disabled={mode === 'edit'} />
-            {#if form.person}
-              <small class="text-muted">{form.person.names} {form.person.lastNames}</small>
-            {/if}
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label">Código</label>
-            <input class="form-control" bind:value={form.code} />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Bio</label>
-            <textarea class="form-control" rows="3" bind:value={form.bio}></textarea>
-          </div>
-
-          <div class="text-end">
-            <button type="button" class="btn btn-secondary me-2" on:click={close}>Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-        </form>
-      </div>
-    </div>
+<form on:submit|preventDefault={save}>
+  <div class="mb-3">
+    <label class="form-label">Person ID</label>
+    <input
+        class="form-control"
+        bind:value={form.person_id}
+        placeholder="ID de la persona"
+        disabled={mode === 'edit'} />
+    {#if form.person}
+      <small class="text-muted">{form.person.names} {form.person.lastNames}</small>
+    {/if}
   </div>
-</div>
+
+  <div class="mb-3">
+    <label class="form-label">Código</label>
+    <input class="form-control" bind:value={form.code} />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Bio</label>
+    <textarea class="form-control" rows="3" bind:value={form.bio}></textarea>
+  </div>
+
+  <div class="text-end">
+    <button type="button" class="btn btn-secondary me-2" on:click={close}>Cancelar</button>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </div>
+</form>
 
 <style>
-  .modal .form-label { font-weight: 600; }
+  .form-label { font-weight: 600; }
 </style>

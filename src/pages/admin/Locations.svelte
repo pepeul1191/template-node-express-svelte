@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import { Link } from "svelte-routing";
   import DataTable from "../../components/widgets/DataTable.svelte";
+  import Autocomplete from '../../components/widgets/Autocomplete.svelte';
+
 
   // Tablas
   let departmentDataTable;
@@ -183,6 +185,10 @@
     console.log('Department Table:', departmentDataTable);
     console.log('Province Table:', provinceDataTable);
   });
+
+  const handleLocationSelect = (location) => {
+    console.log('Ubicación seleccionada:', location);
+  };
 </script>
 
 <div class="container-fluid">
@@ -208,14 +214,12 @@
     <div class="card-body p-3">
       <div class="col-md-5 autocomplete-wrapper">
         <label class="form-label">Nombre de la Provincia</label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Buscar..."
-          bind:value={search}
-        >
-        <input type="hidden" bind:value={selectedId}>
-        <div class="suggestion-list"></div>
+        <Autocomplete
+          searchUrl="/api/v1/districts/search"
+          idKey="district_id"
+          labelKey="full_name"
+          onSelect={handleLocationSelect}
+        />
       </div>
     </div>
   </div>
