@@ -1,7 +1,6 @@
 // management/models/province.js
 
 import { DataTypes } from 'sequelize';
-import Department from './department.js';
 import sequelize from '../../configs/database.js';
 
 const Province = sequelize.define('Province', {
@@ -26,10 +25,6 @@ const Province = sequelize.define('Province', {
 }, {
   tableName: 'provinces',
   timestamps: false
-});
-
-Province.belongsTo(Department, {
-  foreignKey: 'department_id'
 });
 
 export default Province;

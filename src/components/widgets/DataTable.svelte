@@ -328,6 +328,7 @@
 
   export const list = () => {
     // if pagation, add query params
+    //console.log(pagination)
     if(pagination.display){
       queryParams.step = pagination.step;
       queryParams.page = pagination.actualPage;
@@ -346,7 +347,8 @@
         //data = [];
         if(pagination.display){
           let genericResponse = response.data.data;
-          
+          //console.log(response.data)
+          //console.log(genericResponse.offset)
           data = genericResponse.list;
           pagination.totalPages = genericResponse.pages;
           pagination.offset = genericResponse.offset + 1;
@@ -410,6 +412,48 @@
       console.error('No hay URL para traer datos');
     }
   };
+
+  // En la sección <script> de tu componente
+  function getNestedValue(obj, path) {
+    if (!obj || !path) return '';
+    
+    return path.split('.').reduce((current, key) => {
+      return current && current[key] !== undefined ? current[key] : '';
+    }, obj);
+  }
+
+  function setNestedValue(obj, path, value) {
+    if (!obj || !path) return;
+    
+    const keys = path.split('.');
+    const lastKey = keys.pop();
+    let target = obj;
+    
+    // Navegar hasta el objeto padre (creando objetos intermedios si no existen)
+    for (const key of keys) {
+      if (!target[key]) target[key] = {};
+      target = target[key];
+    }
+    
+    // Asignar el valor
+    target[lastKey] = value;
+    
+    // Nota: La reactividad se maneja en el template con "record = record"
+  }
+
+  // Para manejar inputs de texto
+  function handleTextInput(record, key, event) {
+    setNestedValue(record, key, event.target.value);
+    // Forzar reactividad - esto debe hacerse donde se llama
+    return record; // Para poder hacer record = handleTextInput(record, key, event)
+  }
+
+  // Para manejar checkboxes
+  function handleCheckboxChange(record, key, event) {
+    const newValue = event.target.checked;
+    setNestedValue(record, key, newValue);
+    return record;
+  }
 </script>
 
 <style>
@@ -532,46 +576,60 @@
       </tr>
     </thead>
     <tbody>
-      {#each data as record}
-      <tr>
-        {#each columnKeys as key, i}
-          <td class="data-td {columnClasses[i]}" style="{tdStyles[i]}">
-            {#if columnTypes[i] == 'input[text]'}
-              <input type="text" key="{key}" on:keydown={inputTextKeyDown} bind:value={record[key]} style="width: 100%;" />
-            {:else if columnTypes[i] == 'td-datetime'}
-              {record[key]}
-            {:else if columnTypes[i] == 'radiobutton' || columnTypes[i] == 'radiobuttonAll'}
-              <input
-                class="form-check-input"
-                type="checkbox"
-                bind:checked={record[key]}
-                on:change={(event) => radioClicked(event, record, key, record[key])}
-              />
-            {:else} <!-- if columnTypes[i] == 'td'} -->
-              {record[key]}
-            {/if}
-          </td>
-        {/each}
-        {#if actionButtons.length > 0}
-          <td class="text-end" styles="">
-            {#each actionButtons as button}
-              <button class="btn {button.class}" on:click={() => {
-                if (typeof button.action === 'function') {
-                  button.action(record);
-                } else {
-                  alert('No se seteado un evento');
-                }
-              }}><i class="fa {button.icon}"></i> {button.label}</button>
-            {/each}
-          </td>
-        {/if}
-      </tr>
+    {#each data as record}
+    <tr>
+      {#each columnKeys as key, i}
+        <td class="data-td {columnClasses[i]}" style="{tdStyles[i]}">
+          {#if columnTypes[i] == 'input[text]'}
+            <input 
+              type="text" 
+              key="{key}" 
+              on:keydown={inputTextKeyDown}
+              value={getNestedValue(record, key)}
+              on:input={(e) => {
+                setNestedValue(record, key, e.target.value);
+                record = record; // Forzar reactividad
+              }}
+              style="width: 100%;" 
+            />
+          {:else if columnTypes[i] == 'td-datetime'}
+            {getNestedValue(record, key)}
+          {:else if columnTypes[i] == 'radiobutton' || columnTypes[i] == 'radiobuttonAll'}
+            <input
+              class="form-check-input"
+              type="checkbox"
+              checked={getNestedValue(record, key)}
+              on:change={(event) => {
+                const newValue = event.target.checked;
+                setNestedValue(record, key, newValue);
+                radioClicked(event, record, key, newValue);
+              }}
+            />
+          {:else} <!-- if columnTypes[i] == 'td' -->
+            {getNestedValue(record, key)}
+          {/if}
+        </td>
       {/each}
-      </tbody>
+      {#if actionButtons.length > 0}
+        <td class="text-end">
+          {#each actionButtons as button}
+            <button style="margin-left: 5px;" class="btn {button.class}" on:click={() => {
+              if (typeof button.action === 'function') {
+                button.action(record);
+              } else {
+                alert('No se seteado un evento');
+              }
+            }}><i class="fa {button.icon}"></i> {button.label}</button>
+          {/each}
+        </td>
+      {/if}
+    </tr>
+    {/each}
+  </tbody>
     {#if pagination.display && data.length > 0}
       <tfoot>
         <tr>
-          <td colspan="6">
+          <td colspan="10">
             <div class="d-flex justify-content-between align-items-center">
               <!-- Texto con el rango de filas mostradas (izquierda) -->
               <div class="text-left">

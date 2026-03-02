@@ -10,6 +10,7 @@ import flash from 'connect-flash';
 import FileStore from 'session-file-store';
 
 import webRoutes from '../web/routes.js';
+import './models.js';
 import managementRoutes from '../management/configs/routes.js';
 
 import { notFoundHandler, errorHandler, viewFlash, viewEnv, viewSession, viewHelpers, } from './middlewares.js';

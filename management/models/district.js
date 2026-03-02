@@ -2,7 +2,6 @@
 
 import { DataTypes } from 'sequelize';
 import sequelize from '../../configs/database.js';
-import Province from './province.js';
 
 const District = sequelize.define('District', {
   id: {
@@ -26,10 +25,6 @@ const District = sequelize.define('District', {
 }, {
   tableName: 'districts',
   timestamps: false
-});
-
-District.belongsTo(Province, {
-  foreignKey: 'province_id'
 });
 
 export default District;

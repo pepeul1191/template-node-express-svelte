@@ -9,6 +9,7 @@ import * as documentTypeController from '../controllers/document_types_controlle
 import * as levelController from '../controllers/levels_controller.js';
 import * as evaluationTypeController from '../controllers/evalutation_types_controller.js';
 import * as sexController from '../controllers/sexs_controller.js';
+import * as workersController from '../controllers/workers_controller.js';
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
 
@@ -41,5 +42,12 @@ router.post('/api/v1/evaluation-types', requireAuth, evaluationTypeController.sa
 // sexs
 router.get('/api/v1/sexs', requireAuth, sexController.fetchAll);
 router.post('/api/v1/sexs', requireAuth, sexController.save);
+
+// workers
+router.get('/api/v1/workers', requireAuth, workersController.fetchAll);
+router.post('/api/v1/workers', requireAuth, workersController.create);
+router.get('/api/v1/workers/:personId', requireAuth, workersController.fetchByPerson);
+router.put('/api/v1/workers/:id', requireAuth, workersController.update);
+router.delete('/api/v1/workers/:id', requireAuth, workersController.deleteR);
 
 export default router;
