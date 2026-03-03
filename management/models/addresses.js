@@ -14,6 +14,14 @@ const Address = sequelize.define('Address', {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false
   },
+  district_id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+    references: {
+      model: 'districts',
+      key: 'id'
+    }
+  },
   description: {
     type: DataTypes.STRING(40),
     allowNull: true

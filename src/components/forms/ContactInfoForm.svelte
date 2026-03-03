@@ -12,11 +12,11 @@
   const phoneColumnClasses = ['d-none', '', ''];
 
   // column keys/names/types for addresses
-  const addressColumnKeys = ['id', 'description', 'district_text'];
-  const addressColumnNames = ['ID', 'Dirección', 'Distrito'];
+  const addressColumnKeys = ['id', 'address', 'description' ,'district_text'];
+  const addressColumnNames = ['ID', 'Dirección', 'Descripción', 'Distrito', 'Acciones'];
   // use DataTable's autocomplete column type for district (comma-separated params)
-  const addressColumnTypes = ['hidden', 'input[text]', `autocomplete(searchUrl=${API}api/v1/districts/search,idKey=id,labelKey=label,idTarget=district_id,minChars=2,debounceMs=300,hideInput=false,showProgress=true)`];
-  const addressColumnClasses = ['d-none', '', ''];
+  const addressColumnTypes = ['hidden', 'input[text]', 'input[text]', `autocomplete(searchUrl=${API}api/v1/districts/search,idKey=district_id,labelKey=full_name,idTarget=district_id,minChars=2,debounceMs=300,hideInput=false,showProgress=true)`];
+  const addressColumnClasses = ['d-none', '', '', ''];
 
   let phoneTableRef;
   let addressTableRef;
@@ -73,9 +73,33 @@
     addressTableRef.saveURL = `${API_URL}api/v1/persons/${personId}/addresses`;
     addressTableRef.list();
   };
+
+  // Alertas
+  let alertMessage = {
+    text: '',
+    status: ''
+  };
+
+  // Handlers de alertas
+  const handleTableAlert = (callback) => {
+    alertMessage = callback.detail;
+    setTimeout(() => {
+      alertMessage = { text: '', status: '' };
+    }, 4300);
+  };
 </script>
 
 <div class="mb-3">
+  <!-- Alerta -->
+  {#if alertMessage.text}
+    <div class="col-md-12">
+      <div class="alert alert-{alertMessage.status}" role="alert">
+        {alertMessage.text}
+      </div>
+    </div>
+  {/if}
+
+
   <div class="bg-light p-3 rounded mb-3">
     <p class="text-muted small">Teléfonos</p>
     <DataTable
@@ -89,6 +113,7 @@
       saveButton={{ display: false, disabled: false, action: null }}
       actionButtons={phoneActionButtons}
       idKey="id"
+      on:alert={handleTableAlert}
     />
   </div>
 
@@ -105,6 +130,7 @@
       saveButton={{ display: false, disabled: false, action: null }}
       actionButtons={addressActionButtons}
       idKey="id"
+      on:alert={handleTableAlert}
     />
   </div>
 </div>

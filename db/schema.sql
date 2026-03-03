@@ -18,10 +18,13 @@
 CREATE TABLE `addresses` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `person_id` int unsigned NOT NULL,
+  `district_id` int unsigned DEFAULT NULL,
   `description` varchar(40) NOT NULL,
   `address` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_addresses_person` (`person_id`),
+  KEY `idx_addresses_district_id` (`district_id`),
+  CONSTRAINT `fk_addresses_district` FOREIGN KEY (`district_id`) REFERENCES `districts` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_addresses_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -297,5 +300,6 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260222033542'),
   ('20260222034304'),
   ('20260302000003'),
-  ('20260303012834');
+  ('20260303012834'),
+  ('20260303212312');
 UNLOCK TABLES;

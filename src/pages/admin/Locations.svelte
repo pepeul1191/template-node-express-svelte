@@ -187,6 +187,7 @@
   });
 
   const handleLocationSelect = (location) => {
+
     console.log('Ubicación seleccionada:', location);
   };
 </script>

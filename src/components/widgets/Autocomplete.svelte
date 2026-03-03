@@ -1,25 +1,20 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import axios from 'axios';
 
   // Props
-  export let searchUrl = ''; // URL para búsqueda (ej: /api/v1/districts/search/locations?name=)
-  export let jwtKey = 'jwtToken'; // localStorage key para JWT
+  export let searchUrl = '';
+  export let jwtKey = 'jwtToken';
   export let placeholder = 'Buscar...';
-  export let minChars = 2; // mínimo de caracteres para buscar
-  export let debounceMs = 300; // delay para búsqueda
-  export let onSelect = null; // función callback al seleccionar
-  export let idKey = 'district_id'; // nombre de la propiedad que representa el id
-  export let labelKey = 'full_name'; // nombre de la propiedad que representa el label/ texto
-  export let value = ''; // bind:value para sincronizar el texto de búsqueda
+  export let minChars = 2;
+  export let debounceMs = 300;
+  export let onSelect = null;
+  export let idKey = 'id';
+  export let labelKey = 'name';
+  export let value = '';
 
   // State
-  let searchTerm = value || '';
-
-  // keep internal term in sync when parent changes bound value
-  $: if (value !== searchTerm) {
-    searchTerm = value;
-  }
+  let searchTerm = '';
   let results = [];
   let selectedId = null;
   let selectedLabel = '';
@@ -27,6 +22,11 @@
   let isLoading = false;
   let error = '';
   let debounceTimer;
+  let inputElement;
+
+  $: if (value !== searchTerm) {
+    searchTerm = value || '';
+  }
 
   const dispatch = createEventDispatcher();
 
@@ -55,12 +55,10 @@
       const url = `${searchUrl}?name=${encodeURIComponent(searchTerm)}`;
       const response = await axios.get(url, config);
 
-      // Normalizar respuesta según formato { success, message, data: { list }, error }
       if (response.data && response.data.success && response.data.data && Array.isArray(response.data.data.list)) {
         results = response.data.data.list;
         showResults = results.length > 0;
       } else if (Array.isArray(response.data)) {
-        // Fallback si es un array directo
         results = response.data;
         showResults = results.length > 0;
       } else {
@@ -74,9 +72,16 @@
     }
   }
 
-  function onInputChange(e) {
-    searchTerm = e.target.value;
+  function onInputChange() {
+    // Actualizar value para el padre
     value = searchTerm;
+    
+    // Si estamos escribiendo, resetear selectedId
+    if (selectedId) {
+      selectedId = null;
+      selectedLabel = '';
+    }
+    
     clearTimeout(debounceTimer);
 
     if (!searchTerm) {
@@ -91,16 +96,18 @@
   }
 
   function selectResult(item) {
+    const newValue = item[labelKey];
+    
     selectedId = item[idKey];
-    selectedLabel = item[labelKey];
-    searchTerm = item[labelKey];
+    selectedLabel = newValue;
+    searchTerm = newValue;
+    value = newValue;
+
     showResults = false;
     results = [];
 
-    // Dispatch event
     dispatch('selected', { id: selectedId, label: selectedLabel });
 
-    // Llamar callback si existe
     if (typeof onSelect === 'function') {
       onSelect({ id: selectedId, label: selectedLabel });
     }
@@ -108,17 +115,22 @@
 
   function clear() {
     searchTerm = '';
+    value = '';
     selectedId = null;
     selectedLabel = '';
     results = [];
     showResults = false;
     error = '';
+    
+    if (inputElement) {
+      inputElement.focus();
+    }
   }
 
-  function toggleResults() {
-    if (results.length > 0) {
-      showResults = !showResults;
-    }
+  function onBlur() {
+    setTimeout(() => {
+      showResults = false;
+    }, 200);
   }
 </script>
 
@@ -152,6 +164,7 @@
     justify-content: center;
     width: 32px;
     height: 32px;
+    z-index: 2;
   }
 
   .clear-btn:hover {
@@ -192,11 +205,6 @@
     font-size: 0.9rem;
   }
 
-  .result-id {
-    font-size: 0.8rem;
-    color: #999;
-  }
-
   .no-results {
     padding: 12px;
     text-align: center;
@@ -221,14 +229,16 @@
 <div class="autocomplete-container">
   <div class="input-group-wrapper">
     <input
+      bind:this={inputElement}
       type="text"
       class="form-control"
       {placeholder}
-      value={searchTerm}
+      bind:value
       on:input={onInputChange}
       on:focus={() => {
         if (results.length > 0) showResults = true;
       }}
+      on:blur={onBlur}
       autocomplete="off"
     />
     {#if selectedId || searchTerm}
@@ -247,10 +257,12 @@
       {#if isLoading}
         <div class="loading-text">Buscando...</div>
       {:else if results.length > 0}
-        {#each results as item (item.district_id)}
-          <div class="result-item" on:click={() => selectResult(item)}>
-                <div class="result-label">{item[labelKey]}</div>
-              <div class="result-id d-none">ID: {item[idKey]}</div>
+        {#each results as item (item[idKey])}
+          <div 
+            class="result-item" 
+            on:mousedown|preventDefault={() => selectResult(item)}
+          >
+            <div class="result-label">{item[labelKey]}</div>
           </div>
         {/each}
       {:else}

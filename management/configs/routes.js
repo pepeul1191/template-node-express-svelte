@@ -10,9 +10,10 @@ import * as levelController from '../controllers/levels_controller.js';
 import * as evaluationTypeController from '../controllers/evalutation_types_controller.js';
 import * as sexController from '../controllers/sexs_controller.js';
 import * as workersController from '../controllers/workers_controller.js';
+import * as addressesController from '../controllers/addresses_controller.js';
+import * as phonesController from '../controllers/phones_controller.js';
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
-
 
 const router = Router();
 
@@ -43,7 +44,12 @@ router.post('/api/v1/evaluation-types', requireAuth, evaluationTypeController.sa
 // sexs
 router.get('/api/v1/sexs', requireAuth, sexController.fetchAll);
 router.post('/api/v1/sexs', requireAuth, sexController.save);
-
+// addresses
+router.get('/api/v1/persons/:personId/addresses', requireAuth, addressesController.fetchAll);
+router.post('/api/v1/persons/:personId/addresses', requireAuth, addressesController.save);
+// phones
+router.get('/api/v1/persons/:personId/phones', requireAuth, phonesController.fetchAll);
+router.post('/api/v1/persons/:personId/phones', requireAuth, phonesController.save);
 // workers
 router.get('/api/v1/workers', requireAuth, workersController.fetchAll);
 router.post('/api/v1/workers', requireAuth, workersController.create);

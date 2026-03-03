@@ -197,6 +197,38 @@
     data = data;
   };
 
+  const suggestionClicked = (record, event) => {
+    console.log('click', recordId);
+    
+    // Obtener el ID del registro (rowKey)
+    let rowKey = record[recordId];
+    
+    // Determinar si es nuevo (tiene tmp_) o existente
+    if(String(rowKey).includes('tmp_')){
+      if(!observer.new.includes(rowKey)){
+        observer.new.push(rowKey);
+      }
+    }else{
+      if(!observer.edit.includes(rowKey)){
+        observer.edit.push(rowKey);
+      }
+    }
+    
+    // Forzar reactividad
+    observer = observer;
+    record = record;
+    
+    // Disparar evento si es necesario
+    if (event && event.detail) {
+      dispatch('suggestionSelected', {
+        record: record,
+        suggestion: event.detail,
+        rowKey: rowKey,
+        isNew: String(rowKey).includes('tmp_')
+      });
+    }
+  }
+
   const dataSearch = (key, idSearched) => {
     for (var i=0; i < data.length; i++) {
       if (data[i][key] == idSearched) {
@@ -637,12 +669,15 @@
                 hideInput={parseAutocompleteOptions(columnTypes[i]).hideInput}
                 showProgress={parseAutocompleteOptions(columnTypes[i]).showProgress}
                 on:selected={(e) => {
+                  console.log(e)
                   const opts = parseAutocompleteOptions(columnTypes[i]);
                   setNestedValue(record, key, e.detail.label || e.detail);
                   if (opts.idTarget) {
                     setNestedValue(record, opts.idTarget, e.detail.id);
                   }
+                  console.log(record)
                   record = record;
+                  suggestionClicked(record, e);
                 }}
               />
           {:else if columnTypes[i] == 'td-datetime'}

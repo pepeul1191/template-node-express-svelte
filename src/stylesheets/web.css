@@ -125,3 +125,10 @@ select.form-control {
 .nav-link {
   color: var(--bs-primary);
 }
+
+/*Autocomplete del Datatable*/
+
+.data-td > .autocomplete-container > .input-group-wrapper > .form-control {
+  border: 0px;
+  background: transparent;
+}
