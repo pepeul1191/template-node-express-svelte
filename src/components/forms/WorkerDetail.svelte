@@ -42,6 +42,8 @@
     documentTypes: false
   };
 
+  let contactInfoForm; // referencia al formulario de contacto para resetearlo si es necesario
+
   // Cargar datos necesarios
   onMount(async () => {
     await Promise.all([
@@ -138,6 +140,8 @@
     form.email = worker.email || '';
     form.user_id = worker.user_id || null;
     form.user_name = worker.user_name || (worker.user_id ? `ID:${worker.user_id}` : '');
+
+    contactInfoForm.loadTables();
   }
 
   const save = async () => {
@@ -161,7 +165,7 @@
         const res = await axios.post(`${API}api/v1/workers`, payload, { headers: { Authorization: `Bearer ${jwt}` } });
         dispatch('saved', res.data.data || res.data);
       } else {
-        console.log(form)
+        //console.log(form)
         const payload = {
           person: {
             ...form.person,
@@ -206,7 +210,7 @@
     </div>
 
   <div class="tab-pane fade" id="tab-contact" role="tabpanel" aria-labelledby="tab-contact-tab">
-    <ContactInfoForm bind:form={form} />
+    <ContactInfoForm bind:this={contactInfoForm} bind:form={form} />
   </div>
 
   <div class="tab-pane fade" id="tab-user" role="tabpanel" aria-labelledby="tab-user-tab">

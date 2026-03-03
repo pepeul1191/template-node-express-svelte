@@ -51,7 +51,7 @@
     dispatch('clear', { fileUrl: initialProps.fileUrl });
   }
 
-  function clear() {
+  export function clear() {
     resetToInitial();
   }
 

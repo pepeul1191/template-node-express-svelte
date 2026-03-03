@@ -49,8 +49,8 @@
   }
 </script>
 
-<form on:submit|preventDefault={doSave} class="mb-4">
-  <div class="bg-light p-3 mb-3 rounded">
+<form on:submit|preventDefault={doSave}>
+  <div class="bg-light p-3 rounded">
     <div class="row">
       <div class="col-md-4 mb-3">
         <label class="form-label">Apellidos</label>
@@ -111,6 +111,7 @@
           maxFileSizeMB={5}
           extraParams={{ folder: 'workers' }}
           jwtKey={"file_token"}
+          fileUrl={form.person.image_url}
           showProgress={false}
           hideInput={true}
           on:uploaded={fileUploaded}

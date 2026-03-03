@@ -1,5 +1,6 @@
 <script>
   import DataTable from '../widgets/DataTable.svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   export let form;
 
   const API = (typeof API_URL !== 'undefined' ? API_URL : (window && window.API_URL) || '');
@@ -19,6 +20,7 @@
 
   let phoneTableRef;
   let addressTableRef;
+  let personId = null;
 
   function phoneAddAction() {
     if (phoneTableRef && typeof phoneTableRef.addRow === 'function') {
@@ -58,6 +60,19 @@
       action: (record) => addressTableRef && addressTableRef.deleteRow(record, 'id')
     }
   ];
+
+  export const loadTables = () => {
+    console.log('loadTables')
+    personId = form.person_id;
+
+    phoneTableRef.fetchURL = `${API_URL}api/v1/persons/${personId}/phones`;
+    phoneTableRef.saveURL = `${API_URL}api/v1/persons/${personId}/phones`;
+    phoneTableRef.list();
+
+    addressTableRef.fetchURL = `${API_URL}api/v1/persons/${personId}/addresses`;
+    addressTableRef.saveURL = `${API_URL}api/v1/persons/${personId}/addresses`;
+    addressTableRef.list();
+  };
 </script>
 
 <div class="mb-3">
