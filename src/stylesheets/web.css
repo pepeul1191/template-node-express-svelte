@@ -115,3 +115,8 @@ body {
 .sidebar-link-active{
   font-size: 1rem;
 }
+
+/* select */
+select.form-control {
+  appearance: auto;
+}

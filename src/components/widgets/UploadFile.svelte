@@ -1,4 +1,5 @@
 <script>
+  // src/components/widgets/UploadFile.svelte
   import { createEventDispatcher } from 'svelte';
   import axios from 'axios';
 
@@ -13,12 +14,15 @@
   export let maxFiles = null; // optional maximum number of files when multiple=true
   export let fieldName = 'file'; // form field name for files
   export let headers = {}; // additional headers
+  export let hideInput = false; // nueva prop para ocultar o mostrar el input file (default false)
+  export let showProgress = true; // nueva prop para ocultar o mostrar el formulario de progreso (default true)
+  export let fileUrlPrefix = ''; // prefijo para la URL del archivo (ej: /uploads/)
 
   const dispatch = createEventDispatcher();
 
   let inputEl;
   let selectedFiles = []; // array of File
-  let uploads = []; // { file, progress, status, response, error }
+  let uploads = []; // { file, progress, status, response, error, fileUrl }
   let errors = [];
 
   const humanSize = (bytes) => {
@@ -33,6 +37,12 @@
     uploads = [];
     errors = [];
     if (inputEl) inputEl.value = '';
+  }
+
+  function triggerFileInput() {
+    if (inputEl) {
+      inputEl.click();
+    }
   }
 
   function onFileChange(e) {
@@ -62,7 +72,7 @@
     if (validated.length > 0) {
       selectedFiles = multiple ? [...selectedFiles, ...validated] : validated;
       // initialize uploads entries
-      for (const f of validated) uploads.push({ file: f, progress: 0, status: 'pending', response: null, error: null });
+      for (const f of validated) uploads.push({ file: f, progress: 0, status: 'pending', response: null, error: null, fileUrl: null });
     }
   }
 
@@ -135,18 +145,32 @@
       uploads[idx].status = 'done';
       uploads[idx].response = res.data;
 
+      // Extract file URL from response if available
+      if (res.data && res.data.data && res.data.data.url) {
+        uploads[idx].fileUrl = res.data.data.url;
+      } else if (res.data && res.data.url) {
+        uploads[idx].fileUrl = res.data.url;
+      } else if (res.data && res.data.data && res.data.data.fileUrl) {
+        uploads[idx].fileUrl = res.data.data.fileUrl;
+      } else if (res.data && res.data.fileUrl) {
+        uploads[idx].fileUrl = res.data.fileUrl;
+      } else if (fileUrlPrefix && res.data && res.data.data && res.data.data.filename) {
+        // Construct URL from filename if prefix is provided
+        uploads[idx].fileUrl = fileUrlPrefix + res.data.data.filename;
+      }
+
       // normalize response
       if (responseFormat === 'standard') {
         // expected { success, message, data, error }
         if (res.data && res.data.success) {
-          dispatch('uploaded', { file, data: res.data.data, message: res.data.message });
+          dispatch('uploaded', { file, data: res.data.data, message: res.data.message, fileUrl: uploads[idx].fileUrl });
         } else {
           uploads[idx].error = res.data?.error || res.data?.message || 'Error desconocido';
           dispatch('error', { file, error: uploads[idx].error, response: res.data });
         }
       } else {
         // raw
-        dispatch('uploaded', { file, data: res.data });
+        dispatch('uploaded', { file, data: res.data, fileUrl: uploads[idx].fileUrl });
       }
     } catch (err) {
       uploads[idx].status = 'error';
@@ -160,6 +184,12 @@
     selectedFiles = selectedFiles.filter((_, idx) => idx !== i);
     uploads = uploads.filter(u => u.file !== f);
   }
+
+  function openFileInNewTab(fileUrl) {
+    if (fileUrl) {
+      window.open(fileUrl, '_blank');
+    }
+  }
 </script>
 
 <style>
@@ -167,11 +197,48 @@
   .file-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:6px 0; }
   .small-muted { font-size:0.85rem; color:#666; }
   progress { width: 180px; }
+  .btn-link { background: none; border: none; color: #007bff; text-decoration: underline; cursor: pointer; padding: 0; font: inherit; }
+  .btn-link:hover { color: #0056b3; }
 </style>
 
-<div class="upload-box">
+<div class={`${!hideInput ? 'upload-box' : ''}`}>
   <div class="mb-2">
-    <input bind:this={inputEl} type="file" on:change={onFileChange} {multiple} />
+    {#if hideInput}
+      <button type="button" class="btn btn-primary" on:click={triggerFileInput}>
+        <i class="fa fa-folder-open" aria-hidden="true"></i>
+        Seleccionar archivo{multiple ? 's' : ''}
+      </button>
+
+      <!-- Input oculto -->
+      <input 
+        bind:this={inputEl} 
+        type="file" 
+        on:change={onFileChange} 
+        {multiple} 
+        style="display: none;" 
+      />
+
+      <button 
+        class="btn btn-primary" 
+        on:click={uploadAll} 
+        disabled={!postUrl || selectedFiles.length === 0}
+      >
+        <i class="fa fa-upload" aria-hidden="true"></i>
+        Subir
+      </button>
+
+      <button class="btn btn-secondary" on:click={clear}>
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        Limpiar
+      </button>
+    {:else}
+      <input 
+        bind:this={inputEl} 
+        type="file" 
+        on:change={onFileChange} 
+        {multiple} 
+      />
+    {/if}
   </div>
 
   {#if errors.length}
@@ -181,8 +248,8 @@
       {/each}
     </div>
   {/if}
-
-  {#if selectedFiles.length}
+    
+  {#if selectedFiles.length > 0 && showProgress === true}
     <div class="mb-2">
       {#each selectedFiles as f, i}
         <div class="file-row">
@@ -196,21 +263,34 @@
                 <progress value={uploads[i].progress} max="100">{uploads[i].progress}%</progress>
               {:else if uploads[i].status === 'done'}
                 <span class="badge bg-success">Subido</span>
+                <!-- Botón Ver si hay URL disponible -->
+                {#if uploads[i].fileUrl}
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-outline-info" 
+                    on:click={() => openFileInNewTab(uploads[i].fileUrl)}
+                    title="Ver archivo"
+                  >
+                    Ver
+                  </button>
+                {/if}
               {:else if uploads[i].status === 'error'}
                 <span class="badge bg-danger">Error</span>
               {:else}
                 <span class="small-muted">Pendiente</span>
               {/if}
             {/if}
-            <button type="button" class="btn btn-sm btn-outline-danger" on:click={() => removeFile(i)}>Eliminar</button>
+            <button type="button" class="btn btn-sm btn-outline-danger" on:click={() => removeFile(i)}>Eliminar?</button>
           </div>
         </div>
       {/each}
     </div>
   {/if}
 
-  <div class="d-flex gap-2">
-    <button class="btn btn-primary" on:click={uploadAll} disabled={!postUrl || selectedFiles.length===0}>Subir</button>
-    <button class="btn btn-secondary" on:click={clear}>Limpiar</button>
-  </div>
+  {#if !hideInput}
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" on:click={uploadAll} disabled={!postUrl || selectedFiles.length===0}>Subir</button>
+      <button class="btn btn-secondary" on:click={clear}>Limpiar</button>
+    </div>
+  {/if}
 </div>

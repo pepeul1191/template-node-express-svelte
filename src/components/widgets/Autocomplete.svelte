@@ -13,7 +13,12 @@
   export let labelKey = 'full_name'; // nombre de la propiedad que representa el label/ texto
 
   // State
-  let searchTerm = '';
+  let searchTerm = value || '';
+
+  // keep internal term in sync when parent changes bound value
+  $: if (value !== searchTerm) {
+    searchTerm = value;
+  }
   let results = [];
   let selectedId = null;
   let selectedLabel = '';
@@ -70,6 +75,7 @@
 
   function onInputChange(e) {
     searchTerm = e.target.value;
+    value = searchTerm;
     clearTimeout(debounceTimer);
 
     if (!searchTerm) {
