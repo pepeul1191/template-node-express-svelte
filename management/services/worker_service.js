@@ -8,7 +8,7 @@ import Sex from '../models/sex.js';
 import DocumentType from '../models/document_type.js';
 
 // buildWhere only handles criteria that live on the Person model
-const buildWhere = ({ name, documentNumber }) => {
+const buildWhere = ({ name, documentNumber, email }) => {
   const wherePerson = {};
 
   if (name) {
@@ -28,12 +28,15 @@ const buildWhere = ({ name, documentNumber }) => {
 /**
  * Obtener workers con datos de persona (paginado)
  */
-export const fetchWorkers = async ({ name, documentNumber, code, step = 10, page = 1 }) => {
-  const wherePerson = buildWhere({ name, documentNumber });
+export const fetchWorkers = async ({ name, documentNumber, code, email, step = 10, page = 1 }) => {
+  const wherePerson = buildWhere({ name, documentNumber, email });
   // filters that apply directly to the Worker table
   const whereWorker = {};
   if (code) {
     whereWorker.code = { [Op.like]: `%${code}%` };
+  }
+  if (email) {
+    whereWorker.email = { [Op.like]: `%${email}%` };
   }
 
   const limit = Number(step);
@@ -82,16 +85,21 @@ export const fetchWorkers = async ({ name, documentNumber, code, step = 10, page
         id: data.id,
         code: data.code,
         bio: data.bio,
+        email: data.email,
+        user_id: data.user_id,
         person: data.person,
     };
   });
 };
 
-export const countTotalPages = async ({ name, documentNumber, code, step = 10 }) => {
-  const wherePerson = buildWhere({ name, documentNumber });
+export const countTotalPages = async ({ name, documentNumber, code, email, step = 10 }) => {
+  const wherePerson = buildWhere({ name, documentNumber, email });
   const whereWorker = {};
   if (code) {
     whereWorker.code = { [Op.like]: `%${code}%` };
+  }
+  if (email) {
+    whereWorker.email = { [Op.like]: `%${email}%` };
   }
 
   const totalRecords = await Worker.count({

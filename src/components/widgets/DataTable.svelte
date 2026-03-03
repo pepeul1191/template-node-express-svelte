@@ -6,6 +6,7 @@
   import { navigate } from 'svelte-routing';
   import random from '../../helpers/random.js';
   import toDatetimeLocalWithSeconds from '../../helpers/datetime.js';
+  import Autocomplete from './Autocomplete.svelte';
 
   export let recordId = 'id';
   export let observer = { new: [], edit: [], delete: []};
@@ -454,6 +455,34 @@
     setNestedValue(record, key, newValue);
     return record;
   }
+
+  // Parse autocomplete options from columnTypes entry.
+  // Expected syntax: autocomplete(searchUrl=/api/v1/...,idKey=district_id,labelKey=full_name,idTarget=person.addresses.0.district_id,minChars=2,debounceMs=250,hideInput=true,showProgress=false)
+  function parseAutocompleteOptions(spec) {
+    const result = {};
+    // spec is like "autocomplete(...)", extract inner
+    const m = String(spec).match(/^autocomplete\((.*)\)$/);
+    if (!m) return result;
+    const inner = m[1];
+    // split by comma not inside quotes (simple split acceptable here)
+    const parts = inner.split(',').map(p => p.trim()).filter(Boolean);
+    parts.forEach(part => {
+      const [k, ...rest] = part.split('=');
+      if (!k) return;
+      const key = k.trim();
+      let val = rest.join('=').trim();
+      // remove surrounding quotes if present
+      if ((val.startsWith("'") && val.endsWith("'")) || (val.startsWith('"') && val.endsWith('"'))) {
+        val = val.slice(1, -1);
+      }
+      // convert boolean/number
+      if (val === 'true') val = true;
+      else if (val === 'false') val = false;
+      else if (!isNaN(val) && val !== '') val = Number(val);
+      result[key] = val;
+    });
+    return result;
+  }
 </script>
 
 <style>
@@ -489,7 +518,13 @@
   a > i {
     margin-right: 5px !important;
   }
+
+  .data-td > .autocomplete-container > .input-group-wrapper > .form-control {
+    border: 0px;
+    background: transparent;
+  }
 </style>
+
 <!-- modal -->
 <div bind:this={deleteConfirmationModal} class="modal fade" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
@@ -592,6 +627,24 @@
               }}
               style="width: 100%;" 
             />
+            {:else if String(columnTypes[i]).startsWith('autocomplete')}
+              <Autocomplete
+                searchUrl={parseAutocompleteOptions(columnTypes[i]).searchUrl}
+                idKey={parseAutocompleteOptions(columnTypes[i]).idKey}
+                labelKey={parseAutocompleteOptions(columnTypes[i]).labelKey}
+                minChars={parseAutocompleteOptions(columnTypes[i]).minChars}
+                debounceMs={parseAutocompleteOptions(columnTypes[i]).debounceMs}
+                hideInput={parseAutocompleteOptions(columnTypes[i]).hideInput}
+                showProgress={parseAutocompleteOptions(columnTypes[i]).showProgress}
+                on:selected={(e) => {
+                  const opts = parseAutocompleteOptions(columnTypes[i]);
+                  setNestedValue(record, key, e.detail.label || e.detail);
+                  if (opts.idTarget) {
+                    setNestedValue(record, opts.idTarget, e.detail.id);
+                  }
+                  record = record;
+                }}
+              />
           {:else if columnTypes[i] == 'td-datetime'}
             {getNestedValue(record, key)}
           {:else if columnTypes[i] == 'radiobutton' || columnTypes[i] == 'radiobuttonAll'}

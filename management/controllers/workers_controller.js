@@ -4,11 +4,11 @@ import * as workerService from '../services/worker_service.js';
 
 export const fetchAll = async (req, res) => {
   try {
-    const { name, documentNumber, code, step = 10, page = 1 } = req.query;
+    const { name, documentNumber, code, email, step = 10, page = 1 } = req.query;
 
     const [workers, counts] = await Promise.all([
-      workerService.fetchWorkers({ name, documentNumber, code, step, page }),
-      workerService.countTotalPages({ name, documentNumber, code, step }),
+      workerService.fetchWorkers({ name, documentNumber, code, email, step, page }),
+      workerService.countTotalPages({ name, documentNumber, code, email, step }),
     ]);
 
     if (!workers || workers.length === 0) {

@@ -224,8 +224,11 @@ CREATE TABLE `workers` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `code` int NOT NULL,
   `bio` text,
+  `email` varchar(100) DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   `person_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`),
   KEY `fk_workers_person` (`person_id`),
   CONSTRAINT `fk_workers_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -293,5 +296,7 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260222033526'),
   ('20260222033535'),
   ('20260222033542'),
-  ('20260222034304');
+  ('20260222034304'),
+  ('20260302000003'),
+  ('20260303012834');
 UNLOCK TABLES;

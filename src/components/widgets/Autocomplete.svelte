@@ -11,6 +11,7 @@
   export let onSelect = null; // función callback al seleccionar
   export let idKey = 'district_id'; // nombre de la propiedad que representa el id
   export let labelKey = 'full_name'; // nombre de la propiedad que representa el label/ texto
+  export let value = ''; // bind:value para sincronizar el texto de búsqueda
 
   // State
   let searchTerm = value || '';

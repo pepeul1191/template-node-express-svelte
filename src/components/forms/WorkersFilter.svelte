@@ -6,18 +6,20 @@
   let name = '';
   let documentNumber = '';
   let code = ''; // Nuevo campo para código
+  let email = ''; // Nuevo campo para correo
 
   const searchClick = (event) => {
     event.preventDefault();
-    dispatch('search', { name, documentNumber, code }); // Incluimos code en el dispatch
+    dispatch('search', { name, documentNumber, code, email }); // Incluimos email en el dispatch
   };
 
   const cleanClick = (event) => {
     event.preventDefault();
-    if (name || documentNumber || code) { // Verificamos también code
+    if (name || documentNumber || code || email) { // Verificamos también email
       name = '';
       documentNumber = '';
       code = ''; // Limpiamos code
+      email = ''; // Limpiamos email
       dispatch('clean');
     }
   };
@@ -33,13 +35,17 @@
       <label for="name" class="form-label">Nombres o Apellidos</label>
       <input type="text" class="form-control" id="name" placeholder="Nombre" bind:value={name} />
     </div>
-    <div class="col-md-3">
-      <label for="documentNumber" class="form-label">Documento de Identidad</label>
+    <div class="col-md-2">
+      <label for="documentNumber" class="form-label">Doc. de Identidad</label>
       <input type="text" class="form-control" id="documentNumber" placeholder="Documento" bind:value={documentNumber} />
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
       <label for="code" class="form-label">Código</label>
       <input type="text" class="form-control" id="code" placeholder="Código" bind:value={code} />
+    </div>
+    <div class="col-md-2">
+      <label for="email" class="form-label">Correo</label>
+      <input type="email" class="form-control" id="email" placeholder="Correo" bind:value={email} />
     </div>
     <div class="col-md-3 d-flex align-items-end">
       <button type="submit" class="btn btn-primary me-2" on:click={searchClick}>

@@ -22,9 +22,9 @@
 
   // Configuración de tabla
   const TABLE_CONFIG = {
-    columns: ['id', 'person.last_names', 'person.names','person.sex.name', 'person.document_type.name', 'person.document_number', 'code'],
+    columns: ['id', 'person.last_names', 'person.names','email', 'person.document_type.name', 'person.document_number', 'code'],
     types: ['id', 'td', 'td', 'td', 'td', 'id', 'td'],
-    names: ['ID', 'Apellidos', 'Nombres', 'Sexo', 'Documento', 'Número de Doc.', 'Código', 'Acciones'],
+    names: ['ID', 'Apellidos', 'Nombres', 'Correo', 'Documento', 'Número de Doc.', 'Código', 'Acciones'],
     styles: ['max-width: 50px;', '', '', '', 'max-width: 120px;', 'max-width: 300px;', 'max-width: 200px;'],
     classes: ['d-none', '', '', '', '', '', 'text-end'],
     messages: {
@@ -97,9 +97,9 @@
   };
 
   const handleSearch = (event) => {
-    const { name, documentNumber, code } = event.detail;
+    const { name, documentNumber, code, email } = event.detail;
     // add params to queryParams and refresh
-    workerDataTable.queryParams = { ...workerDataTable.queryParams, name, documentNumber, code };
+    workerDataTable.queryParams = { ...workerDataTable.queryParams, name, documentNumber, code, email };
     workerDataTable.pagination.actualPage = 1;
     workerDataTable.list();
   };

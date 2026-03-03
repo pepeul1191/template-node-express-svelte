@@ -62,6 +62,8 @@ entity workers {
   code: INT
   bio: TEXT
   person_id : INT <<FK>>
+  email: VARCHAR(100)
+  user_id: INT
 }
 
 entity representatives {
