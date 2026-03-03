@@ -116,12 +116,12 @@ CREATE TABLE `levels` (
 CREATE TABLE `persons` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `names` varchar(45) NOT NULL,
-  `lastNames` varchar(45) NOT NULL,
-  `documentNumber` varchar(12) NOT NULL,
+  `last_names` varchar(45) NOT NULL,
+  `document_number` varchar(12) NOT NULL,
   `sex_id` int unsigned NOT NULL,
   `document_type_id` int unsigned NOT NULL,
-  `imageUrl` varchar(70) NOT NULL DEFAULT '/img/user.png',
-  `birthDate` date NOT NULL,
+  `image_url` varchar(70) NOT NULL DEFAULT 'img/user.png',
+  `birth_date` date NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -228,7 +228,6 @@ CREATE TABLE `workers` (
   `user_id` int DEFAULT NULL,
   `person_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `code` (`code`),
   KEY `fk_workers_person` (`person_id`),
   CONSTRAINT `fk_workers_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

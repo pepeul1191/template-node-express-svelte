@@ -4,20 +4,20 @@
 
   const dispatch = createEventDispatcher();
   let name = '';
-  let documentNumber = '';
+  let document_number = '';
   let code = ''; // Nuevo campo para código
   let email = ''; // Nuevo campo para correo
 
   const searchClick = (event) => {
     event.preventDefault();
-    dispatch('search', { name, documentNumber, code, email }); // Incluimos email en el dispatch
+    dispatch('search', { name, document_number, code, email }); // Incluimos email en el dispatch
   };
 
   const cleanClick = (event) => {
     event.preventDefault();
-    if (name || documentNumber || code || email) { // Verificamos también email
+    if (name || document_number || code || email) { // Verificamos también email
       name = '';
-      documentNumber = '';
+      document_number = '';
       code = ''; // Limpiamos code
       email = ''; // Limpiamos email
       dispatch('clean');
@@ -36,8 +36,8 @@
       <input type="text" class="form-control" id="name" placeholder="Nombre" bind:value={name} />
     </div>
     <div class="col-md-2">
-      <label for="documentNumber" class="form-label">Doc. de Identidad</label>
-      <input type="text" class="form-control" id="documentNumber" placeholder="Documento" bind:value={documentNumber} />
+      <label for="document_number" class="form-label">Doc. de Identidad</label>
+      <input type="text" class="form-control" id="document_number" placeholder="Documento" bind:value={document_number} />
     </div>
     <div class="col-md-2">
       <label for="code" class="form-label">Código</label>

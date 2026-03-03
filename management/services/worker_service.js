@@ -8,18 +8,18 @@ import Sex from '../models/sex.js';
 import DocumentType from '../models/document_type.js';
 
 // buildWhere only handles criteria that live on the Person model
-const buildWhere = ({ name, documentNumber, email }) => {
+const buildWhere = ({ name, document_number, email }) => {
   const wherePerson = {};
 
   if (name) {
     wherePerson[Op.or] = [
       { names: { [Op.like]: `%${name}%` } },
-      { lastNames: { [Op.like]: `%${name}%` } },
+      { last_names: { [Op.like]: `%${name}%` } },
     ];
   }
 
-  if (documentNumber) {
-    wherePerson.documentNumber = { [Op.like]: `%${documentNumber}%` };
+  if (document_number) {
+    wherePerson.document_number = { [Op.like]: `%${document_number}%` };
   }
 
   return wherePerson;
@@ -28,8 +28,8 @@ const buildWhere = ({ name, documentNumber, email }) => {
 /**
  * Obtener workers con datos de persona (paginado)
  */
-export const fetchWorkers = async ({ name, documentNumber, code, email, step = 10, page = 1 }) => {
-  const wherePerson = buildWhere({ name, documentNumber, email });
+export const fetchWorkers = async ({ name, document_number, code, email, step = 10, page = 1 }) => {
+  const wherePerson = buildWhere({ name, document_number, email });
   // filters that apply directly to the Worker table
   const whereWorker = {};
   if (code) {
@@ -53,10 +53,10 @@ export const fetchWorkers = async ({ name, documentNumber, code, email, step = 1
         attributes: [
           ['id', 'id'],
           ['names', 'names'],
-          ['lastNames', 'last_names'],        // 👈 alias aquí
-          ['documentNumber', 'document_number'],
-          ['imageUrl', 'image_url'],
-          ['birthDate', 'birth_date'],
+          ['last_names', 'last_names'],        // 👈 alias aquí
+          ['document_number', 'document_number'],
+          ['image_url', 'image_url'],
+          ['birth_date', 'birth_date'],
           ['created', 'created'],
           ['updated', 'updated'],
         ],
@@ -92,8 +92,8 @@ export const fetchWorkers = async ({ name, documentNumber, code, email, step = 1
   });
 };
 
-export const countTotalPages = async ({ name, documentNumber, code, email, step = 10 }) => {
-  const wherePerson = buildWhere({ name, documentNumber, email });
+export const countTotalPages = async ({ name, document_number, code, email, step = 10 }) => {
+  const wherePerson = buildWhere({ name, document_number, email });
   const whereWorker = {};
   if (code) {
     whereWorker.code = { [Op.like]: `%${code}%` };
@@ -189,7 +189,7 @@ export const updateWorker = async (id, payload = {}) => {
       };
     }
 
-    const { code, bio } = payload;
+    const { code, bio, } = payload;
 
     await worker.update({ code: code ?? worker.code, bio: bio ?? worker.bio }, { transaction });
 

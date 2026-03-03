@@ -98,9 +98,9 @@
   };
 
   const handleSearch = (event) => {
-    const { name, documentNumber, code, email } = event.detail;
+    const { name, document_number, code, email } = event.detail;
     // add params to queryParams and refresh
-    workerDataTable.queryParams = { ...workerDataTable.queryParams, name, documentNumber, code, email };
+    workerDataTable.queryParams = { ...workerDataTable.queryParams, name, document_number, code, email };
     workerDataTable.pagination.actualPage = 1;
     workerDataTable.list();
   };

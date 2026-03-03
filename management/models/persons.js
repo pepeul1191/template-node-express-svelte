@@ -14,19 +14,19 @@ const Person = sequelize.define('Person', {
     type: DataTypes.STRING(45),
     allowNull: false
   },
-  lastNames: {
+  last_names: {
     type: DataTypes.STRING(45),
     allowNull: false
   },
-  documentNumber: {
+  document_number: {
     type: DataTypes.STRING(12),
     allowNull: true
   },
-  imageUrl: {
+  image_url: {
     type: DataTypes.STRING(70),
     allowNull: true
   },
-  birthDate: {
+  birth_date: {
     type: DataTypes.DATEONLY,
     allowNull: true
   },

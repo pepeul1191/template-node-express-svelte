@@ -126,7 +126,7 @@
       birth_date: p.birth_date || '',
       sex_id: p.sex.id || null,
       document_type_id: p.document_type.id || null,
-      imageUrl: p.imageUrl || '',
+      image_url: p.image_url || 'img/user.png',
       phones: p.phones ? [...p.phones] : [],
       addresses: p.addresses ? p.addresses.map(a => ({
           ...a,
@@ -145,24 +145,31 @@
 
     try {
       if (mode === 'create') {
+
         const payload = {
           person_id: form.person_id,
-          person: form.person,
+          person: {
+            ...form.person,
+            image_url: form.person?.image_url?.trim() || '/img/user.png'
+          },
           code: form.code,
           bio: form.bio,
           email: form.email,
-          user_id: form.user_id
+          user_id: form.user_id,
         };
 
         const res = await axios.post(`${API}api/v1/workers`, payload, { headers: { Authorization: `Bearer ${jwt}` } });
         dispatch('saved', res.data.data || res.data);
       } else {
+        console.log(form)
         const payload = {
-          person: form.person,
+          person: {
+            ...form.person,
+          },
           code: form.code,
           bio: form.bio,
           email: form.email,
-          user_id: form.user_id
+          user_id: form.user_id,
         };
         const res = await axios.put(`${API}api/v1/workers/${form.id}`, payload, { headers: { Authorization: `Bearer ${jwt}` } });
         dispatch('saved', res.data.data || res.data);

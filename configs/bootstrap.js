@@ -28,6 +28,20 @@ export default function bootstrap(app) {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // CORS middleware (allow requests from the frontend)
+  // puedes restringir origin a process.env.CORS_ORIGIN o a 'http://localhost:3000'
+  app.use((req, res, next) => {
+    const origin = process.env.CORS_ORIGIN || '*';
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    // si el navegador hace preflight OPTIONS, le respondemos de una vez
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+    next();
+  });
+
   // Configuración de sesiones (ESTO ES IMPORTANTE)
   app.use(session({
     store: new FileStoreSession({

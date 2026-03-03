@@ -1,14 +1,15 @@
 // management/controllers/workers_controller.js
 
 import * as workerService from '../services/worker_service.js';
+import * as personService from '../services/person_service.js';
 
 export const fetchAll = async (req, res) => {
   try {
-    const { name, documentNumber, code, email, step = 10, page = 1 } = req.query;
+    const { name, document_number, code, email, step = 10, page = 1 } = req.query;
 
     const [workers, counts] = await Promise.all([
-      workerService.fetchWorkers({ name, documentNumber, code, email, step, page }),
-      workerService.countTotalPages({ name, documentNumber, code, email, step }),
+      workerService.fetchWorkers({ name, document_number, code, email, step, page }),
+      workerService.countTotalPages({ name, document_number, code, email, step }),
     ]);
 
     if (!workers || workers.length === 0) {
@@ -124,7 +125,7 @@ export const fetchByPerson = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { code, bio } = req.body;
+    const { code, bio, person } = req.body;
 
     if (code === undefined && bio === undefined) {
       return res.status(400).json({
@@ -136,6 +137,7 @@ export const update = async (req, res) => {
     }
 
     const worker = await workerService.updateWorker(id, { code, bio });
+    await personService.updatePerson(id, person);
 
     return res.status(200).json({
       success: true,

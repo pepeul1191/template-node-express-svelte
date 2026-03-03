@@ -8,6 +8,7 @@
   export let loading = { sexs: false, documentTypes: false };
 
   const dispatch = createEventDispatcher();
+  let uploadFileComponent; // referencia al componente UploadFile
 
   const doSave = (e) => {
     e.preventDefault();
@@ -16,7 +17,31 @@
 
   const doClose = (e) => {
     e.preventDefault();
+    clearForm();
     dispatch('close');
+  }
+
+  const clearForm = () => {
+    // Limpiar campos del formulario
+    form.person.last_names = '';
+    form.person.names = '';
+    form.person.birth_date = '';
+    form.person.sex_id = '';
+    form.person.document_type_id = '';
+    form.person.document_number = '';
+    form.code = '';
+    form.person.image_url = '';
+    form.bio = '';
+    
+    // Limpiar el componente UploadFile si existe
+    if (uploadFileComponent) {
+      uploadFileComponent.clear();
+    }
+  }
+
+  const fileUploaded = (e) => {
+    //console.log(e)
+    form.person.image_url = `${e.detail.fileUrl}` || '';
   }
 </script>
 
@@ -75,26 +100,47 @@
       <div class="col-md-5 mb-3">
         <label class="form-label">Imagen</label>
         <UploadFile
-          postUrl={`${typeof API_URL !== 'undefined' ? API_URL : (window && window.API_URL) || ''}api/v1/uploads/person-image`}
+          bind:this={uploadFileComponent}
+          postUrl={`${FILES_URL}/api/v1/public`}
+          baseURL={FILES_URL}
           allowedExtensions={['jpg','png','jpeg']}
           maxFileSizeMB={5}
+          extraParams={{ folder: 'workers' }}
+          jwtKey={"file_token"}
           showProgress={false}
           hideInput={true}
-          on:uploaded={(e) => form.person.imageUrl = e.detail.data || ''}
+          on:uploaded={fileUploaded}
         />
-        {#if form.person.imageUrl}
-          <div class="mt-2">
-            <img src={form.person.imageUrl} alt="Foto" class="img-thumbnail" style="max-width:120px;" />
-          </div>
-        {/if}
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12 mb-3">
-        <label class="form-label">Bio</label>
+    <div class="row align-items-start">
+      <!-- Columna del textarea -->
+      <div class="col-md-10 mb-3">
+        <label class="form-label">Resumen de Hoja de Vida</label>
         <textarea class="form-control" rows="3" bind:value={form.bio}></textarea>
       </div>
+
+      <!-- Columna de la imagen -->
+      {#if form.person.image_url && form.person.image_url !== 'img/user.png'}
+        <div class="col-md-2 mb-3">
+          <label class="form-label d-block">Foto</label>
+          <img
+            src={`${FILES_URL}/${form.person.image_url}`}
+            alt="Foto"
+            class="img-thumbnail"
+            style="max-width:120px;" />
+        </div>
+      {:else}
+        <div class="col-md-2 mb-3">
+          <label class="form-label d-block">Foto</label>
+          <img
+            src="/img/user.png"
+            alt="Foto"
+            class="img-thumbnail"
+            style="max-width:120px;" />
+        </div>
+      {/if}
     </div>
 
     <div class="text-end">
