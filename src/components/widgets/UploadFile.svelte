@@ -18,9 +18,14 @@
   export let hideInput = false; // nueva prop para ocultar o mostrar el input file (default false)
   export let showProgress = true; // nueva prop para ocultar o mostrar el formulario de progreso (default true)
   export let fileUrlPrefix = ''; // prefijo para la URL del archivo (ej: /uploads/)
-  export let fileUrl = '';
+  export let fileUrl = ''; // prop reactiva para la URL del archivo
 
   const dispatch = createEventDispatcher();
+
+  // Guardar valores iniciales
+  const initialProps = {
+    fileUrl: fileUrl
+  };
 
   let inputEl;
   let selectedFile = null; // ahora es un solo archivo, no array
@@ -34,11 +39,20 @@
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  function clear() {
+  function resetToInitial() {
     selectedFile = null;
     upload = { file: null, progress: 0, status: 'pending', response: null, error: null, fileUrl: null };
     errors = [];
+    fileUrl = initialProps.fileUrl; // Restaurar URL inicial
+    
     if (inputEl) inputEl.value = '';
+    
+    // Dispatch evento de limpieza con el valor inicial
+    dispatch('clear', { fileUrl: initialProps.fileUrl });
+  }
+
+  function clear() {
+    resetToInitial();
   }
 
   function triggerFileInput() {
@@ -147,22 +161,26 @@
       // Extract file URL from response if available
       if (res.data && res.data.data && res.data.data.url) {
         upload.fileUrl = res.data.data.url;
+        fileUrl = upload.fileUrl;
       } else if (res.data && res.data.url) {
         upload.fileUrl = res.data.url;
+        fileUrl = upload.fileUrl;
       } else if (res.data && res.data.data && res.data.data.fileUrl) {
         upload.fileUrl = res.data.data.fileUrl;
+        fileUrl = upload.fileUrl;
       } else if (res.data && res.data.fileUrl) {
         upload.fileUrl = res.data.fileUrl;
+        fileUrl = upload.fileUrl;
       } else if (fileUrlPrefix && res.data && res.data.data) {
         const d = res.data.data;
         // if backend returns folder+filename, build path
         if (d.folder && d.filename) {
           upload.fileUrl = `${fileUrlPrefix}${d.folder}/${d.filename}`;
+          fileUrl = upload.fileUrl;
         } else if (d.filename) {
           upload.fileUrl = fileUrlPrefix + d.filename;
+          fileUrl = upload.fileUrl;
         }
-        upload.status = 'done';
-        fileUrl = upload.fileUrl;
       }
 
       // normalize response
@@ -170,7 +188,10 @@
         // expected { success, message, data, error }
         if (res.data && res.data.success) {
           upload.status = 'done';
-          fileUrl = `${res.data.data.folder}/${res.data.data.filename}`;
+          if (res.data.data && res.data.data.folder && res.data.data.filename) {
+            fileUrl = `${res.data.data.folder}/${res.data.data.filename}`;
+            upload.fileUrl = fileUrl;
+          }
           console.log('File:', res.data.data);
           console.log('File uploaded successfully. URL:', fileUrl);
           dispatch('uploaded', { file: selectedFile, data: res.data.data, message: res.data.message, fileUrl: fileUrl });
@@ -188,6 +209,7 @@
         }
       } else {
         // raw
+        upload.status = 'done';
         dispatch('uploaded', { file: selectedFile, data: res.data, fileUrl: upload.fileUrl });
       }
     } catch (err) {
@@ -198,7 +220,7 @@
   }
 
   function removeFile() {
-    clear();
+    resetToInitial();
   }
 
   function openFileInNewTab() {
@@ -257,7 +279,7 @@
         </button>
       {/if}
 
-      <button class="btn btn-secondary" on:click={clear} disabled={!selectedFile}>
+      <button class="btn btn-secondary" on:click={clear} disabled={!selectedFile && fileUrl === initialProps.fileUrl}>
         <i class="fa fa-trash" aria-hidden="true"></i>
         Limpiar
       </button>

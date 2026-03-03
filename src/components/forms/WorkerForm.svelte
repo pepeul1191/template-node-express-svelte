@@ -43,6 +43,10 @@
     //console.log(e)
     form.person.image_url = `${e.detail.fileUrl}` || '';
   }
+
+  const clearFile = (e) => {
+    form.person.image_url = '';
+  }
 </script>
 
 <form on:submit|preventDefault={doSave} class="mb-4">
@@ -110,6 +114,7 @@
           showProgress={false}
           hideInput={true}
           on:uploaded={fileUploaded}
+          on:clear={clearFile}
         />
       </div>
     </div>
