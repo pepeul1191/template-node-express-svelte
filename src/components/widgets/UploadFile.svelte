@@ -206,7 +206,7 @@
     {#if hideInput}
       <button type="button" class="btn btn-primary" on:click={triggerFileInput}>
         <i class="fa fa-folder-open" aria-hidden="true"></i>
-        Seleccionar archivo{multiple ? 's' : ''}
+        Archivo{multiple ? 's' : ''}
       </button>
 
       <!-- Input oculto -->

@@ -70,6 +70,7 @@
     // record may include nested Person object
     modalTitle = 'Editar Trabajador';
     if (workerFormInstance && typeof workerFormInstance.showEdit === 'function') {
+      console.log(record)
       workerFormInstance.showEdit(record);
     }
     if (workerModalInstance) workerModalInstance.show();

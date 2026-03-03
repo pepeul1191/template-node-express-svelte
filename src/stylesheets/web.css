@@ -120,3 +120,8 @@ body {
 select.form-control {
   appearance: auto;
 }
+
+
+.nav-link {
+  color: var(--bs-primary);
+}
