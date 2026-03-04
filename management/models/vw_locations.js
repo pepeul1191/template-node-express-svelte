@@ -6,12 +6,12 @@ import sequelize from '../../configs/database.js';
 const VwLocations = sequelize.define(
   'VwLocations',
   {
-    district_id: {
+    id: {
       type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
       allowNull: false,
     },
-    full_name: {
+    name: {
       type: DataTypes.STRING(255),
       allowNull: true,
     },

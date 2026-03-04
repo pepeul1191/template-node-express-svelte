@@ -2,6 +2,7 @@
 import Department from '../management/models/department.js';
 import Province from '../management/models/province.js';
 import District from '../management/models/district.js';
+import VWLocations from '../management/models/vw_locations.js';
 import Person from '../management/models/persons.js';
 import Worker from '../management/models/workers.js';
 import Sex from '../management/models/sex.js';
@@ -84,12 +85,12 @@ Address.belongsTo(Person, {
 });
 
 // District -> Address (1:N) - District has many addresses
-District.hasMany(Address, {
+VWLocations.hasMany(Address, {
   foreignKey: 'district_id',
   as: 'addresses'
 });
 
-Address.belongsTo(District, {
+Address.belongsTo(VWLocations, {
   foreignKey: 'district_id',
   as: 'district'
 });
@@ -103,5 +104,6 @@ export {
   Sex,
   DocumentType,
   Phone,
-  Address
+  Address,
+  VWLocations,
 };

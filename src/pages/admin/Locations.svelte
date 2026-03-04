@@ -214,11 +214,11 @@
 
     <div class="card-body p-3">
       <div class="col-md-5 autocomplete-wrapper">
-        <label class="form-label">Nombre de la Provincia</label>
+        <label class="form-label">Nombre de la Distrito/Provincia/Departamento</label>
         <Autocomplete
           searchUrl="/api/v1/districts/search"
-          idKey="district_id"
-          labelKey="full_name"
+          idKey="id"
+          labelKey="name"
           onSelect={handleLocationSelect}
         />
       </div>

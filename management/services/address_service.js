@@ -3,6 +3,7 @@
 import sequelize from '../../configs/database.js';
 import Address from '../models/addresses.js';
 import District from '../models/district.js';
+import VWLocation from '../models/vw_locations.js';
 
 /**
  * Obtener direcciones por persona
@@ -12,7 +13,7 @@ export const fetchAll = async (personId) => {
     where: { person_id: personId },
     include: [
       {
-        model: District,
+        model: VWLocation,
         as: 'district'
       }
     ]

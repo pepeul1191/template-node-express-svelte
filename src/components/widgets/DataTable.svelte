@@ -668,6 +668,7 @@
                 debounceMs={parseAutocompleteOptions(columnTypes[i]).debounceMs}
                 hideInput={parseAutocompleteOptions(columnTypes[i]).hideInput}
                 showProgress={parseAutocompleteOptions(columnTypes[i]).showProgress}
+                value={getNestedValue(record, key)}
                 on:selected={(e) => {
                   console.log(e)
                   const opts = parseAutocompleteOptions(columnTypes[i]);

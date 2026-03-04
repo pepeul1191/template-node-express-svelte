@@ -12,10 +12,10 @@
   const phoneColumnClasses = ['d-none', '', ''];
 
   // column keys/names/types for addresses
-  const addressColumnKeys = ['id', 'address', 'description' ,'district_text'];
+  const addressColumnKeys = ['id', 'address', 'description' ,'district.name'];
   const addressColumnNames = ['ID', 'Dirección', 'Descripción', 'Distrito', 'Acciones'];
   // use DataTable's autocomplete column type for district (comma-separated params)
-  const addressColumnTypes = ['hidden', 'input[text]', 'input[text]', `autocomplete(searchUrl=${API}api/v1/districts/search,idKey=district_id,labelKey=full_name,idTarget=district_id,minChars=2,debounceMs=300,hideInput=false,showProgress=true)`];
+  const addressColumnTypes = ['hidden', 'input[text]', 'input[text]', `autocomplete(searchUrl=${API}api/v1/districts/search,idKey=id,labelKey=name,idTarget=district_id,minChars=2,debounceMs=300,hideInput=false,showProgress=true)`];
   const addressColumnClasses = ['d-none', '', '', ''];
 
   let phoneTableRef;

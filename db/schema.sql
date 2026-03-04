@@ -213,8 +213,8 @@ CREATE TABLE `sexs` (
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `vw_locations` AS SELECT
- 1 AS `district_id`,
- 1 AS `full_name`*/;
+ 1 AS `id`,
+ 1 AS `name`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -253,7 +253,7 @@ CREATE TABLE `workers` (
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_locations` AS select `D`.`id` AS `district_id`,concat_ws(', ',`D`.`name`,`P`.`name`,`DE`.`name`) AS `full_name` from ((`districts` `D` join `provinces` `P` on((`D`.`province_id` = `P`.`id`))) join `departments` `DE` on((`P`.`department_id` = `DE`.`id`))) */;
+/*!50001 VIEW `vw_locations` AS select `D`.`id` AS `id`,concat_ws(', ',`D`.`name`,`P`.`name`,`DE`.`name`) AS `name` from ((`districts` `D` join `provinces` `P` on((`D`.`province_id` = `P`.`id`))) join `departments` `DE` on((`P`.`department_id` = `DE`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -301,5 +301,6 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260222034304'),
   ('20260302000003'),
   ('20260303012834'),
-  ('20260303212312');
+  ('20260303212312'),
+  ('20260304000213');
 UNLOCK TABLES;

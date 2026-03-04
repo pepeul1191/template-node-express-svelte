@@ -110,16 +110,15 @@ export const searchLocations = async (searchTerm = '', limit = 10) => {
   if (!searchTerm || typeof searchTerm !== 'string') {
     return [];
   }
-  console.log('+++++++++++++++++++++++')
-  console.log(searchTerm)
+
   const locations = await VwLocations.findAll({
     where: {
-      full_name: {
+      name: {
         [Op.like]: `%${searchTerm}%`
       }
     },
     limit: Number(limit) || 10,
-    order: [['full_name', 'ASC']],
+    order: [['name', 'ASC']],
     raw: true
   });
 
