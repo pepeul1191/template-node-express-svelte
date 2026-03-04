@@ -695,7 +695,7 @@
               }}
             />
           {:else} <!-- if columnTypes[i] == 'td' -->
-            {getNestedValue(record, key)}
+            {getNestedValue(record, key) ?? ''}
           {/if}
         </td>
       {/each}

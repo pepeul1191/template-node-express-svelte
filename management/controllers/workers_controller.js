@@ -47,24 +47,16 @@ export const fetchAll = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { person_id, code, bio } = req.body;
+    const { person, code, bio } = req.body;
 
-    if (!person_id) {
-      return res.status(400).json({
-        success: false,
-        message: 'Faltan datos obligatorios',
-        data: null,
-        error: 'person_id es requerido',
-      });
-    }
-
-    const worker = await workerService.createFromPerson(person_id, { code, bio });
+    const worker = await workerService.createFromPerson(person, code, bio);
 
     return res.status(201).json({
       success: true,
       message: 'Trabajador creado correctamente',
       data: {
         id: worker.id,
+        person_id: worker.person.id,
         created: worker.created || null,
         updated: worker.updated || null,
       },
@@ -72,6 +64,7 @@ export const create = async (req, res) => {
     });
 
   } catch (error) {
+    console.log(error)
     return res.status(error.status || 500).json({
       success: false,
       message: error.message || 'Error interno del servidor',

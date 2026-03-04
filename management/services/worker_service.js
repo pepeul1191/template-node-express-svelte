@@ -119,49 +119,62 @@ export const countTotalPages = async ({ name, document_number, code, email, step
   return { totalPages, totalRecords };
 };
 
-/**
- * Crear un worker a partir de una persona
- * @param {number|string} personId
- * @param {object} payload - { code, bio }
- * @returns {object} worker
- */
-export const createFromPerson = async (personId, payload = {}) => {
+export const createFromPerson = async (person, code = null, bio = null) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const person = await Person.findByPk(personId, { transaction });
-
     if (!person) {
       throw {
-        status: 404,
-        message: 'Persona no encontrada',
-        error: `ID ${personId}`,
-      };
-    }
-
-    // Verificar que la persona no sea ya un worker
-    const existing = await Worker.findOne({ where: { person_id: personId }, transaction });
-
-    if (existing) {
-      throw {
         status: 400,
-        message: 'La persona ya está registrada como trabajador',
-        error: `Person ID ${personId}`,
+        message: 'Datos de persona requeridos',
       };
     }
 
+    const {
+      names,
+      last_names,
+      document_number,
+      birth_date,
+      image_url,
+      sex_id,
+      document_type_id,
+    } = person;
+
+    // Crear persona
+    const newPerson = await Person.create(
+      {
+        names,
+        last_names,
+        document_number: document_number ?? null,
+        birth_date: birth_date || null,
+        image_url: image_url ?? null,
+        sex_id: sex_id ?? null,
+        document_type_id: document_type_id ?? null,
+        created: new Date(),
+        updated: new Date(),
+      },
+      { transaction }
+    );
+
+    // Crear worker asociado
     const worker = await Worker.create(
       {
-        person_id: personId,
-        code: payload.code ?? null,
-        bio: payload.bio ?? null,
+        person_id: newPerson.id,
+        code: parseInt(code) ?? null, // OJO, el codigo en un INT
+        bio: bio ?? null,
+        email: null,      // cadena vacía como pediste
+        user_id: null,  // explícitamente nulo
       },
       { transaction }
     );
 
     await transaction.commit();
 
-    return worker.toJSON();
+    return {
+      ...worker.toJSON(),
+      person: newPerson.toJSON(),
+    };
+
   } catch (error) {
     await transaction.rollback();
     throw error;

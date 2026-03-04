@@ -1,6 +1,6 @@
 <script>
   // src/components/forms/WorkerDetail.svelte
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher, onMount, tick } from 'svelte';
   import axios from 'axios';
   import WorkerForm from './WorkerForm.svelte';
   import ContactInfoForm from './ContactInfoForm.svelte';
@@ -18,12 +18,12 @@
     person: {
       id: null,
       names: '',
-      lastNames: '',
-      documentNumber: '',
+      last_names: '',
+      document_number: '',
       birthDate: '',
       sex_id: null,
       document_type_id: null,
-      imageUrl: '',
+      image_url: '',
       phones: [],
       addresses: []
     },
@@ -98,12 +98,12 @@
       person: {
         id: null,
         names: '',
-        lastNames: '',
-        documentNumber: '',
+        last_names: '',
+        document_number: '',
         birthDate: '',
         sex_id: null,
         document_type_id: null,
-        imageUrl: '',
+        image_url: '',
         phones: [],
         addresses: []
       },
@@ -165,7 +165,18 @@
         };
 
         const res = await axios.post(`${API}api/v1/workers`, payload, { headers: { Authorization: `Bearer ${jwt}` } });
-        dispatch('saved', res.data.data || res.data);
+
+        form.id = res.data.data.id;
+        form.person_id = res.data.data.person_id;
+        form = form;
+        console.log(form);
+        mode = 'edit';
+
+        await tick(); 
+        
+        contactInfoForm.loadTables();
+        
+        // dispatch('saved', res.data.data || res.data);
       } else {
         //console.log(form)
         const payload = {

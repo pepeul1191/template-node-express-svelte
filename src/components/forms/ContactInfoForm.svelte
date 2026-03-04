@@ -62,7 +62,6 @@
   ];
 
   export const loadTables = () => {
-    console.log('loadTables')
     personId = form.person_id;
 
     phoneTableRef.fetchURL = `${API_URL}api/v1/persons/${personId}/phones`;

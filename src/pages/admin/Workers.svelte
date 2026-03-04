@@ -95,6 +95,7 @@
 
   const handleModalClose = () => {
     console.log('Modal cerrado');
+    workerDataTable.list();
     if (workerModalInstance) workerModalInstance.hide();
   };
 
@@ -123,6 +124,7 @@
     // initialize bootstrap modal instance for the worker detail modal
     if (workerDetailModalEl) {
       workerModalInstance = new Modal(workerDetailModalEl, { backdrop: 'static' });
+      workerDetailModalEl.addEventListener('hidden.bs.modal', handleModalClose);
     }
   });
 </script>
