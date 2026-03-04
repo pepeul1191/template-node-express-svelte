@@ -145,6 +145,7 @@ export function viewEnv(req, res, next) {
   res.locals.BASE_URL = process.env.BASE_URL || '/';
   res.locals.STATIC_URL = process.env.STATIC_URL || '/';
   res.locals.FILES_URL = process.env.URL_FILES_SERVICE || '/';
+  res.locals.ACCESS_URL = process.env.URL_ACCESS_SERVICE || '/';
     
   next();
 }

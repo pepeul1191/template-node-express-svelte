@@ -187,3 +187,73 @@ export const deleteR = async (req, res) => {
     });
   }
 };
+
+export const asociateUser = async (req, res) => {
+  try { 
+    const { id } = req.params;
+    const { user_id, email } = req.body;    
+
+    if (!id || !email) {
+      return res.status(400).json({
+        success: false,
+        message: 'ID y correo de trabajador requerido',
+        data: null,
+        error: 'ID faltante',
+      });
+    }
+
+    if (!user_id) {
+      user_id = null;
+    }
+
+    await workerService.updateWorkerEmailUser(id, email, user_id);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Trabajador actualizado correctamente',
+      data: null,
+      error: '',
+    });
+
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      success: false,
+      message: error.message || 'Error interno del servidor',
+      data: null,
+      error: error.error || error.message,
+    });
+  }
+};
+
+export const removeUser = async (req, res) => {
+  try { 
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'ID  de trabajador requerido',
+        data: null,
+        error: 'ID faltante',
+      });
+    }
+
+    await workerService.removeUser(id);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Trabajador actualizado correctamente',
+      data: null,
+      error: '',
+    });
+
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).json({
+      success: false,
+      message: error.message || 'Error interno del servidor',
+      data: null,
+      error: error.error || error.message,
+    });
+  }
+};

@@ -56,5 +56,7 @@ router.post('/api/v1/workers', requireAuth, workersController.create);
 router.get('/api/v1/workers/:personId', requireAuth, workersController.fetchByPerson);
 router.put('/api/v1/workers/:id', requireAuth, workersController.update);
 router.delete('/api/v1/workers/:id', requireAuth, workersController.deleteR);
+router.put('/api/v1/workers/:id/associate-user', requireAuth, workersController.asociateUser);
+router.put('/api/v1/workers/:id/remove-user', requireAuth, workersController.removeUser);
 
 export default router;

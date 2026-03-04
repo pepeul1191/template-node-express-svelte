@@ -43,6 +43,7 @@
   };
 
   let contactInfoForm; // referencia al formulario de contacto para resetearlo si es necesario
+  let userForm; // referencia al formulario de usuario para resetearlo si es necesario
 
   // Cargar datos necesarios
   onMount(async () => {
@@ -139,9 +140,10 @@
     form.bio = worker.bio || '';
     form.email = worker.email || '';
     form.user_id = worker.user_id || null;
-    form.user_name = worker.user_name || (worker.user_id ? `ID:${worker.user_id}` : '');
+    // form.user_name = worker.user_name || (worker.user_id ? `ID:${worker.user_id}` : '');
 
     contactInfoForm.loadTables();
+    userForm.loadUser();
   }
 
   const save = async () => {
@@ -214,7 +216,7 @@
   </div>
 
   <div class="tab-pane fade" id="tab-user" role="tabpanel" aria-labelledby="tab-user-tab">
-    <UserForm bind:form={form} on:updated={() => { /* parent could react if needed */ }} />
+    <UserForm bind:form={form} bind:this={userForm} on:updated={() => { /* parent could react if needed */ }} />
   </div>
 </div>
 

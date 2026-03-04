@@ -7,106 +7,184 @@
 
   const dispatch = createEventDispatcher();
 
+  let alertMessage = { text: '', status: '' };
   let busy = false;
+
+  function showAlertFromResponse(resp, successStatus = 'success', errorStatus = 'danger', duration = 4000) {
+    if (resp.success) {
+      alertMessage = { text: resp.message || 'Operación exitosa', status: successStatus };
+    } else {
+      const msg = resp.message || '';
+      const err = resp.error || '';
+      alertMessage = { text: `${msg}${err ? ' - ' + err : ''}`, status: errorStatus };
+    }
+    setTimeout(() => {
+      alertMessage = { text: '', status: '' };
+    }, duration);
+  }
 
   async function findUser() {
     if (!form.email) {
-      alert('Ingrese un email para buscar');
+      alertMessage = { text: 'Ingrese un email para buscar', status: 'warning' };
       return;
     }
+
     busy = true;
     try {
-      const resp = await axios.get(`${API}api/v1/users/find`, { params: { email: form.email } });
-      if (resp.data && resp.data.data) {
-        form.user_id = resp.data.data.id;
-        form.user_name = resp.data.data.username || resp.data.data.name || '';
-        dispatch('updated');
-      } else {
-        alert('Usuario no encontrado');
+      const token = localStorage.getItem('access_token');
+
+      const resp = await axios.get(
+        `${ACCESS_URL}/api/v1/users/search-id-by-email`,
+        {
+          params: { email: form.email },
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      if (resp.data) {
+        showAlertFromResponse(resp.data);
+        if (resp.data.success && resp.data.data) {
+          form.user_id = resp.data.data.id;
+          form.user_name = resp.data.data.username || resp.data.data.name || '';
+          dispatch('updated');
+        }
       }
     } catch (err) {
       console.error(err);
-      alert('Error buscando usuario');
-    } finally { busy = false; }
+
+      // Si la respuesta del servidor tiene formato JSON
+      if (err.response?.data) {
+        showAlertFromResponse(err.response.data);
+      } else {
+        // Error genérico de comunicación
+        alertMessage = { text: 'Error de comunicación con el servidor', status: 'danger' };
+      }
+    } finally {
+      busy = false;
+    }
   }
 
   async function associateUserWithEmail() {
-    if (!form.id || !form.email) { alert('Worker id o email faltante'); return; }
+    if (!form.id || !form.email) { 
+      alertMessage = { text: 'Worker id o email faltante', status: 'warning' }; 
+      return; 
+    }
+
     busy = true;
     try {
-      const resp = await axios.post(`${API}api/v1/workers/${form.id}/associate-user`, { email: form.email });
-      if (resp.data && resp.data.data) {
-        form.user_id = resp.data.data.user_id;
-        form.user_name = resp.data.data.username || '';
-        dispatch('updated');
-        alert('Asociado');
+      const resp = await axios.put(`${API}api/v1/workers/${form.id}/associate-user`, { email: form.email, user_id: form.user_id});
+      if (resp.data) {
+        showAlertFromResponse(resp.data);
+        if (resp.data.success && resp.data.data) {
+          form.user_id = resp.data.data.user_id;
+          form.user_name = resp.data.data.username || '';
+          dispatch('updated');
+        }
       }
     } catch (err) {
       console.error(err);
-      alert('Error asociando usuario');
+      alertMessage = { text: 'Error de comunicación con el servidor', status: 'danger' };
     } finally { busy = false; }
   }
 
   async function removeUser() {
-    if (!form.id || !form.user_id) { alert('No hay usuario asociado'); return; }
+    if (!form.id || !form.user_id) { 
+      alertMessage = { text: 'No hay usuario asociado', status: 'warning' }; 
+      return; 
+    }
+
     if (!confirm('Quitar asociación con el usuario?')) return;
+
     busy = true;
     try {
-      const resp = await axios.post(`${API}api/v1/workers/${form.id}/remove-user`, { user_id: form.user_id });
-      form.user_id = null;
-      form.user_name = '';
-      dispatch('updated');
-      alert('Usuario removido');
+      const resp = await axios.put(`${API}api/v1/workers/${form.id}/remove-user`, { });
+      if (resp.data) {
+        showAlertFromResponse(resp.data);
+        if (resp.data.success) {
+          form.user_id = null;
+          form.user_name = '';
+          dispatch('updated');
+        }
+      }
     } catch (err) {
       console.error(err);
-      alert('Error removiendo usuario');
+      alertMessage = { text: 'Error de comunicación con el servidor', status: 'danger' };
     } finally { busy = false; }
   }
 
-  async function sendPasswordChangeRequest() {
-    if (!form.user_id) { alert('No hay usuario asociado'); return; }
+  export async function loadUser() { 
+    if (!form.email) {
+      alertMessage = { text: 'Usuario no tiene correo registrado', status: 'warning' };
+      return;
+    }
+
     busy = true;
     try {
-      await axios.post(`${API}api/v1/users/${form.user_id}/send-password-reset`);
-      alert('Correo de cambio de contraseña enviado');
+      const token = localStorage.getItem('access_token');
+
+      const resp = await axios.get(
+        `${ACCESS_URL}/api/v1/users/search-id-by-email`,
+        {
+          params: { email: form.email },
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      if (resp.data) {
+        showAlertFromResponse(resp.data);
+        if (resp.data.success && resp.data.data) {
+          form.user_id = resp.data.data.id;
+          form.user_name = resp.data.data.username || resp.data.data.name || '';
+          dispatch('updated');
+        }
+      }
     } catch (err) {
       console.error(err);
-      alert('Error enviando correo');
-    } finally { busy = false; }
+
+      // Si la respuesta del servidor tiene formato JSON
+      if (err.response?.data) {
+        showAlertFromResponse(err.response.data);
+      } else {
+        // Error genérico de comunicación
+        alertMessage = { text: 'Error de comunicación con el servidor para obtner el usuario', status: 'danger' };
+      }
+    } finally {
+      busy = false;
+    }
   }
 </script>
 
 <div class="bg-light p-3 rounded">
-  <!-- Row 1: Inputs -->
-  <div class="row mb-3">
-    <div class="col-md-6">
+  <!-- Alerta -->
+  {#if alertMessage.text}
+    <div class="col-md-12">
+      <div class="alert alert-{alertMessage.status}" role="alert">
+        {alertMessage.text}
+      </div>
+    </div>
+  {/if}
+
+  <!-- Row: Inputs + Botones -->
+  <div class="row mb-3 align-items-end">
+    <div class="col-md-4">
       <label class="form-label">Email</label>
       <input class="form-control" bind:value={form.email} />
     </div>
-    <div class="col-md-6">
-      <label class="form-label">Usuario</label>
-      <input class="form-control" value={form.user_name} readonly />
-    </div>
-  </div>
 
-  <!-- Row 2: Buttons -->
-  <div class="row">
-    <div class="col-12 d-flex gap-2">
-      <button class="btn btn-outline-primary" on:click={findUser} disabled={busy} type="button" title="Buscar usuario">
-        <i class="fa fa-search"></i>
-        <span class="ms-1">Buscar</span>
+    <div class="col-md-3">
+      <label class="form-label">Usuario</label>
+      <input class="form-control" value={form.user_name} readonly disabled />
+    </div>
+
+    <div class="col-md-5 d-flex gap-2 justify-content-end">
+      <button class="btn btn-secondary" on:click={findUser} disabled={busy} type="button">
+        <i class="fa fa-search"></i> Buscar
       </button>
-      <button class="btn btn-primary" on:click={associateUserWithEmail} disabled={busy} type="button" title="Asociar usuario">
-        <i class="fa fa-link"></i>
-        <span class="ms-1">Asociar</span>
+      <button class="btn btn-secondary" on:click={removeUser} disabled={busy} type="button">
+        <i class="fa fa-unlink"></i> Desasociar Usuario
       </button>
-      <button class="btn btn-warning" on:click={removeUser} disabled={busy} type="button" title="Quitar usuario">
-        <i class="fa fa-unlink"></i>
-        <span class="ms-1">Quitar</span>
-      </button>
-      <button class="btn btn-secondary" on:click={sendPasswordChangeRequest} disabled={busy} type="button" title="Enviar cambio de contraseña">
-        <i class="fa fa-envelope"></i>
-        <span class="ms-1">Enviar cambio contraseña</span>
+      <button class="btn btn-primary" on:click={associateUserWithEmail} disabled={busy} type="button">
+        <i class="fa fa-check"></i> Guardar
       </button>
     </div>
   </div>

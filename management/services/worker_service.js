@@ -226,3 +226,68 @@ export const deleteWorker = async (id) => {
   }
 };
 
+export const updateWorkerEmailUser = async (id, email, user_id) => {
+  const transaction = await sequelize.transaction();
+
+  try {
+    const worker = await Worker.findByPk(id, { transaction });
+
+    if (!worker) {
+      throw {
+        status: 404,
+        message: 'Worker no encontrado',
+        error: `ID ${id}`,
+      };
+    }
+
+    const updateData = {};
+
+    if (email !== undefined) {
+      updateData.email = email;
+    }
+
+    // user_id puede ser null, por eso verificamos !== undefined
+    if (user_id !== undefined) {
+      updateData.user_id = user_id;
+      updateData.email = email;
+    }
+
+    await worker.update(updateData, { transaction });
+
+    await transaction.commit();
+
+    return worker.toJSON();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+export const removeUser = async (id) => {
+  const transaction = await sequelize.transaction();
+
+  try {
+    const worker = await Worker.findByPk(id, { transaction });
+
+    if (!worker) {
+      throw {
+        status: 404,
+        message: 'Worker no encontrado',
+        error: `ID ${id}`,
+      };
+    }
+
+    const updateData = {};
+
+    updateData.user_id = null;
+
+    await worker.update(updateData, { transaction });
+
+    await transaction.commit();
+
+    return worker.toJSON();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};

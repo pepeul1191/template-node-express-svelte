@@ -47,6 +47,8 @@ export async function login(req, res) {
 
   const genericResponse = await webService.loginByUsername(user, password);
 
+  console.log('Login response:', genericResponse);
+
   if (genericResponse.success) {
     req.session.user = genericResponse.data.user;
     req.session.roles = genericResponse.data.roles;

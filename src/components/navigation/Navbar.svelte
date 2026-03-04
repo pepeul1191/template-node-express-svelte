@@ -1,15 +1,19 @@
 <script>
-  // src/components/navigation/Navbar.svelte
+  import 'bootstrap/dist/js/bootstrap.bundle.min.js';
   import { sidebarCollapsed } from "../../stores/sidebarStore";
 
   function toggleSidebar() {
     sidebarCollapsed.update(value => !value);
   }
-</script>
 
-<style>
-    
-</style>
+  function signOut() {
+    // Limpiar el localStorage
+    localStorage.clear();
+
+    // Redirigir a /sign-out
+    window.location.href = '/sign-out';
+  }
+</script>
 
 <nav class="navbar navbar-dark bg-dark px-3 w-100 fixed-top">
   
@@ -51,9 +55,10 @@
         <hr class="dropdown-divider">
       </li>
       <li>
-        <a class="dropdown-item text-danger" href="/sign-out">
+        <!-- Botón de Cerrar sesión con método -->
+        <button class="dropdown-item text-danger" on:click={signOut}>
           Cerrar sesión
-        </a>
+        </button>
       </li>
     </ul>
   </div>
