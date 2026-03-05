@@ -13,6 +13,7 @@ import * as workersController from '../controllers/workers_controller.js';
 import * as addressesController from '../controllers/addresses_controller.js';
 import * as phonesController from '../controllers/phones_controller.js';
 import * as studentsController from '../controllers/student_controller.js';
+import * as representativesController from '../controllers/representatives_controller.js';
 
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
@@ -68,5 +69,13 @@ router.put('/api/v1/students/:id', requireAuth, studentsController.update);
 router.delete('/api/v1/students/:id', requireAuth, studentsController.deleteR);
 router.put('/api/v1/students/:id/associate-user', requireAuth, studentsController.asociateUser);
 router.put('/api/v1/students/:id/remove-user', requireAuth, studentsController.removeUser);
+// representatives
+router.get('/api/v1/representatives', requireAuth, representativesController.fetchAll);
+router.post('/api/v1/representatives', requireAuth, representativesController.create);
+router.get('/api/v1/representatives/:personId', requireAuth, representativesController.fetchByPerson);
+router.put('/api/v1/representatives/:id', requireAuth, representativesController.update);
+router.delete('/api/v1/representatives/:id', requireAuth, representativesController.deleteR);
+router.put('/api/v1/representatives/:id/associate-user', requireAuth, representativesController.asociateUser);
+router.put('/api/v1/representatives/:id/remove-user', requireAuth, representativesController.removeUser);
 
 export default router;

@@ -69,6 +69,8 @@ entity workers {
 entity representatives {
   * id : INT <<PK>>
   --
+  email: VARCHAR(100)
+  user_id: INT
   person_id : INT <<FK>>
 }
 

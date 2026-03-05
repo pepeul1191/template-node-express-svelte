@@ -182,6 +182,25 @@ CREATE TABLE `representative_roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `representatives`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `representatives` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) DEFAULT NULL,
+  `person_id` int unsigned NOT NULL,
+  `user_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `representatives_email_unique` (`email`),
+  UNIQUE KEY `representatives_user_id_unique` (`user_id`),
+  KEY `fk_representatives_person` (`person_id`),
+  CONSTRAINT `fk_representatives_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `schema_migrations`
 --
 
@@ -328,5 +347,7 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260304124946'),
   ('20260304145500'),
   ('20260304235526'),
-  ('20260305002624');
+  ('20260305002624'),
+  ('20260305044619'),
+  ('20260305045353');
 UNLOCK TABLES;

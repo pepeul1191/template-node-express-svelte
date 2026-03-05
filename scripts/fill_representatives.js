@@ -1,23 +1,21 @@
-// scripts/fill_students.js
+// scripts/fill_representatives.js
 import fs from 'fs';
 import { faker } from '@faker-js/faker';
 
 faker.locale = 'es';
 
-const personStartId = 31;
-const total = 500;
-const studentCodeStart = 20260001;
-const userId = 1;
+// IDs iniciales
+const personStartId = 531; // después de los 500 estudiantes
+const total = 100;
+const userId = null;
 
 let text = '-- migrate:up\n\n';
 
 let personsValues = [];
-let studentsValues = [];
+let representativesValues = [];
 
 for (let i = 0; i < total; i++) {
-
   const personId = personStartId + i;
-  const studentCode = studentCodeStart + i;
 
   const names = faker.person.firstName().replace(/'/g, "''");
   const lastNames = faker.person.lastName().replace(/'/g, "''");
@@ -26,8 +24,8 @@ for (let i = 0; i < total; i++) {
   const documentTypeId = 1;
 
   const birthDate = faker.date.birthdate({
-    min: 5,
-    max: 18,
+    min: 25,
+    max: 60,
     mode: 'age'
   }).toISOString().split('T')[0];
 
@@ -36,12 +34,14 @@ for (let i = 0; i < total; i++) {
     lastName: lastNames
   }).replace(/'/g, "''");
 
+  // Insert persons
   personsValues.push(
     `(${personId}, '${names}', '${lastNames}', '${documentNumber}', ${sexId}, ${documentTypeId}, '${birthDate}')`
   );
 
-  studentsValues.push(
-    `(${studentCode}, '${email}', ${personId}, NULL)`
+  // Insert representatives
+  representativesValues.push(
+    `('${email}', ${personId}, NULL)`
   );
 }
 
@@ -53,20 +53,21 @@ ${personsValues.join(',\n')};
 
 \n`;
 
-// INSERT students (id AUTO_INCREMENT empieza en 1)
-text += `INSERT INTO students
-(code, email, person_id, user_id)
+// INSERT representatives (id AUTO_INCREMENT empieza en 1)
+text += `INSERT INTO representatives
+(email, person_id, user_id)
 VALUES
-${studentsValues.join(',\n')};
+${representativesValues.join(',\n')};
 
 \n`;
 
+// migrate:down
 text += '-- migrate:down\n\n';
-text += 'DELETE FROM students WHERE person_id >= 31;\n';
-text += 'DELETE FROM persons WHERE id >= 31;\n';
-text += 'ALTER TABLE persons AUTO_INCREMENT = 31;\n';
-text += 'ALTER TABLE students AUTO_INCREMENT = 1;\n';
+text += `DELETE FROM representatives WHERE person_id >= ${personStartId};\n`;
+text += `DELETE FROM persons WHERE id >= ${personStartId};\n`;
+text += `ALTER TABLE persons AUTO_INCREMENT = ${personStartId};\n`;
+text += 'ALTER TABLE representatives AUTO_INCREMENT = 1;\n';
 
-fs.writeFileSync('inserts_persons_students.sql', text, { encoding: 'utf-8' });
+fs.writeFileSync('inserts_persons_representatives.sql', text, { encoding: 'utf-8' });
 
-console.log('✅ Archivo generado con inserts en bloque.');
+console.log('✅ Archivo generado con inserts en bloque para representatives.');

@@ -98,7 +98,7 @@
         <input class="form-control" bind:value={form.person.document_number} />
       </div>
       <div class="col-md-3 mb-3">
-        <label class="form-label">Código de trabajador</label>
+        <label class="form-label">Código del Estudiante</label>
         <input class="form-control" bind:value={form.code} />
       </div>
       <div class="col-md-5 mb-3">
