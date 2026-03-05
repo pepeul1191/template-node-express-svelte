@@ -1,5 +1,5 @@
 <script>
-  // src/components/forms/WorkerForm.svelte
+  // src/components/forms/StudentForm.svelte
   import { createEventDispatcher } from 'svelte';
   import UploadFile from '../widgets/UploadFile.svelte';
 
@@ -32,7 +32,6 @@
     form.person.document_number = '';
     form.code = '';
     form.person.image_url = '';
-    form.bio = '';
     
     // Limpiar el componente UploadFile si existe
     if (uploadFileComponent) {
@@ -122,11 +121,6 @@
     </div>
 
     <div class="row align-items-start">
-      <!-- Columna del textarea -->
-      <div class="col-md-10 mb-3">
-        <label class="form-label">Resumen de Hoja de Vida</label>
-        <textarea class="form-control" rows="3" bind:value={form.bio}></textarea>
-      </div>
 
       <!-- Columna de la imagen -->
       {#if form.person.image_url && form.person.image_url !== 'img/user.png' && form.person.image_url !== '/img/user.png'}

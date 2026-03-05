@@ -1,6 +1,6 @@
 <svelte:options accessors={true} />
 <script>
-  // src/components/forms/WorkersFilter.svelte
+  // src/components/forms/StudentsFilter.svelte
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();

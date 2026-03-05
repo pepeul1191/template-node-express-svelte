@@ -5,10 +5,13 @@ import District from '../management/models/district.js';
 import VWLocations from '../management/models/vw_locations.js';
 import Person from '../management/models/persons.js';
 import Worker from '../management/models/workers.js';
+import Student from '../management/models/students.js';
 import Sex from '../management/models/sex.js';
 import DocumentType from '../management/models/document_type.js';
 import Phone from '../management/models/phones.js';
 import Address from '../management/models/addresses.js';
+
+// locations
 
 Department.hasMany(Province, {
   foreignKey: 'department_id',
@@ -30,12 +33,26 @@ District.belongsTo(Province, {
   as: 'province'
 });
 
+// Person -> Worker (1:1) - Worker is a Person
+
 Person.hasOne(Worker, {
   foreignKey: 'person_id',
   as: 'worker'
 });
 
 Worker.belongsTo(Person, {
+  foreignKey: 'person_id',
+  as: 'person'
+});
+
+// Person -> Worker (1:1) - Worker is a Person
+
+Person.hasOne(Student, {
+  foreignKey: 'person_id',
+  as: 'student'
+});
+
+Student.belongsTo(Person, {
   foreignKey: 'person_id',
   as: 'person'
 });
