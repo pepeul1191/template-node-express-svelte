@@ -44,6 +44,7 @@
     "svelte-routing": "^2.13.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
     "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-terser": "^0.4.0",

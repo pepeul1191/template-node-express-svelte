@@ -207,6 +207,26 @@ CREATE TABLE `sexs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `students`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `students` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `code` int DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `person_id` int unsigned NOT NULL,
+  `user_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `students_email_unique` (`email`),
+  UNIQUE KEY `students_user_id_unique` (`user_id`),
+  KEY `fk_students_person` (`person_id`),
+  CONSTRAINT `fk_students_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Temporary view structure for view `vw_locations`
 --
 
@@ -306,5 +326,7 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260303212312'),
   ('20260304000213'),
   ('20260304124946'),
-  ('20260304145500');
+  ('20260304145500'),
+  ('20260304235526'),
+  ('20260305002624');
 UNLOCK TABLES;
