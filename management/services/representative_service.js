@@ -3,6 +3,8 @@ import { Op } from 'sequelize';
 import sequelize from '../../configs/database.js';
 import Person from '../models/persons.js';
 import Representative from '../models/representatives.js';
+import Sex from '../models/sex.js';
+import DocumentType from '../models/document_type.js';
 
 // buildWhere solo maneja filtros de la persona
 const buildWhere = ({ name, document_number, email }) => {
@@ -45,7 +47,19 @@ export const fetchRepresentatives = async ({ name, document_number, email, step 
         required: true,
         attributes: [
           'id', 'names', 'last_names', 'document_number', 'birth_date', 'image_url'
-        ]
+        ],
+        include: [
+          {
+            model: Sex,
+            as: 'sex',
+            attributes: ['id', 'name'],
+          },
+          {
+            model: DocumentType,
+            as: 'document_type',
+            attributes: ['id', 'name'],
+          },
+        ],
       }
     ],
     limit,

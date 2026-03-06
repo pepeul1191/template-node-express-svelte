@@ -1,4 +1,4 @@
-Apoderados<script>
+<script>
   // src/pages/admin/Representatives.svelte
   // IMPORTS
   import { onMount } from 'svelte';
@@ -171,8 +171,8 @@ Apoderados<script>
 
       <DataTable
         bind:this={representativeDataTable}
-        fetchURL={`${API_URL}api/v1/workers`}
-        saveURL={`${API_URL}api/v1/workers`}
+        fetchURL={`${API_URL}api/v1/representatives`}
+        saveURL={`${API_URL}api/v1/representatives`}
         columnKeys={TABLE_CONFIG.columns}
         columnTypes={TABLE_CONFIG.types}
         columnNames={TABLE_CONFIG.names}

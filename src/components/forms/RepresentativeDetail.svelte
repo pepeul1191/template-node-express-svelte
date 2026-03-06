@@ -5,6 +5,7 @@
   import RepresentativeForm from './RepresentativeForm.svelte';
   import ContactInfoForm from './ContactInfoForm.svelte';
   import UserForm from './UserForm.svelte';
+  import RepresentativeStudentForm from './RepresentativeStudentForm.svelte';
 
   const API = typeof API_URL !== 'undefined' ? API_URL : (window && window.API_URL) || '';
 
@@ -203,6 +204,9 @@
     <button class="nav-link" id="tab-contact-tab" data-bs-toggle="tab" data-bs-target="#tab-contact" type="button" role="tab" aria-controls="tab-contact" aria-selected="false">Contacto</button>
   </li>
   <li class="nav-item" role="presentation">
+    <button class="nav-link" id="tab-students-tab" data-bs-toggle="tab" data-bs-target="#tab-students" type="button" role="tab" aria-controls="tab-students" aria-selected="false">Estudiantes</button>
+  </li>
+  <li class="nav-item" role="presentation">
     <button class="nav-link" id="tab-user-tab" data-bs-toggle="tab" data-bs-target="#tab-user" type="button" role="tab" aria-controls="tab-user" aria-selected="false">Usuario</button>
   </li>
 </ul>
@@ -218,6 +222,10 @@
 
   <div class="tab-pane fade" id="tab-user" role="tabpanel" aria-labelledby="tab-user-tab">
     <UserForm bind:form={form} bind:this={userForm} on:updated={() => { /* parent could react if needed */ }} />
+  </div>
+
+  <div class="tab-pane fade" id="tab-students" role="tabpanel" aria-labelledby="tab-students-tab">
+    <RepresentativeStudentForm />
   </div>
 </div>
 

@@ -4,6 +4,7 @@ import Province from '../management/models/province.js';
 import District from '../management/models/district.js';
 import VWLocations from '../management/models/vw_locations.js';
 import Person from '../management/models/persons.js';
+import Representative from '../management/models/representatives.js';
 import Worker from '../management/models/workers.js';
 import Student from '../management/models/students.js';
 import Sex from '../management/models/sex.js';
@@ -45,7 +46,19 @@ Worker.belongsTo(Person, {
   as: 'person'
 });
 
-// Person -> Worker (1:1) - Worker is a Person
+// Person -> Representative (1:1) - Representative is a Person
+
+Person.hasOne(Representative, {
+  foreignKey: 'person_id',
+  as: 'representative'
+});
+
+Representative.belongsTo(Person, {
+  foreignKey: 'person_id',
+  as: 'person'
+});
+
+// Person -> Student (1:1) - Student is a Person
 
 Person.hasOne(Student, {
   foreignKey: 'person_id',
