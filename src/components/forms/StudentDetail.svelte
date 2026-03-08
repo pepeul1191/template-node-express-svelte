@@ -226,7 +226,7 @@
   </div>
 
   <div class="tab-pane fade" id="tab-user" role="tabpanel" aria-labelledby="tab-user-tab">
-    <UserForm bind:form={form} bind:this={userForm} on:updated={() => { /* parent could react if needed */ }} />
+    <UserForm userType={'students'} bind:form={form} bind:this={userForm} on:updated={() => { /* parent could react if needed */ }} />
   </div>
 
    <div class="tab-pane fade" id="tab-representative" role="tabpanel" aria-labelledby="tab-representative-tab">

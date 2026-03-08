@@ -50,6 +50,9 @@
   };
   export let jwtToken = null;
 
+  // control if data has changed to show save button
+  let actualRowNumbers = 0;
+  let prevRowNumbers = 0;
   // delete confirmation modal
   let deleteConfirmationInstance;
   let deleteConfirmationModal;
@@ -129,6 +132,10 @@
     }
     data.push(tmp)
     data = data
+
+    // updata row numbers
+    actualRowNumbers = data.length;
+    prevRowNumbers = actualRowNumbers - 1;
   }
 
   export const deleteRow = (record, keyId) => {
@@ -145,6 +152,10 @@
     }
     // remove from data
     data = data.filter(item => item[keyId] !== idToRemove);
+
+    // updata row numbers
+    actualRowNumbers = data.length;
+    prevRowNumbers = actualRowNumbers + 1;
   }
 
   const inputTextKeyDown = (event) => {
@@ -391,6 +402,10 @@
           let genericResponse = response.data.data;
           
           data = genericResponse.list;
+
+          // updata row numbers
+          actualRowNumbers = data.length;
+          prevRowNumbers = -1;
         }
       })
       .catch(function (error) {
@@ -601,7 +616,7 @@
   </div>
   <!-- Parte derecha: Botón "Agregar Registro" con ícono de Font Awesome -->
   <div class="d-flex gap-2">
-    {#if addButton.display}
+    {#if addButton.display || prevRowNumbers >= 0}
       <button
         class="btn btn-primary d-flex align-items-center"
         disabled={addButton.disabled}
@@ -614,8 +629,6 @@
         }}>
         <i class="fa fa-plus me-2"></i> Agregar Registro
       </button>
-    {/if}
-    {#if saveButton.display || data.length > 0}
       <button class="btn btn-success d-flex align-items-center" on:click={saveChanges}>
         <i class="fa fa-check me-2"></i> Guardar Cambios
       </button>

@@ -113,9 +113,7 @@
           on:clear={clearFile}
         />
       </div>
-    </div>
 
-    <div class="row align-items-start">
       <!-- Columna de la imagen -->
       {#if form.person.image_url && form.person.image_url !== 'img/user.png' && form.person.image_url !== '/img/user.png'}
         <div class="col-md-2 mb-3">

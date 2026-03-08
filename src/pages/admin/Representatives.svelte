@@ -96,7 +96,7 @@
   const handleModalClose = () => {
     console.log('Modal cerrado');
     representativeDataTable.list();
-    if (representativeModalInstance) representativeModalInstance.hide();
+    //if (representativeModalInstance) representativeModalInstance.hide();
   };
 
   const handleSearch = (event) => {

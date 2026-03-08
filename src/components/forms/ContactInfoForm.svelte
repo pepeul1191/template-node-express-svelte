@@ -7,7 +7,7 @@
 
   // column keys/names/types for phones
   const phoneColumnKeys = ['id', 'phone', 'description'];
-  const phoneColumnNames = ['ID', 'Número', 'Descripción'];
+  const phoneColumnNames = ['ID', 'Número', 'Descripción', 'Acciones'];
   const phoneColumnTypes = ['hidden', 'input[text]', 'input[text]'];
   const phoneColumnClasses = ['d-none', '', ''];
 

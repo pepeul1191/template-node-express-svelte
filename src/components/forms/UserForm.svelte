@@ -3,6 +3,8 @@
   import axios from 'axios';
 
   export let form;
+  export let userType = 'workers'; // o 'students' o 'representatives'
+  
   const API = (typeof API_URL !== 'undefined' ? API_URL : (window && window.API_URL) || '');
 
   const dispatch = createEventDispatcher();
@@ -72,7 +74,7 @@
 
     busy = true;
     try {
-      const resp = await axios.put(`${API}api/v1/workers/${form.id}/associate-user`, { email: form.email, user_id: form.user_id});
+      const resp = await axios.put(`${API}api/v1/${userType}/${form.id}/associate-user`, { email: form.email, user_id: form.user_id});
       if (resp.data) {
         showAlertFromResponse(resp.data);
         if (resp.data.success && resp.data.data) {
@@ -97,7 +99,7 @@
 
     busy = true;
     try {
-      const resp = await axios.put(`${API}api/v1/workers/${form.id}/remove-user`, { });
+      const resp = await axios.put(`${API}api/v1/${userType}s/${form.id}/remove-user`, { });
       if (resp.data) {
         showAlertFromResponse(resp.data);
         if (resp.data.success) {

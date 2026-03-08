@@ -97,11 +97,11 @@
         <label class="form-label">Núme. Documento</label>
         <input class="form-control" bind:value={form.person.document_number} />
       </div>
-      <div class="col-md-3 mb-3">
-        <label class="form-label">Código del Estudiante</label>
+      <div class="col-md-2 mb-3">
+        <label class="form-label">Código</label>
         <input class="form-control" bind:value={form.code} />
       </div>
-      <div class="col-md-5 mb-3">
+      <div class="col-md-4 mb-3">
         <label class="form-label">Imagen</label>
         <UploadFile
           bind:this={uploadFileComponent}
@@ -118,9 +118,6 @@
           on:clear={clearFile}
         />
       </div>
-    </div>
-
-    <div class="row align-items-start">
 
       <!-- Columna de la imagen -->
       {#if form.person.image_url && form.person.image_url !== 'img/user.png' && form.person.image_url !== '/img/user.png'}
