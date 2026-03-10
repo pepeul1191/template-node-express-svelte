@@ -13,7 +13,6 @@
 
   const searchClick = (event) => {
     event.preventDefault();
-    console.log(relationFilter)
     dispatch('search', { name, document_number, email, relationFilter }); // Incluimos email en el dispatch
   };
 

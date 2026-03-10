@@ -50,7 +50,14 @@
       })
       .then((response) => {
         let genericResponse = response.data.data;
-        representativesFounded = genericResponse.list;
+        
+        // Asegurar que cada item tenga un objeto role (aunque sea null)
+        representativesFounded = genericResponse.list.map(item => ({
+          ...item,
+          role: item.role || {id: null}  // Si viene null, lo dejamos como null explícitamente
+        }));
+        
+        console.log('Representantes con roles normalizados:', representativesFounded);
       })
       .catch((error) => {
         console.error(error);
@@ -64,7 +71,14 @@
       })
       .then((response) => {
         let genericResponse = response.data.data;
-        representativesFounded = genericResponse.list;
+        
+        // Asegurar que cada item tenga un objeto role (aunque sea null)
+        representativesFounded = genericResponse.list.map(item => ({
+          ...item,
+          role: item.role || {id: null}  // Si viene null, lo dejamos como null explícitamente
+        }));
+        
+        console.log('Representantes con roles normalizados:', representativesFounded);
       })
       .catch((error) => {
         console.error(error);
@@ -155,21 +169,16 @@
 
                 <!-- Formulario -->
                 <div>
-                  <label class="form-label">
-                    Relación con el alumno
-                  </label>
+                  <label class="form-label">Relación con el alumno</label>
                   <select 
                     class="form-select" 
-                    bind:value={item.selectedRoleId}
-                    on:change={(e) => {
-                      item.selectedRoleId = e.target.value;
-                    }}
+                    bind:value={item.role.id}
                   >
-                    <option value="">Seleccione...</option>
+                    <option value={null}>-- Seleccionar --</option>
                     {#each representativeRoles as role}
                       <option 
                         value={role.id}
-                        selected={currentRole?.id === role.id}
+                        selected={item.role?.id === role.id}
                       >
                         {role.name}
                       </option>
@@ -177,15 +186,10 @@
                   </select>
                 </div>
 
-                <!-- Botón de acción -->
-                <div class="mt-3">
-                  <button 
-                    class="btn btn-primary btn-sm w-100"
-                    on:click={() => handleAdd(item)}
-                  >
-                    {currentRole ? 'Actualizar' : 'Agregar'} Representante
-                  </button>
-                </div>
+                <!-- Mostrar el rol seleccionado (opcional, para debug) -->
+                <!-- <div class="mt-2 small text-muted">
+                  Rol seleccionado: {item.role?.name || 'Ninguno'}
+                </div> -->
 
               </div>
             </div>

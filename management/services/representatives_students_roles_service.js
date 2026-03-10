@@ -14,23 +14,20 @@ import DocumentType from '../models/document_type.js';
 /**
  * Construye las condiciones de búsqueda para los filtros opcionales
  */
+/**
+ * Construye las condiciones de búsqueda para los filtros opcionales
+ */
 const buildSearchConditions = (searchParams = {}) => {
   const { full_name, document_number } = searchParams;
   const conditions = [];
 
   if (full_name) {
-    conditions.push(
-      Sequelize.where(
-        Sequelize.fn('CONCAT',
-          Sequelize.col('last_names'),
-          Sequelize.literal("', '"),
-          Sequelize.col('names')
-        ),
-        {
-          [Op.like]: `%${full_name}%`
-        }
-      )
-    );
+    conditions.push({
+      [Op.or]: [
+        { names: { [Op.like]: `%${full_name}%` } },
+        { last_names: { [Op.like]: `%${full_name}%` } }
+      ]
+    });
   }
 
   if (document_number) {
@@ -127,18 +124,10 @@ export const fetchAllWithRelationStatus = async (studentId, limit = 9, searchPar
         model: Person,
         as: 'person',
         required: true,
-        where: Object.keys(searchConditions).length > 0 ? searchConditions : {},
+        where: Object.keys(searchConditions).length ? searchConditions : undefined,
         include: [
-          {
-            model: DocumentType,
-            as: 'document_type',
-            attributes: ['name']
-          },
-          {
-            model: Sex,
-            as: 'sex',
-            attributes: ['name']
-          }
+          { model: DocumentType, as: 'document_type', attributes: ['name'] },
+          { model: Sex, as: 'sex', attributes: ['name'] }
         ]
       },
       {
@@ -230,22 +219,14 @@ export const fetchAllWithRelationStatusAlternative = async (studentId, limit = 9
   
   const representatives = await Representative.findAll({
     include: [
-      {
+          {
         model: Person,
         as: 'person',
         required: true,
-        where: Object.keys(searchConditions).length > 0 ? searchConditions : {},
+        where: Object.keys(searchConditions).length ? searchConditions : undefined,
         include: [
-          {
-            model: DocumentType,
-            as: 'document_type',
-            attributes: ['name']
-          },
-          {
-            model: Sex,
-            as: 'sex',
-            attributes: ['name']
-          }
+          { model: DocumentType, as: 'document_type', attributes: ['name'] },
+          { model: Sex, as: 'sex', attributes: ['name'] }
         ]
       },
       {
