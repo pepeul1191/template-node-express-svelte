@@ -44,6 +44,7 @@
 
   let contactInfoForm; // referencia al formulario de contacto para resetearlo si es necesario
   let userForm; // referencia al formulario de usuario para resetearlo si es necesario
+  let studentRepresentativeForm; // referencia al formulario de apoderados del estudiante
 
   // Cargar datos necesarios
   onMount(async () => {
@@ -142,6 +143,8 @@
 
     contactInfoForm.loadTables();
     userForm.loadUser();
+    studentRepresentativeForm.studentId = student.id;
+    studentRepresentativeForm.searchRepresentatives(); // cargar apoderados del estudiante
   }
 
   const save = async () => {
@@ -230,7 +233,7 @@
   </div>
 
    <div class="tab-pane fade" id="tab-representative" role="tabpanel" aria-labelledby="tab-representative-tab">
-    <StudentRepresentativeForm />
+    <StudentRepresentativeForm bind:this={studentRepresentativeForm} />
   </div>
 </div>
 

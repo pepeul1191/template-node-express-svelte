@@ -105,6 +105,8 @@ entity representatites_students_roles {
   representative_id : INT <<FK>>
   student_id : INT <<FK>>
   representative_role_id : INT <<FK>>
+  created: DATETIME
+  updated: DATETIME
 }
 
 entity worker_roles {

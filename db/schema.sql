@@ -201,6 +201,27 @@ CREATE TABLE `representatives` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `representatives_students_roles`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `representatives_students_roles` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `representative_id` int unsigned NOT NULL,
+  `student_id` int unsigned NOT NULL,
+  `representative_role_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_rsr_representative` (`representative_id`),
+  KEY `fk_rsr_student` (`student_id`),
+  KEY `fk_rsr_role` (`representative_role_id`),
+  CONSTRAINT `fk_rsr_representative` FOREIGN KEY (`representative_id`) REFERENCES `representatives` (`id`),
+  CONSTRAINT `fk_rsr_role` FOREIGN KEY (`representative_role_id`) REFERENCES `representative_roles` (`id`),
+  CONSTRAINT `fk_rsr_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `schema_migrations`
 --
 
@@ -349,5 +370,6 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260304235526'),
   ('20260305002624'),
   ('20260305044619'),
-  ('20260305045353');
+  ('20260305045353'),
+  ('20260309211239');
 UNLOCK TABLES;

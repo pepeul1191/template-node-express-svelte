@@ -63,7 +63,7 @@
         <label class="form-label">Fecha nac.</label>
         <input type="date" class="form-control" bind:value={form.person.birth_date} />
       </div>
-      <div class="col-md-2 mb-3">
+      <div class="col-md-3 mb-3">
         <label class="form-label">Sexo</label>
         <select class="form-control" bind:value={form.person.sex_id} disabled={loading.sexs}>
           <option value="">--</option>

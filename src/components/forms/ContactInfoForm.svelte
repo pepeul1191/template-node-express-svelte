@@ -88,7 +88,7 @@
   };
 </script>
 
-<div class="mb-3">
+<div class="p-3 rounded">
   <!-- Alerta -->
   {#if alertMessage.text}
     <div class="col-md-12">
@@ -98,40 +98,35 @@
     </div>
   {/if}
 
+  <h6>Teléfonos</h6>
+  <DataTable
+    bind:this={phoneTableRef}
+    bind:data={form.person.phones}
+    columnKeys={phoneColumnKeys}
+    columnNames={phoneColumnNames}
+    columnTypes={phoneColumnTypes}
+    columnClasses={phoneColumnClasses}
+    addButton={{ display: true, disabled: false, action: phoneAddAction }}
+    saveButton={{ display: false, disabled: false, action: null }}
+    actionButtons={phoneActionButtons}
+    idKey="id"
+    on:alert={handleTableAlert}
+  />
 
-  <div class="bg-light p-3 rounded mb-3">
-    <p class="text-muted small">Teléfonos</p>
-    <DataTable
-      bind:this={phoneTableRef}
-      bind:data={form.person.phones}
-      columnKeys={phoneColumnKeys}
-      columnNames={phoneColumnNames}
-      columnTypes={phoneColumnTypes}
-      columnClasses={phoneColumnClasses}
-      addButton={{ display: true, disabled: false, action: phoneAddAction }}
-      saveButton={{ display: false, disabled: false, action: null }}
-      actionButtons={phoneActionButtons}
-      idKey="id"
-      on:alert={handleTableAlert}
-    />
-  </div>
-
-  <div class="bg-light p-3 rounded">
-    <p class="text-muted small">Direcciones</p>
-    <DataTable
-      bind:this={addressTableRef}
-      bind:data={form.person.addresses}
-      columnKeys={addressColumnKeys}
-      columnNames={addressColumnNames}
-      columnTypes={addressColumnTypes}
-      columnClasses={addressColumnClasses}
-      addButton={{ display: true, disabled: false, action: addressAddAction }}
-      saveButton={{ display: false, disabled: false, action: null }}
-      actionButtons={addressActionButtons}
-      idKey="id"
-      on:alert={handleTableAlert}
-    />
-  </div>
+  <h6>Direcciones</h6>
+  <DataTable
+    bind:this={addressTableRef}
+    bind:data={form.person.addresses}
+    columnKeys={addressColumnKeys}
+    columnNames={addressColumnNames}
+    columnTypes={addressColumnTypes}
+    columnClasses={addressColumnClasses}
+    addButton={{ display: true, disabled: false, action: addressAddAction }}
+    saveButton={{ display: false, disabled: false, action: null }}
+    actionButtons={addressActionButtons}
+    idKey="id"
+    on:alert={handleTableAlert}
+  />
 </div>
 
 <style>

@@ -156,7 +156,7 @@
   }
 </script>
 
-<div class="bg-light p-3 rounded">
+<div class="p-3 rounded">
   <!-- Alerta -->
   {#if alertMessage.text}
     <div class="col-md-12">

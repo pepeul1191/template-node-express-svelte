@@ -11,6 +11,8 @@ import Sex from '../management/models/sex.js';
 import DocumentType from '../management/models/document_type.js';
 import Phone from '../management/models/phones.js';
 import Address from '../management/models/addresses.js';
+import RepresentativeRole from '../management/models/representative_role.js';
+import RepresentativeStudentRole from '../management/models/representatives_students_roles.js';
 
 // locations
 
@@ -84,7 +86,7 @@ Person.belongsTo(Sex, {
 // DocumentType -> Person (1:N) - Person has a sex
 DocumentType.hasMany(Person, {
   foreignKey: 'document_type_id',
-  as: 'document_type'
+  as: 'persons' // plural makes more sense
 });
 
 Person.belongsTo(DocumentType, {
@@ -125,6 +127,44 @@ Address.belongsTo(VWLocations, {
   as: 'district'
 });
 
+// Representative -> RepresentativeStudentRole (1:N)
+
+Representative.hasMany(RepresentativeStudentRole, {
+  foreignKey: 'representative_id',
+  as: 'student_roles'
+});
+
+RepresentativeStudentRole.belongsTo(Representative, {
+  foreignKey: 'representative_id',
+  as: 'representative'
+});
+
+
+// Student -> RepresentativeStudentRole (1:N)
+
+Student.hasMany(RepresentativeStudentRole, {
+  foreignKey: 'student_id',
+  as: 'representative_roles'
+});
+
+RepresentativeStudentRole.belongsTo(Student, {
+  foreignKey: 'student_id',
+  as: 'student'
+});
+
+
+// RepresentativeRole -> RepresentativeStudentRole (1:N)
+
+RepresentativeRole.hasMany(RepresentativeStudentRole, {
+  foreignKey: 'representative_role_id',
+  as: 'representatives_students'
+});
+
+RepresentativeStudentRole.belongsTo(RepresentativeRole, {
+  foreignKey: 'representative_role_id',
+  as: 'role'
+});
+
 export {
   Department,
   Province,
@@ -136,4 +176,7 @@ export {
   Phone,
   Address,
   VWLocations,
+  Representative,
+  RepresentativeRole,
+  RepresentativeStudentRole
 };
