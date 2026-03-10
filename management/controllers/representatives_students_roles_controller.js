@@ -81,3 +81,26 @@ export const fetchAll = async (req, res) => {
     });
   }
 };
+
+export const save = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+
+    const response = await representativesStudentsRolesService.saveMany(studentId, req.body);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Roles de representantes guardados correctamente',
+      data: response,
+      error: '',
+    });
+
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      success: false,
+      message: error.message || 'Error interno del servidor',
+      data: null,
+      error: error.error || error.message,
+    });
+  }
+};

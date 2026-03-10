@@ -212,7 +212,7 @@ CREATE TABLE `representatives_students_roles` (
   `student_id` int unsigned NOT NULL,
   `representative_role_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_rsr_representative` (`representative_id`),
+  UNIQUE KEY `uq_rsr_unique_combination` (`representative_id`,`student_id`,`representative_role_id`),
   KEY `fk_rsr_student` (`student_id`),
   KEY `fk_rsr_role` (`representative_role_id`),
   CONSTRAINT `fk_rsr_representative` FOREIGN KEY (`representative_id`) REFERENCES `representatives` (`id`),

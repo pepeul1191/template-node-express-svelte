@@ -25,6 +25,11 @@
       dispatch('clean');
     }
   };
+
+  const saveClick = (event) => {
+    event.preventDefault();
+    dispatch('save');
+  };
 </script>
 
 <style>
@@ -68,7 +73,7 @@
         <i class="fa fa-eraser me-2"></i> Limpiar
       </button>
       {#if showSaveButton}
-        <button type="button" class="btn btn-success me-2" style="margin-left: 7px;">
+        <button type="button" class="btn btn-success me-2" style="margin-left: 7px;" on:click={saveClick}>
           <i class="fa fa-plus me-2"></i> Guardar Cambios
         </button>
       {/if}

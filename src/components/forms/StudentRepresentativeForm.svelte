@@ -57,10 +57,11 @@
           role: item.role || {id: null}  // Si viene null, lo dejamos como null explícitamente
         }));
         
-        console.log('Representantes con roles normalizados:', representativesFounded);
+        console.log('Apoderados con roles normalizados:', representativesFounded);
       })
       .catch((error) => {
         console.error(error);
+        alertMessage = { text: 'Error al buscar apoderados', status: 'danger' };
       });
   };
 
@@ -81,6 +82,7 @@
         console.log('Representantes con roles normalizados:', representativesFounded);
       })
       .catch((error) => {
+        alertMessage = { text: 'Error al buscar apoderados', status: 'danger' };
         console.error(error);
       });
   };
@@ -90,8 +92,28 @@
     representativesFounded = [];
   };
 
-  const handleAdd = (representative) => {
-    // función vacía por ahora
+  const handleSave = () => {
+    const simplifiedList = representativesFounded.map(item => ({
+      representative_id: item.representative.id,
+      rol_id: item.role?.id || null
+    }));
+
+    axios.put(`${API_URL}api/v1/representatives-students-roles/${studentId}`, {
+      representives: simplifiedList
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        //'Authorization': `Bearer ${jwtToken}`
+      }
+    })
+    .then(function (response) {
+      // console.log(extraReplace)
+      alertMessage = { text: 'Apoderados actualizados correctamente', status: 'success' };
+    })
+    .catch(function (error) {
+      console.error(error);
+      alertMessage = { text: 'Error al actualizar apoderados', status: 'danger' };
+    });
   };
 
   // Función para dividir el nombre completo
@@ -117,6 +139,7 @@
   <RepresentativeFilter 
     on:search={handleSearch} 
     on:clean={handleClean} 
+    on:save={handleSave} 
     showSaveButton={true} />
 
   {#if alertMessage.text}

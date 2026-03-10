@@ -3,6 +3,7 @@
 import { Sequelize, Op } from 'sequelize';
 import Representative from '../models/representatives.js';
 import RepresentativeStudentRole from '../models/representatives_students_roles.js';
+import sequelize from '../../configs/database.js';
 import Person from '../models/persons.js';
 import RepresentativeRole from '../models/representative_role.js';
 import Sex from '../models/sex.js';
@@ -226,4 +227,46 @@ export const fetchOnlyNotRelatedByStudentIdAlternative = async (studentId, limit
   });
 
   return representatives.map(rep => formatRepresentativeData(rep.toJSON(), null));
+};
+
+export const saveMany = async (studentId, payload) => {
+  const transaction = await sequelize.transaction();
+
+  try {
+    const { representives = [] } = payload;
+
+    for (const item of representives) {
+
+      const { representative_id, rol_id } = item;
+
+      // 1. Eliminar cualquier registro existente
+      await RepresentativeStudentRole.destroy({
+        where: {
+          student_id: studentId,
+          representative_id: representative_id
+        },
+        transaction
+      });
+
+      // 2. Si tiene rol, crear uno nuevo
+      if (rol_id !== null) {
+        await RepresentativeStudentRole.create(
+          {
+            student_id: studentId,
+            representative_id: representative_id,
+            representative_role_id: rol_id
+          },
+          { transaction }
+        );
+      }
+    }
+
+    await transaction.commit();
+
+    return true;
+
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 };

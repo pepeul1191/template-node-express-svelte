@@ -80,6 +80,6 @@ router.put('/api/v1/representatives/:id/associate-user', requireAuth, representa
 router.put('/api/v1/representatives/:id/remove-user', requireAuth, representativesController.removeUser);
 // representatives students roles
 router.get('/api/v1/representatives-students-roles', requireAuth, representativesStudentsRolesController.fetchAll);
-//router.post('/api/v1/representatives-students-roles', requireAuth, representativesStudentsRolesController.save);
+router.put('/api/v1/representatives-students-roles/:studentId', requireAuth, representativesStudentsRolesController.save);
 
 export default router;

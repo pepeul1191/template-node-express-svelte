@@ -7,6 +7,9 @@ CREATE TABLE representatives_students_roles (
     student_id INT UNSIGNED NOT NULL,
     representative_role_id INT UNSIGNED NOT NULL,
 
+    CONSTRAINT uq_rsr_unique_combination
+        UNIQUE (representative_id, student_id, representative_role_id),
+
     CONSTRAINT fk_rsr_representative
         FOREIGN KEY (representative_id)
         REFERENCES representatives(id),
