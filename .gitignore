@@ -50,5 +50,3 @@ tmp
 uploads
 sessions
 backup.sql
-
-scripts/*.sql
