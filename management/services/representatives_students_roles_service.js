@@ -7,6 +7,7 @@ import sequelize from '../../configs/database.js';
 import Person from '../models/persons.js';
 import RepresentativeRole from '../models/representative_role.js';
 import Sex from '../models/sex.js';
+import Student from '../models/students.js';
 import DocumentType from '../models/document_type.js';
 
 /**
@@ -44,6 +45,38 @@ const formatRepresentativeData = (representative, studentRole = null) => {
   return {
     representative: {
       id: representative.id,
+      person: person
+        ? {
+            full_name: `${person.last_names}, ${person.names}`,
+            birth_date: person.birth_date,
+            image_url: person.image_url,
+            sex_id: person.sex_id,
+            sex: person.sex ? { name: person.sex.name } : null,
+            document: person.document_type
+              ? { type: person.document_type.name, number: person.document_number }
+              : null,
+          }
+        : null,
+    },
+    role: role
+      ? {
+          id: role.id,
+          name: role.name,
+        }
+      : null,
+  };
+};
+
+/**
+ * Formatea los datos del estudiante para los métodos que buscan por representative_id
+ */
+const formatStudentData = (student, studentRole = null) => {
+  const person = student.person;
+  const role = studentRole?.role || null;
+
+  return {
+    student: {
+      id: student.id,
       person: person
         ? {
             full_name: `${person.last_names}, ${person.names}`,
@@ -229,7 +262,7 @@ export const fetchOnlyNotRelatedByStudentIdAlternative = async (studentId, limit
   return representatives.map(rep => formatRepresentativeData(rep.toJSON(), null));
 };
 
-export const saveMany = async (studentId, payload) => {
+export const saveManyByStudent = async (studentId, payload) => {
   const transaction = await sequelize.transaction();
 
   try {
@@ -254,6 +287,209 @@ export const saveMany = async (studentId, payload) => {
           {
             student_id: studentId,
             representative_id: representative_id,
+            representative_role_id: rol_id
+          },
+          { transaction }
+        );
+      }
+    }
+
+    await transaction.commit();
+
+    return true;
+
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+// management/services/representatives_students_roles_service.js
+
+// ... (imports y funciones auxiliares existentes se mantienen igual)
+
+/**
+ * Solo los estudiantes que tienen relación con el representante
+ */
+export const fetchOnlyRelatedByRepresentativeId = async (representativeId, limit = 9, searchParams = {}) => {
+  const searchConditions = buildSearchConditions(searchParams);
+
+  const representativesRoles = await RepresentativeStudentRole.findAll({
+    where: { representative_id: representativeId },
+    include: [
+      {
+        model: Student,
+        as: 'student',
+        required: true,
+        include: [
+          {
+            model: Person,
+            as: 'person',
+            required: true,
+            where: searchConditions || undefined,
+            include: [
+              { model: DocumentType, as: 'document_type', attributes: ['name'] },
+              { model: Sex, as: 'sex', attributes: ['name'] },
+            ],
+          },
+        ],
+      },
+      {
+        model: RepresentativeRole,
+        as: 'role',
+        attributes: ['id', 'name'],
+      },
+    ],
+    order: [['id', 'ASC']],
+    limit,
+    subQuery: false,
+  });
+
+  return representativesRoles.map(item => formatStudentData(item.student, item));
+};
+
+/**
+ * Todos los estudiantes, incluyendo los que tienen y no tienen relación con el representante
+ */
+export const fetchAllWithRelationStatusByRepresentative = async (representativeId, limit = 9, searchParams = {}) => {
+  const searchConditions = buildSearchConditions(searchParams);
+
+  const personInclude = {
+    model: Person,
+    as: 'person',
+    required: true,
+    include: [
+      { model: DocumentType, as: 'document_type', attributes: ['name'] },
+      { model: Sex, as: 'sex', attributes: ['name'] },
+    ],
+  };
+
+  if (searchConditions) personInclude.where = searchConditions;
+
+  const students = await Student.findAll({
+    include: [
+      personInclude,
+      {
+        model: RepresentativeStudentRole,
+        as: 'representative_roles',
+        required: false,
+        where: { representative_id: representativeId },
+        include: [{ model: RepresentativeRole, as: 'role', attributes: ['id', 'name'] }],
+      },
+    ],
+    order: [['id', 'ASC']],
+    limit,
+    subQuery: false,
+    distinct: true,
+  });
+
+  return students.map(student => {
+    const studentJson = student.toJSON();
+    const studentRole = studentJson.representative_roles?.[0] || null;
+    return formatStudentData(studentJson, studentRole);
+  });
+};
+
+/**
+ * Solo los estudiantes que NO tienen relación con el representante
+ */
+export const fetchOnlyNotRelatedByRepresentativeId = async (representativeId, limit = 9, searchParams = {}) => {
+  const relatedIdsRaw = await RepresentativeStudentRole.findAll({
+    where: { representative_id: representativeId },
+    attributes: ['student_id'],
+    raw: true,
+  });
+
+  const relatedIds = relatedIdsRaw.map(r => r.student_id);
+  const searchConditions = buildSearchConditions(searchParams);
+
+  const personInclude = {
+    model: Person,
+    as: 'person',
+    required: true,
+    include: [
+      { model: DocumentType, as: 'document_type', attributes: ['name'] },
+      { model: Sex, as: 'sex', attributes: ['name'] },
+    ],
+  };
+  if (searchConditions) personInclude.where = searchConditions;
+
+  const students = await Student.findAll({
+    where: {
+      id: { [Op.notIn]: relatedIds.length > 0 ? relatedIds : [0] },
+    },
+    include: [personInclude],
+    order: [['id', 'ASC']],
+    limit,
+    subQuery: false,
+    distinct: true,
+  });
+
+  return students.map(student => formatStudentData(student.toJSON(), null));
+};
+
+/**
+ * Versión alternativa usando LEFT JOIN y condición WHERE ... IS NULL para estudiantes no relacionados
+ */
+export const fetchOnlyNotRelatedByRepresentativeIdAlternative = async (representativeId, limit = 9, searchParams = {}) => {
+  const searchConditions = buildSearchConditions(searchParams);
+
+  const personInclude = {
+    model: Person,
+    as: 'person',
+    required: true,
+    include: [
+      { model: DocumentType, as: 'document_type', attributes: ['name'] },
+      { model: Sex, as: 'sex', attributes: ['name'] },
+    ],
+  };
+  if (searchConditions) personInclude.where = searchConditions;
+
+  const students = await Student.findAll({
+    include: [
+      personInclude,
+      {
+        model: RepresentativeStudentRole,
+        as: 'representative_roles',
+        required: false,
+        where: { representative_id: representativeId },
+        attributes: [],
+      },
+    ],
+    where: { '$representative_roles.id$': null },
+    order: [['id', 'ASC']],
+    limit,
+    subQuery: false,
+    distinct: true,
+  });
+
+  return students.map(student => formatStudentData(student.toJSON(), null));
+};
+
+export const saveManyByRepresentative = async (representativeId, payload) => {
+  const transaction = await sequelize.transaction();
+  try {
+    const { students = [] } = payload;
+
+    for (const item of students) {
+
+      const { student_id, rol_id } = item;
+
+      // 1. Eliminar cualquier registro existente
+      await RepresentativeStudentRole.destroy({
+        where: {
+          representative_id: representativeId,
+          student_id: student_id
+        },
+        transaction
+      });
+
+      // 2. Si tiene rol, crear uno nuevo
+      if (rol_id !== null) {
+        await RepresentativeStudentRole.create(
+          {
+            representative_id: representativeId,
+            student_id: student_id,
             representative_role_id: rol_id
           },
           { transaction }

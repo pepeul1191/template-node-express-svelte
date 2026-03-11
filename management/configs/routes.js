@@ -79,7 +79,9 @@ router.delete('/api/v1/representatives/:id', requireAuth, representativesControl
 router.put('/api/v1/representatives/:id/associate-user', requireAuth, representativesController.asociateUser);
 router.put('/api/v1/representatives/:id/remove-user', requireAuth, representativesController.removeUser);
 // representatives students roles
-router.get('/api/v1/representatives-students-roles', requireAuth, representativesStudentsRolesController.fetchAll);
-router.put('/api/v1/representatives-students-roles/:studentId', requireAuth, representativesStudentsRolesController.save);
+router.get('/api/v1/representatives-students-roles/representatives', requireAuth, representativesStudentsRolesController.fetchRepresentativesByStudent);
+router.put('/api/v1/representatives-students-roles/:studentId/representatives', requireAuth, representativesStudentsRolesController.saveRepresentativesByStudent);
+router.get('/api/v1/representatives-students-roles/students', requireAuth, representativesStudentsRolesController.fetchStudentsByRepresentative);
+router.put('/api/v1/representatives-students-roles/:representativeId/students', requireAuth, representativesStudentsRolesController.saveStudentsByRepresentative);
 
 export default router;

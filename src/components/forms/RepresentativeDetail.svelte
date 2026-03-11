@@ -1,5 +1,5 @@
 <script>
-  // src/components/forms/WorkerDetail.svelte
+  // src/components/forms/representativeDetail.svelte
   import { createEventDispatcher, onMount, tick } from 'svelte';
   import axios from 'axios';
   import RepresentativeForm from './RepresentativeForm.svelte';
@@ -43,6 +43,7 @@
 
   let contactInfoForm; // referencia al formulario de contacto para resetearlo si es necesario
   let userForm; // referencia al formulario de usuario para resetearlo si es necesario
+  let representativeStudentForm; // referencia al formulario de apoderados del estudiante
 
   // Cargar datos necesarios
   onMount(async () => {
@@ -112,12 +113,12 @@
     };
   }
 
-  export function showEdit(worker) {
+  export function showEdit(representative) {
     mode = 'edit';
-    form.id = worker.id;
-    form.person_id = worker.person?.id ?? worker.person_id ?? '';
+    form.id = representative.id;
+    form.person_id = representative.person?.id ?? representative.person_id ?? '';
     // copy individual fields to avoid reactive issues
-    const p = worker.person || {};
+    const p = representative.person || {};
     form.person = {
       id: p.id || null,
       names: p.names || '',
@@ -133,12 +134,15 @@
           district_text: a.district_text || ''
         })) : []
     };
-    form.email = worker.email || '';
-    form.user_id = worker.user_id || null;
-    // form.user_name = worker.user_name || (worker.user_id ? `ID:${worker.user_id}` : '');
+    form.email = representative.email || '';
+    form.user_id = representative.user_id || null;
+    // form.user_name = representative.user_name || (representative.user_id ? `ID:${representative.user_id}` : '');
 
     contactInfoForm.loadTables();
     userForm.loadUser();
+    console.log(representative)
+    representativeStudentForm.representativeId = representative.id;
+    representativeStudentForm.searchStudents(); // cargar apoderados del estudiante
   }
 
   const save = async () => {
@@ -225,7 +229,7 @@
   </div>
 
   <div class="tab-pane fade" id="tab-students" role="tabpanel" aria-labelledby="tab-students-tab">
-    <RepresentativeStudentForm />
+    <RepresentativeStudentForm bind:this={representativeStudentForm}/>
   </div>
 </div>
 

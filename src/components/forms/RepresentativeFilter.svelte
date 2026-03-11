@@ -1,6 +1,6 @@
 <svelte:options accessors={true} />
 <script>
-  // src/components/forms/WorkersFilter.svelte
+  // src/components/forms/RepresentativeFilter.svelte
   import { createEventDispatcher } from 'svelte';
 
   export let showSaveButton = false;
@@ -65,7 +65,7 @@
         </select>
       </div>
     {/if}
-    <div class="col-md-{showSaveButton ? '5' : '2'} d-flex align-items-end">
+    <div class="col-md-{showSaveButton ? '5' : '3'} d-flex align-items-end">
       <button type="submit" class="btn btn-primary me-2" on:click={searchClick}>
         <i class="fa fa-search me-2"></i> Buscar
       </button>

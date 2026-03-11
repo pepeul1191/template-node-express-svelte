@@ -45,7 +45,7 @@
     queryParams = { ...queryParams, name, document_number, code, email, relationFilter };
 
     axios
-      .get(`${API_URL}api/v1/representatives-students-roles?limit=9&student_id=${studentId}&relation_filter=${relation_filter}`, {
+      .get(`${API_URL}api/v1/representatives-students-roles/representatives?limit=9&student_id=${studentId}&relation_filter=${relation_filter}`, {
         params: Object.keys(queryParams).length > 0 ? queryParams : undefined
       })
       .then((response) => {
@@ -67,7 +67,7 @@
 
   export const searchRepresentatives = () => {
     axios
-      .get(`${API_URL}api/v1/representatives-students-roles?limit=9&student_id=${studentId}&relation_filter=related`, {
+      .get(`${API_URL}api/v1/representatives-students-roles/representatives?limit=9&student_id=${studentId}&relation_filter=related`, {
         params: Object.keys(queryParams).length > 0 ? queryParams : undefined
       })
       .then((response) => {
@@ -98,7 +98,7 @@
       rol_id: item.role?.id || null
     }));
 
-    axios.put(`${API_URL}api/v1/representatives-students-roles/${studentId}`, {
+    axios.put(`${API_URL}api/v1/representatives-students-roles/${studentId}/representatives`, {
       representives: simplifiedList
     }, {
       headers: {
