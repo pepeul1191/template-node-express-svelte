@@ -13,6 +13,8 @@ import Phone from '../management/models/phones.js';
 import Address from '../management/models/addresses.js';
 import RepresentativeRole from '../management/models/representative_role.js';
 import RepresentativeStudentRole from '../management/models/representatives_students_roles.js';
+import Course from '../management/models/courses.js';
+import Level from '../management/models/level.js';
 
 // locations
 
@@ -165,6 +167,28 @@ RepresentativeStudentRole.belongsTo(RepresentativeRole, {
   as: 'role'
 });
 
+// Courses - Workers and levels
+
+Level.hasMany(Course, {
+  foreignKey: 'level_id',
+  as: 'courses'
+});
+
+Course.belongsTo(Level, {
+  foreignKey: 'level_id',
+  as: 'level'
+});
+
+Worker.hasMany(Course, {
+  foreignKey: 'worker_id',
+  as: 'courses'
+});
+
+Course.belongsTo(Worker, {
+  foreignKey: 'worker_id',
+  as: 'worker'
+});
+
 export {
   Department,
   Province,
@@ -178,5 +202,6 @@ export {
   VWLocations,
   Representative,
   RepresentativeRole,
-  RepresentativeStudentRole
+  RepresentativeStudentRole,
+  Course,
 };

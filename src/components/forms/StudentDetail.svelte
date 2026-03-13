@@ -2,7 +2,7 @@
   // src/components/forms/StudentDetail.svelte
   import { createEventDispatcher, onMount, tick } from 'svelte';
   import axios from 'axios';
-  import StudentFormForm from './StudentForm.svelte';
+  import StudentForm from './StudentForm.svelte';
   import ContactInfoForm from './ContactInfoForm.svelte';
   import UserForm from './UserForm.svelte';
   import StudentRepresentativeForm from './StudentRepresentativeForm.svelte';
@@ -221,7 +221,7 @@
 
 <div class="tab-content">
   <div class="tab-pane fade show active" id="tab-persona" role="tabpanel" aria-labelledby="tab-persona-tab">
-    <StudentFormForm bind:form={form} sexs={sexs} documentTypes={documentTypes} loading={loading} on:save={save} on:close={close} />
+    <StudentForm bind:form={form} sexs={sexs} documentTypes={documentTypes} loading={loading} on:save={save} on:close={close} />
   </div>
 
   <div class="tab-pane fade" id="tab-contact" role="tabpanel" aria-labelledby="tab-contact-tab">

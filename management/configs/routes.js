@@ -13,6 +13,7 @@ import * as workersController from '../controllers/workers_controller.js';
 import * as addressesController from '../controllers/addresses_controller.js';
 import * as phonesController from '../controllers/phones_controller.js';
 import * as studentsController from '../controllers/student_controller.js';
+import * as coursesController from '../controllers/courses_controller.js';
 import * as representativesController from '../controllers/representatives_controller.js';
 import * as representativesStudentsRolesController from '../controllers/representatives_students_roles_controller.js';
 
@@ -83,5 +84,11 @@ router.get('/api/v1/representatives-students-roles/representatives', requireAuth
 router.put('/api/v1/representatives-students-roles/:studentId/representatives', requireAuth, representativesStudentsRolesController.saveRepresentativesByStudent);
 router.get('/api/v1/representatives-students-roles/students', requireAuth, representativesStudentsRolesController.fetchStudentsByRepresentative);
 router.put('/api/v1/representatives-students-roles/:representativeId/students', requireAuth, representativesStudentsRolesController.saveStudentsByRepresentative);
+// courses
+router.get('/api/v1/courses', requireAuth, coursesController.fetchAll);
+router.post('/api/v1/courses', requireAuth, coursesController.create);
+router.get('/api/v1/courses/:personId', requireAuth, coursesController.fetchById);
+router.put('/api/v1/courses/:id', requireAuth, coursesController.update);
+router.delete('/api/v1/courses/:id', requireAuth, coursesController.deleteC);
 
 export default router;

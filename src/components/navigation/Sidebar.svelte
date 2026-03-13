@@ -50,7 +50,7 @@
           Apoderados
         </Link>
 
-        <Link to="/academic" getProps={activeClass("/academic")}>
+        <Link to="/management/academics" getProps={activeClass("/academic")}>
           Académico
         </Link>
       </div>

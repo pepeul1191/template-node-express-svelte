@@ -125,9 +125,11 @@ entity courses {
   * id : INT <<PK>>
   --
   name : VARCHAR(45)
+  code: VARCHAR(10)
   description : TEXT
   sylabus_url: VARCHAR(100)
   level_id: INT <<FK>>
+  worker_id: INT <<FK>>
 }
 
 entity sections {
@@ -292,6 +294,7 @@ students ||--o{ representatites_students_roles : has
 
 levels ||--o{ courses : has
 courses ||--o{ sections : has
+workers ||--o{ courses : has
 
 sections ||--o{ sections_workers_roles : has
 workers  ||--o{ sections_workers_roles : has

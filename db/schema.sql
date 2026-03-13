@@ -30,6 +30,28 @@ CREATE TABLE `addresses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `courses`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `courses` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `code` varchar(20) NOT NULL,
+  `description` text,
+  `sylabus_url` varchar(100) DEFAULT NULL,
+  `level_id` int unsigned NOT NULL,
+  `worker_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_courses_level` (`level_id`),
+  KEY `fk_courses_worker` (`worker_id`),
+  CONSTRAINT `fk_courses_level` FOREIGN KEY (`level_id`) REFERENCES `levels` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_courses_worker` FOREIGN KEY (`worker_id`) REFERENCES `workers` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `departments`
 --
 
@@ -371,5 +393,7 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260305002624'),
   ('20260305044619'),
   ('20260305045353'),
-  ('20260309211239');
+  ('20260309211239'),
+  ('20260313162513'),
+  ('20260313164218');
 UNLOCK TABLES;

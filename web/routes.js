@@ -24,6 +24,8 @@ router.get('/management/sexs', requireAuth, webController.home);
 router.get('/management/students', requireAuth, webController.home);
 router.get('/management/workers', requireAuth, webController.home);
 router.get('/management/representatives', requireAuth, webController.home);
+router.get('/management/academics', requireAuth, webController.home);
+router.get('/management/courses', requireAuth, webController.home);
 
 router.get('/api/v1/session', requireAuth, apis.sessionInfo); 
 

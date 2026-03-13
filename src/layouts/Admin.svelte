@@ -14,6 +14,8 @@
   import Students from "../pages/admin/Students.svelte";
 	import Workers from "../pages/admin/Workers.svelte";
 	import Representatives from "../pages/admin/Representatives.svelte";
+  import Academics from "../pages/admin/Academics.svelte";
+	import Courses from "../pages/admin/Courses.svelte";
   // import Students from "../pages/admin/Students.svelte";
 </script>
 
@@ -36,6 +38,8 @@
       <Route path="/management/students" component={Students} />
       <Route path="/management/workers" component={Workers} />
       <Route path="/management/representatives" component={Representatives} />
+      <Route path="/management/academics" component={Academics} />
+      <Route path="/management/courses" component={Courses} />
     </main>
 
   </div>

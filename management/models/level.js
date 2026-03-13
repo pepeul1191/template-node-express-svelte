@@ -1,4 +1,4 @@
-// management/models/representative_role.js
+// management/models/level.js
 
 import { DataTypes } from 'sequelize';
 import sequelize from '../../configs/database.js';
