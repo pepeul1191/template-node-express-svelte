@@ -50,3 +50,4 @@ tmp
 uploads
 sessions
 backup.sql
+*.odt#

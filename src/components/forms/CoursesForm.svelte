@@ -1,6 +1,7 @@
 <script>
   // src/components/forms/CourseForm.svelte
   import { createEventDispatcher } from 'svelte';
+  import UploadFile from '../widgets/UploadFile.svelte';
 
   export let form;
   export let levels = [];
@@ -8,6 +9,8 @@
   export let loading = { levels:false, workers:false };
 
   const dispatch = createEventDispatcher();
+
+  let uploadFileComponent; // referencia al componente UploadFile
 
   const doSave = (e) => {
     e.preventDefault();
@@ -17,6 +20,17 @@
   const doClose = () => {
     dispatch('close');
   };
+
+  const fileUploaded = (e) => {
+    //console.log(e)
+    form.sylabus_url = `${e.detail.fileUrl}` || '';
+  }
+
+  const clearFile = (e) => {
+    form.sylabus_url = '';
+  }
+
+  let levelClassification = '';
 </script>
 
 <form on:submit|preventDefault={doSave}>
@@ -62,7 +76,21 @@
 
       <div class="col-md-6 mb-3">
         <label class="form-label">Syllabus URL</label>
-        <input class="form-control" bind:value={form.sylabus_url} />
+        <UploadFile
+          bind:this={uploadFileComponent}
+          postUrl={`${FILES_URL}/api/v1/public`}
+          baseURL={FILES_URL}
+          allowedExtensions={['pdf',]}
+          maxFileSizeMB={5}
+          extraParams={{ folder: `sylabus/${levelClassification}` }}
+          jwtKey={"file_token"}
+          fileUrl={form.sylabus_url}
+          showProgress={false}
+          showCleanButton={false}
+          hideInput={true}
+          on:uploaded={fileUploaded}
+          on:clear={clearFile}
+        />
       </div>
 
     </div>

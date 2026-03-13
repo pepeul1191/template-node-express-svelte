@@ -1,6 +1,7 @@
 <script>
   // src/components/widgets/UploadFile.svelte
   import { createEventDispatcher } from 'svelte';
+  import { onDestroy } from 'svelte';
   import axios from 'axios';
 
   // Props
@@ -17,8 +18,10 @@
   export let headers = {}; // additional headers
   export let hideInput = false; // nueva prop para ocultar o mostrar el input file (default false)
   export let showProgress = true; // nueva prop para ocultar o mostrar el formulario de progreso (default true)
+  export let showCleanButton = true; // nueva prop para ocultar o mostrar el botón de limpiar (default true)
   export let fileUrlPrefix = ''; // prefijo para la URL del archivo (ej: /uploads/)
   export let fileUrl = ''; // prop reactiva para la URL del archivo
+  export let messageDuration = 5000; // duración en ms para mostrar mensajes (default 5 segundos)
 
   const dispatch = createEventDispatcher();
 
@@ -31,6 +34,28 @@
   let selectedFile = null; // ahora es un solo archivo, no array
   let upload = { file: null, progress: 0, status: 'pending', response: null, error: null, fileUrl: null }; // un solo upload
   let errors = [];
+  let successMessage = '';
+  
+  // Timeouts para auto-limpiar mensajes
+  let errorTimeouts = [];
+  let successTimeout = null;
+
+  // Limpiar timeouts al destruir el componente
+  onDestroy(() => {
+    clearAllTimeouts();
+  });
+
+  function clearAllTimeouts() {
+    // Limpiar timeouts de errores
+    errorTimeouts.forEach(timeout => clearTimeout(timeout));
+    errorTimeouts = [];
+    
+    // Limpiar timeout de éxito
+    if (successTimeout) {
+      clearTimeout(successTimeout);
+      successTimeout = null;
+    }
+  }
 
   const humanSize = (bytes) => {
     if (bytes === 0) return '0 B';
@@ -43,9 +68,13 @@
     selectedFile = null;
     upload = { file: null, progress: 0, status: 'pending', response: null, error: null, fileUrl: null };
     errors = [];
+    successMessage = '';
     fileUrl = initialProps.fileUrl; // Restaurar URL inicial
     
     if (inputEl) inputEl.value = '';
+    
+    // Limpiar timeouts
+    clearAllTimeouts();
     
     // Dispatch evento de limpieza con el valor inicial
     dispatch('clear', { fileUrl: initialProps.fileUrl });
@@ -67,20 +96,23 @@
 
   function handleFiles(fileList) {
     errors = [];
+    successMessage = '';
+    clearAllTimeouts();
+    
     const arr = Array.from(fileList || []);
 
     // Siempre solo un archivo
     if (arr.length === 0) return;
     
     if (arr.length > 1) {
-      errors.push('Solo puede seleccionar un archivo');
+      addErrorWithTimeout('Solo puede seleccionar un archivo');
       return;
     }
 
     const file = arr[0];
     const err = validateFile(file);
     if (err) {
-      errors.push(`${file.name}: ${err}`);
+      addErrorWithTimeout(`${file.name}: ${err}`);
       return;
     }
 
@@ -92,6 +124,34 @@
     if (!hideInput && postUrl) {
       uploadFile();
     }
+  }
+
+  function addErrorWithTimeout(errorMsg) {
+    errors = [...errors, errorMsg];
+    
+    // Configurar timeout para eliminar este error específico
+    const timeout = setTimeout(() => {
+      errors = errors.filter(e => e !== errorMsg);
+      // También eliminar este timeout de la lista
+      errorTimeouts = errorTimeouts.filter(t => t !== timeout);
+    }, messageDuration);
+    
+    errorTimeouts = [...errorTimeouts, timeout];
+  }
+
+  function setSuccessWithTimeout(message) {
+    successMessage = message;
+    
+    // Limpiar timeout anterior si existe
+    if (successTimeout) {
+      clearTimeout(successTimeout);
+    }
+    
+    // Configurar nuevo timeout
+    successTimeout = setTimeout(() => {
+      successMessage = '';
+      successTimeout = null;
+    }, messageDuration);
   }
 
   function validateFile(file) {
@@ -117,12 +177,12 @@
 
   async function uploadFile() {
     if (!selectedFile) {
-      errors.push('No hay archivo seleccionado');
+      addErrorWithTimeout('No hay archivo seleccionado');
       return;
     }
 
     if (!postUrl) {
-      errors.push('No se ha configurado postUrl');
+      addErrorWithTimeout('No se ha configurado postUrl');
       return;
     }
 
@@ -130,6 +190,9 @@
     if (upload.status === 'done' || upload.status === 'uploading') return;
 
     upload.status = 'uploading';
+    errors = [];
+    successMessage = '';
+    clearAllTimeouts();
 
     const form = new FormData();
     form.append(fieldName, selectedFile);
@@ -192,6 +255,8 @@
             fileUrl = `${res.data.data.folder}/${res.data.data.filename}`;
             upload.fileUrl = fileUrl;
           }
+          const msg = res.data.message || 'Archivo subido exitosamente';
+          setSuccessWithTimeout(msg);
           console.log('File:', res.data.data);
           console.log('File uploaded successfully. URL:', fileUrl);
           dispatch('uploaded', { file: selectedFile, data: res.data.data, message: res.data.message, fileUrl: fileUrl });
@@ -200,6 +265,7 @@
           const errMsg = resp.message || resp.error || 'Error desconocido';
           upload.error = errMsg;
           upload.errorMessage = resp.message || resp.error;
+          addErrorWithTimeout(errMsg);
           dispatch('error', {
             file: selectedFile,
             error: errMsg,
@@ -210,11 +276,14 @@
       } else {
         // raw
         upload.status = 'done';
+        setSuccessWithTimeout('Archivo subido exitosamente');
         dispatch('uploaded', { file: selectedFile, data: res.data, fileUrl: upload.fileUrl });
       }
     } catch (err) {
       upload.status = 'error';
       upload.error = err.response?.data || err.message || err;
+      const errorMsg = err.response?.data?.message || err.message || 'Error al subir el archivo';
+      addErrorWithTimeout(errorMsg);
       dispatch('error', { file: selectedFile, error: upload.error, response: err.response?.data || null });
     }
   }
@@ -238,6 +307,12 @@
   progress { width: 180px; }
   .btn-link { background: none; border: none; color: #007bff; text-decoration: underline; cursor: pointer; padding: 0; font: inherit; }
   .btn-link:hover { color: #0056b3; }
+  .status-label { font-size:0.8rem; padding:2px 6px; border-radius:3px; display: inline-block; margin-right: 4px; }
+  .status-label.success { background-color: #d4edda; color: #155724; }
+  .status-label.error { background-color: #f8d7da; color: #721c24; }
+  .status-label.pending { background-color: #fff3cd; color: #856404; }
+  .status-label.info { background-color: #d1ecf1; color: #0c5460; }
+  .message-container { margin-bottom: 8px; }
 </style>
 
 <div class={`${!hideInput ? 'upload-box' : ''}`}>
@@ -268,7 +343,7 @@
       </button>
 
       {#if fileUrl != ''}
-        <button 
+        <button   
           type="button" 
           class="btn btn-primary" 
           on:click={() => openFileInNewTab()}
@@ -279,10 +354,12 @@
         </button>
       {/if}
 
-      <button class="btn btn-secondary" on:click={clear} disabled={!selectedFile && fileUrl === initialProps.fileUrl}>
-        <i class="fa fa-trash" aria-hidden="true"></i>
-        Limpiar
-      </button>
+      {#if showCleanButton}
+        <button class="btn btn-secondary" on:click={clear} disabled={!selectedFile && fileUrl === initialProps.fileUrl}>
+          <i class="fa fa-trash" aria-hidden="true"></i>
+          Limpiar
+        </button>
+      {/if}
     {:else}
       <input 
         bind:this={inputEl} 
@@ -293,13 +370,24 @@
     {/if}
   </div>
 
-  {#if errors.length}
-    <div class="mb-2">
-      {#each errors as err}
-        <div class="alert alert-danger py-1 my-1">{err}</div>
-      {/each}
-    </div>
-  {/if}
+  <!-- Contenedor de mensajes -->
+  <div class="message-container">
+    <!-- Mensajes de error como labels -->
+    {#if errors.length}
+      <div class="mb-2">
+        {#each errors as err}
+          <small class="status-label error">{err}</small>
+        {/each}
+      </div>
+    {/if}
+
+    <!-- Mensaje de éxito como label -->
+    {#if successMessage}
+      <div class="mb-2">
+        <small class="status-label success">{successMessage}</small>
+      </div>
+    {/if}
+  </div>
     
   {#if selectedFile && showProgress === true}
     <div class="mb-2">
@@ -311,8 +399,9 @@
         <div style="display:flex;align-items:center;gap:8px;">
           {#if upload.status === 'uploading'}
             <progress value={upload.progress} max="100">{upload.progress}%</progress>
+            <small class="status-label info">Subiendo...</small>
           {:else if upload.status === 'done'}
-            <span class="badge bg-success">Subido</span>
+            <small class="status-label success">Subido</small>
             <!-- Botón Ver si hay URL disponible -->
             {#if fileUrl}
               <button 
@@ -325,12 +414,12 @@
               </button>
             {/if}
           {:else if upload.status === 'error'}
-            <span class="badge bg-danger">Error</span>
+            <small class="status-label error">Error</small>
             {#if upload.error}
               <span class="small-muted ms-2">{upload.error}</span>
             {/if}
           {:else}
-            <span class="small-muted">Pendiente</span>
+            <small class="status-label pending">Pendiente</small>
           {/if}
           <button type="button" class="btn btn-sm btn-outline-danger" on:click={removeFile}>Eliminar</button>
         </div>
@@ -340,7 +429,7 @@
 
   {#if !hideInput}
     <div class="d-flex gap-2">
-      <button class="btn btn-primary" on:click={uploadFile} disabled={!postUrl || !selectedFile || upload.status === 'uploading' || upload.status === 'done'}>Subir</button>
+      <button class="btn btn-primary" on:click={uploadFile}   disabled={!postUrl || !selectedFile || upload.status === 'uploading' || upload.status === 'done'}>Subir</button>
       <button class="btn btn-secondary" on:click={clear} disabled={!selectedFile}>Limpiar</button>
     </div>
   {/if}
