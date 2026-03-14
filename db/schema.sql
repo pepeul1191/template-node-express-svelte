@@ -256,6 +256,24 @@ CREATE TABLE `schema_migrations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `sections`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sections` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `description` text,
+  `image_url` varchar(100) DEFAULT NULL,
+  `course_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `sections_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `sexs`
 --
 
@@ -395,5 +413,7 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260305045353'),
   ('20260309211239'),
   ('20260313162513'),
-  ('20260313164218');
+  ('20260313164218'),
+  ('20260314020655'),
+  ('20260314020814');
 UNLOCK TABLES;

@@ -1,6 +1,7 @@
 <script>
+  // src/pages/admin/Courses.svelte
   import { onMount } from 'svelte';
-  import { Link } from "svelte-routing";
+  import { Link, navigate } from "svelte-routing";
   import DataTable from "../../components/widgets/DataTable.svelte";
   import CourseDetail from '../../components/forms/CoursesDetail.svelte';
   import { Modal } from 'bootstrap';
@@ -72,7 +73,21 @@
     },4300);
   };
 
+  const goToSections = (record) => {
+    // Usando svelte-routing (que ya tienes importado)
+    navigate(`/management/courses/${record.id}/sections`);
+    
+    // O si prefieres abrir en nueva pestaña:
+    // window.open(`/management/courses/${record.id}/sections`, '_blank');
+  };
+
   const createActions = () => [
+      {
+      class:'btn-secondary',
+      icon:'fa-cubes',
+      label:'Secciones',
+      action:(record)=>goToSections(record)
+    },
     {
       class:'btn-primary',
       icon:'fa-edit',
@@ -201,8 +216,8 @@
   <div class="header-route">
     <h3 class="mb-4">
       <i class="fa fa-tachometer me-2"></i>
-      <Link to="/">Administración</Link> /
-      Gestión de cursos
+      <Link to="/management/academics">Gestión Académica</Link> /
+      Gestión de Cursos
     </h3>
   </div>
 
@@ -274,7 +289,7 @@
 
 <div bind:this={courseDetailModalEl} class="modal fade" tabindex="-1">
 
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
 
     <div class="modal-content">
 

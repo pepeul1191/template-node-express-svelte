@@ -51,3 +51,5 @@ uploads
 sessions
 backup.sql
 *.odt#
+
+scripts/inserts_*.sql

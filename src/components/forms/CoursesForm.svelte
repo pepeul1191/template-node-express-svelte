@@ -34,7 +34,7 @@
 </script>
 
 <form on:submit|preventDefault={doSave}>
-  <div class="bg-light p-3 rounded">
+  <div class="p-3 rounded">
 
     <div class="row">
 

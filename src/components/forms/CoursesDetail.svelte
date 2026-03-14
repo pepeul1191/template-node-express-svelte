@@ -139,11 +139,29 @@
 
 </script>
 
-<CourseForm
-  bind:form={form}
-  {levels}
-  {workers}
-  {loading}
-  on:save={save}
-  on:close={close}
-/>
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-3" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="tab-detail" data-bs-toggle="tab" data-bs-target="#tab-persona" type="button" role="tab" aria-controls="tab-detail" aria-selected="true">Detalle del Curso</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="tab-common-material-tab" data-bs-toggle="tab" data-bs-target="#tab-common-material" type="button" role="tab" aria-controls="tab-common-material" aria-selected="false">Material del Curso</button>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="tab-persona" role="tabpanel" aria-labelledby="tab-detail">
+    <CourseForm
+      bind:form={form}
+      {levels}
+      {workers}
+      {loading}
+      on:save={save}
+      on:close={close}
+    />
+  </div>
+
+  <div class="tab-pane fade" id="tab-common-material" role="tabpanel" aria-labelledby="tab-common-material-tab">
+    Material del Curso (a implementar)
+  </div>
+</div>

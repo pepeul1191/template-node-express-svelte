@@ -16,6 +16,7 @@ import * as studentsController from '../controllers/student_controller.js';
 import * as coursesController from '../controllers/courses_controller.js';
 import * as representativesController from '../controllers/representatives_controller.js';
 import * as representativesStudentsRolesController from '../controllers/representatives_students_roles_controller.js';
+import * as sectionsController from '../controllers/sections_controller.js';
 
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
@@ -90,5 +91,12 @@ router.post('/api/v1/courses', requireAuth, coursesController.create);
 router.get('/api/v1/courses/:personId', requireAuth, coursesController.fetchById);
 router.put('/api/v1/courses/:id', requireAuth, coursesController.update);
 router.delete('/api/v1/courses/:id', requireAuth, coursesController.deleteC);
+// sections
+router.get('/api/v1/courses/:courseId/sections', requireAuth, sectionsController.fetchAll);
+router.get('/api/v1/courses/:courseId/sections/:sectionId', requireAuth, sectionsController.fetchById);
+router.post('/api/v1/courses/:courseId/sections', requireAuth, sectionsController.create);
+router.put('/api/v1/courses/:courseId/sections/:sectionId', requireAuth, sectionsController.update);
+router.delete('/api/v1/courses/:courseId/sections/:sectionId', requireAuth, sectionsController.remove);
+router.put('/api/v1/courses/:courseId/sections/reorder', requireAuth, sectionsController.reorder);
 
 export default router;

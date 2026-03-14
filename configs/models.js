@@ -15,6 +15,7 @@ import RepresentativeRole from '../management/models/representative_role.js';
 import RepresentativeStudentRole from '../management/models/representatives_students_roles.js';
 import Course from '../management/models/courses.js';
 import Level from '../management/models/level.js';
+import Section from '../management/models/sections.js';
 
 // locations
 
@@ -189,6 +190,17 @@ Course.belongsTo(Worker, {
   as: 'worker'
 });
 
+// Course -> Section (1:N) - Un curso tiene muchas secciones
+Course.hasMany(Section, {
+  foreignKey: 'course_id',
+  as: 'sections'
+});
+
+Section.belongsTo(Course, {
+  foreignKey: 'course_id',
+  as: 'course'
+});
+
 export {
   Department,
   Province,
@@ -204,4 +216,5 @@ export {
   RepresentativeRole,
   RepresentativeStudentRole,
   Course,
+  Section,
 };

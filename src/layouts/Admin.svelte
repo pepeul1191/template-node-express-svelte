@@ -16,6 +16,7 @@
 	import Representatives from "../pages/admin/Representatives.svelte";
   import Academics from "../pages/admin/Academics.svelte";
 	import Courses from "../pages/admin/Courses.svelte";
+  import CourseSections from "../pages/admin/CourseSections.svelte"; 
   // import Students from "../pages/admin/Students.svelte";
 </script>
 
@@ -40,6 +41,7 @@
       <Route path="/management/representatives" component={Representatives} />
       <Route path="/management/academics" component={Academics} />
       <Route path="/management/courses" component={Courses} />
+      <Route path="/management/courses/:courseId/sections" component={CourseSections} /> <!-- 👈 Nueva ruta con parámetro -->
     </main>
 
   </div>
