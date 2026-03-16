@@ -29,9 +29,9 @@
 
   // Configuración de tabla
   const TABLE_CONFIG = {
-    columns: ['id', 'name', 'description', 'image_url', 'course_id'],
+    columns: ['id', 'name', 'code', 'description', ''],
     types: ['id', 'td', 'td', 'td', 'td'],
-    names: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Curso', 'Acciones'],
+    names: ['ID', 'Nombre', 'Código', 'Descripción', 'Acciones'],
     styles: ['max-width: 50px;', '', 'max-width: 300px;', 'max-width: 150px;', 'd-none'],
     classes: ['d-none', '', '', '', 'd-none'],
     messages: {

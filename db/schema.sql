@@ -264,6 +264,7 @@ CREATE TABLE `schema_migrations` (
 CREATE TABLE `sections` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
+  `code` varchar(20) DEFAULT NULL,
   `description` text,
   `image_url` varchar(100) DEFAULT NULL,
   `course_id` int unsigned NOT NULL,

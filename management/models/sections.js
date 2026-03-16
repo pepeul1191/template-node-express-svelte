@@ -13,6 +13,10 @@ const Section = sequelize.define('Section', {
     type: DataTypes.STRING(45),
     allowNull: false
   },
+  code: {
+    type: DataTypes.STRING(20),
+    allowNull: true
+  },
   description: {
     type: DataTypes.TEXT,
     allowNull: true

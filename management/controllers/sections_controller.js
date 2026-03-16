@@ -90,7 +90,7 @@ export const create = async (req, res) => {
       });
     }
 
-    const { name, description, image_url } = req.body;
+    const { name, description, image_url, code } = req.body;
 
     if (!name) {
       return res.status(400).json({
@@ -104,7 +104,8 @@ export const create = async (req, res) => {
     const section = await service.create(courseId, {
       name,
       description,
-      image_url
+      image_url,
+      code
     });
 
     return res.status(201).json({
@@ -140,7 +141,7 @@ export const update = async (req, res) => {
       });
     }
 
-    const { name, description, image_url } = req.body;
+    const { name, description, image_url, code } = req.body;
 
     if (!name) {
       return res.status(400).json({
@@ -154,7 +155,8 @@ export const update = async (req, res) => {
     const section = await service.update(sectionId, courseId, {
       name,
       description,
-      image_url
+      image_url,
+      code
     });
 
     return res.status(200).json({

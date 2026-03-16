@@ -58,6 +58,7 @@ export const create = async (courseId, data) => {
         name: data.name,
         description: data.description || null,
         image_url: data.image_url || null,
+        code: data.code || null,
         course_id: courseId
       },
       { transaction }
@@ -99,6 +100,7 @@ export const update = async (sectionId, courseId, data) => {
         name: data.name,
         description: data.description,
         image_url: data.image_url,
+        code: data.code,
       },
       { transaction }
     );
