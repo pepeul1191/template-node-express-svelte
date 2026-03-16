@@ -66,7 +66,7 @@
       <i class="fa fa-tachometer me-2"></i>
       <Link to="/">Administración</Link> /
       <Link to="/">Datos Maestros</Link> /
-      Gestión de Roles de Empleados
+      Gestión de Roles de Trabajadores
     </h3>
   </div>
 
@@ -75,7 +75,7 @@
     <div class="card-header">
       <h6 class="mb-0">
         <i class="fa fa-user me-2"></i>
-        Lista de Roles de Empleados
+        Lista de Roles de Trabajadores
       </h6>
     </div>
 
@@ -88,8 +88,8 @@
 
       <DataTable
         bind:this={employeeRoleDataTable}
-        fetchURL={`${API_URL}api/v1/employee-roles`}
-        saveURL={`${API_URL}api/v1/employee-roles`}
+        fetchURL={`${API_URL}api/v1/worker-roles`}
+        saveURL={`${API_URL}api/v1/worker-roles`}
         columnKeys={TABLE_CONFIG.columns}
         columnTypes={TABLE_CONFIG.types}
         columnNames={TABLE_CONFIG.names}

@@ -17,7 +17,7 @@
       title: "Roles de Empleados",
       description: "Gestiona los roles y permisos de los empleados",
       icon: "fa-user",
-      route: "/management/employee-roles"
+      route: "/management/worker-roles"
     },
     {
       title: "Roles de Apoderados",

@@ -3,9 +3,12 @@
   import { createEventDispatcher, onMount, tick } from 'svelte';
   import axios from 'axios';
   import SectionForm from './SectionForm.svelte';
+	import SectionWorkerRoleForm from './SectionWorkerRoleForm.svelte';
 
   const API = typeof API_URL !== 'undefined' ? API_URL : (window && window.API_URL) || '';
   const dispatch = createEventDispatcher();
+
+  let sectionWorkerRoleForm;  // referencia al formulario de roles de trabajadors por sección
 
   export let courseId = null;
 
@@ -43,6 +46,9 @@
       code: section.code || '',
       course_id: section.course_id || courseId
     };
+
+    sectionWorkerRoleForm.sectionId = form.id;
+    sectionWorkerRoleForm.searchWorkers(); 
   }
 
   const save = async () => {
@@ -110,7 +116,7 @@
   </div>
 
   <div class="tab-pane fade" id="tab-workers" role="tabpanel" aria-labelledby="tab-workers-tab">
-    <h1>Encargados</h1>
+    <SectionWorkerRoleForm bind:form={form} bind:sectionId={form.id} bind:this={sectionWorkerRoleForm}/>
   </div>
 
   <div class="tab-pane fade" id="tab-documents" role="tabpanel" aria-labelledby="tab-documents-tab">

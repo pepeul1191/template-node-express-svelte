@@ -1,12 +1,12 @@
-// management/services/employee_role_service.js
+// management/services/worker_role_service.js
 import sequelize from '../../configs/database.js';
-import EmployeeRole from '../models/employee_role.js';
+import WorkerRole from '../models/worker_role.js';
 
 /**
  * Obtener roles de empleado
  */
 export const fetchAll = async () => {
-  const roles = await EmployeeRole.findAll();
+  const roles = await WorkerRole.findAll();
 
   return roles.map(role => role.toJSON());
 };
@@ -24,7 +24,7 @@ export const saveMany = async (payload) => {
 
     // 1. Crear nuevos roles
     for (const incoming of news) {
-      const role = await EmployeeRole.create(
+      const role = await WorkerRole.create(
         {
           name: incoming.name,
         },
@@ -39,7 +39,7 @@ export const saveMany = async (payload) => {
 
     // 2. Actualizar roles existentes
     for (const incoming of edits) {
-      const role = await EmployeeRole.findByPk(incoming.id, { transaction });
+      const role = await WorkerRole.findByPk(incoming.id, { transaction });
 
       if (!role) {
         throw {
@@ -59,7 +59,7 @@ export const saveMany = async (payload) => {
 
     // 3. Eliminar roles
     for (const idToDelete of deletes) {
-      const role = await EmployeeRole.findByPk(idToDelete, { transaction });
+      const role = await WorkerRole.findByPk(idToDelete, { transaction });
 
       if (!role) {
         throw {

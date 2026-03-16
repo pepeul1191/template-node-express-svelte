@@ -94,19 +94,6 @@ CREATE TABLE `document_types` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `employee_roles`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee_roles` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `evaluation_types`
 --
 
@@ -275,6 +262,27 @@ CREATE TABLE `sections` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `sections_workers_roles`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sections_workers_roles` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `section_id` int unsigned NOT NULL,
+  `worker_id` int unsigned NOT NULL,
+  `worker_role_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_swr_unique_combination` (`section_id`,`worker_id`,`worker_role_id`),
+  KEY `fk_swr_worker` (`worker_id`),
+  KEY `fk_swr_role` (`worker_role_id`),
+  CONSTRAINT `fk_swr_role` FOREIGN KEY (`worker_role_id`) REFERENCES `worker_roles` (`id`),
+  CONSTRAINT `fk_swr_section` FOREIGN KEY (`section_id`) REFERENCES `sections` (`id`),
+  CONSTRAINT `fk_swr_worker` FOREIGN KEY (`worker_id`) REFERENCES `workers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `sexs`
 --
 
@@ -319,6 +327,41 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `vw_workers`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_workers` AS SELECT
+ 1 AS `worker_id`,
+ 1 AS `code`,
+ 1 AS `bio`,
+ 1 AS `person_id`,
+ 1 AS `names`,
+ 1 AS `last_names`,
+ 1 AS `document_number`,
+ 1 AS `sex_id`,
+ 1 AS `document_type_id`,
+ 1 AS `image_url`,
+ 1 AS `birth_date`,
+ 1 AS `created`,
+ 1 AS `updated`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `worker_roles`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `worker_roles` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `workers`
 --
 
@@ -357,6 +400,24 @@ CREATE TABLE `workers` (
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_locations` AS select `D`.`id` AS `id`,concat_ws(', ',`D`.`name`,`P`.`name`,`DE`.`name`) AS `name` from ((`districts` `D` join `provinces` `P` on((`D`.`province_id` = `P`.`id`))) join `departments` `DE` on((`P`.`department_id` = `DE`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_workers`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_workers`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_workers` AS select `w`.`id` AS `worker_id`,`w`.`code` AS `code`,`w`.`bio` AS `bio`,`w`.`person_id` AS `person_id`,`p`.`names` AS `names`,`p`.`last_names` AS `last_names`,`p`.`document_number` AS `document_number`,`p`.`sex_id` AS `sex_id`,`p`.`document_type_id` AS `document_type_id`,`p`.`image_url` AS `image_url`,`p`.`birth_date` AS `birth_date`,`p`.`created` AS `created`,`p`.`updated` AS `updated` from (`workers` `w` join `persons` `p` on((`w`.`person_id` = `p`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -416,5 +477,8 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260313162513'),
   ('20260313164218'),
   ('20260314020655'),
-  ('20260314020814');
+  ('20260314020814'),
+  ('20260316153033'),
+  ('20260316153628'),
+  ('20260316163800');
 UNLOCK TABLES;

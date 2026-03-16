@@ -3,7 +3,7 @@ import { Router } from 'express';
 import * as departmentController from '../controllers/departments_controller.js';
 import * as provinceController from '../controllers/provinces_controller.js';
 import * as districtController from '../controllers/districts_controller.js';
-import * as employeeRoleController from '../controllers/employee_roles_controller.js';
+import * as workerRoleController from '../controllers/worker_roles_controller.js';
 import * as representativeRoleController from '../controllers/reprsentative_roles_controller.js';
 import * as documentTypeController from '../controllers/document_types_controller.js';
 import * as levelController from '../controllers/levels_controller.js';
@@ -17,6 +17,7 @@ import * as coursesController from '../controllers/courses_controller.js';
 import * as representativesController from '../controllers/representatives_controller.js';
 import * as representativesStudentsRolesController from '../controllers/representatives_students_roles_controller.js';
 import * as sectionsController from '../controllers/sections_controller.js';
+import * as sectionsWorkersRolesController from '../controllers/sections_workers_roles_controller.js';
 
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
@@ -33,9 +34,9 @@ router.post('/api/v1/provinces/:departmentId', requireAuth, provinceController.s
 router.get('/api/v1/districts/search', requireAuth, districtController.searchLocations);
 router.get('/api/v1/districts/:provinceId', requireAuth, districtController.fetchAll);
 router.post('/api/v1/districts/:provinceId', requireAuth, districtController.save);
-// employee-roles
-router.get('/api/v1/employee-roles', requireAuth, employeeRoleController.fetchAll);
-router.post('/api/v1/employee-roles', requireAuth, employeeRoleController.save);
+// worker-roles
+router.get('/api/v1/worker-roles', requireAuth, workerRoleController.fetchAll);
+router.post('/api/v1/worker-roles', requireAuth, workerRoleController.save);
 // representative-roles
 router.get('/api/v1/representative-roles', requireAuth, representativeRoleController.fetchAll);
 router.post('/api/v1/representative-roles', requireAuth, representativeRoleController.save);
@@ -98,5 +99,10 @@ router.post('/api/v1/courses/:courseId/sections', requireAuth, sectionsControlle
 router.put('/api/v1/courses/:courseId/sections/:sectionId', requireAuth, sectionsController.update);
 router.delete('/api/v1/courses/:courseId/sections/:sectionId', requireAuth, sectionsController.remove);
 router.put('/api/v1/courses/:courseId/sections/reorder', requireAuth, sectionsController.reorder);
+// sections workers roles
+router.get('/api/v1/sections-workers-roles/workers', requireAuth, sectionsWorkersRolesController.fetchWorkersBySection);
+router.put('/api/v1/sections-workers-roles/:sectionId/workers', requireAuth, sectionsWorkersRolesController.saveWorkersBySection);
+router.get('/api/v1/sections-workers-roles/sections', requireAuth, sectionsWorkersRolesController.fetchSectionsByWorker);
+router.put('/api/v1/sections-workers-roles/:workerId/sections', requireAuth, sectionsWorkersRolesController.saveSectionsByWorker);
 
 export default router;

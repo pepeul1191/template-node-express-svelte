@@ -15,7 +15,7 @@ router.get('/reset-password', redirectIfAuthenticated, webController.resetPasswo
 router.get('/sign-up', redirectIfAuthenticated, webController.signUp);
 router.get('/', requireAuth, webController.home);
 router.get('/management/locations', requireAuth, webController.home);
-router.get('/management/employee-roles', requireAuth, webController.home);
+router.get('/management/worker-roles', requireAuth, webController.home);
 router.get('/management/representative-roles', requireAuth, webController.home);
 router.get('/management/document-types', requireAuth, webController.home);
 router.get('/management/levels', requireAuth, webController.home);

@@ -1,6 +1,6 @@
-// management/controllers/employee_roles_controller.js
+// management/controllers/worker_roles_controller.js
 
-import * as service from '../services/employee_role_service.js';
+import * as service from '../services/worker_role_service.js';
 
 export const fetchAll = async (req, res) => {
   try {

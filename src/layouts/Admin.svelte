@@ -5,7 +5,7 @@
 
   import Home from "../pages/admin/Home.svelte";
   import Locations from "../pages/admin/Locations.svelte";
-	import EmployeeRoles from "../pages/admin/EmployeeRoles.svelte";
+	import WorkerRoles from "../pages/admin/WorkerRoles.svelte";
   import RepresentativeRoles from "../pages/admin/RepresentativeRoles.svelte";
   import DocumentTypes from "../pages/admin/DocumentTypes.svelte";
   import Levels from "../pages/admin/Levels.svelte";
@@ -30,7 +30,7 @@
     <main class="main-content p-4" id="content">
       <Route path="/" component={Home} />
       <Route path="/management/locations" component={Locations} />
-      <Route path="/management/employee-roles" component={EmployeeRoles} />
+      <Route path="/management/worker-roles" component={WorkerRoles} />
       <Route path="/management/representative-roles" component={RepresentativeRoles} />
       <Route path="/management/document-types" component={DocumentTypes} />
       <Route path="/management/levels" component={Levels} />

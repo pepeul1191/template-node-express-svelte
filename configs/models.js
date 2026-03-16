@@ -10,12 +10,14 @@ import Student from '../management/models/students.js';
 import Sex from '../management/models/sex.js';
 import DocumentType from '../management/models/document_type.js';
 import Phone from '../management/models/phones.js';
+import WorkerRole from '../management/models/worker_role.js';
 import Address from '../management/models/addresses.js';
 import RepresentativeRole from '../management/models/representative_role.js';
 import RepresentativeStudentRole from '../management/models/representatives_students_roles.js';
 import Course from '../management/models/courses.js';
 import Level from '../management/models/level.js';
 import Section from '../management/models/sections.js';
+import SectionWorkerRole from '../management/models/sections_workers_roles.js';
 
 // locations
 
@@ -201,6 +203,71 @@ Section.belongsTo(Course, {
   as: 'course'
 });
 
+// Section <-> Worker (a través de SectionWorkerRole)
+Section.belongsToMany(Worker, {
+  through: SectionWorkerRole,
+  foreignKey: 'section_id',
+  otherKey: 'worker_id',
+  as: 'workers'
+});
+
+Worker.belongsToMany(Section, {
+  through: SectionWorkerRole,
+  foreignKey: 'worker_id',
+  otherKey: 'section_id',
+  as: 'sections'
+});
+
+// Relaciones directas con SectionWorkerRole
+Section.hasMany(SectionWorkerRole, {
+  foreignKey: 'section_id',
+  as: 'worker_roles'
+});
+
+SectionWorkerRole.belongsTo(Section, {
+  foreignKey: 'section_id',
+  as: 'section'
+});
+
+Worker.hasMany(SectionWorkerRole, {
+  foreignKey: 'worker_id',
+  as: 'section_roles'
+});
+
+SectionWorkerRole.belongsTo(Worker, {
+  foreignKey: 'worker_id',
+  as: 'worker'
+});
+
+WorkerRole.hasMany(SectionWorkerRole, {
+  foreignKey: 'worker_role_id',
+  as: 'section_workers'
+});
+
+SectionWorkerRole.belongsTo(WorkerRole, {
+  foreignKey: 'worker_role_id',
+  as: 'role'
+});
+
+// ============================================
+// También podrías querer agregar una relación adicional:
+// Worker tiene muchos WorkerRoles a través de SectionWorkerRole
+// ============================================
+
+Worker.belongsToMany(WorkerRole, {
+  through: SectionWorkerRole,
+  foreignKey: 'worker_id',
+  otherKey: 'worker_role_id',
+  as: 'roles_in_sections'
+});
+
+WorkerRole.belongsToMany(Worker, {
+  through: SectionWorkerRole,
+  foreignKey: 'worker_role_id',
+  otherKey: 'worker_id',
+  as: 'workers_in_sections'
+});
+
 export {
   Department,
   Province,
@@ -217,4 +284,6 @@ export {
   RepresentativeStudentRole,
   Course,
   Section,
+  WorkerRole,
+  SectionWorkerRole,
 };
