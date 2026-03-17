@@ -17,6 +17,7 @@
   import Academics from "../pages/admin/Academics.svelte";
 	import Courses from "../pages/admin/Courses.svelte";
   import CourseSections from "../pages/admin/CourseSections.svelte"; 
+	import SectionStudents from "../pages/admin/SectionStudents.svelte";
   // import Students from "../pages/admin/Students.svelte";
 </script>
 
@@ -42,6 +43,7 @@
       <Route path="/management/academics" component={Academics} />
       <Route path="/management/courses" component={Courses} />
       <Route path="/management/courses/:courseId/sections" component={CourseSections} /> <!-- 👈 Nueva ruta con parámetro -->
+      <Route path="/management/courses/:courseId/sections/:sectionId/students" component={SectionStudents} /> <!-- 👈 Nueva ruta con parámetro -->
     </main>
 
   </div>

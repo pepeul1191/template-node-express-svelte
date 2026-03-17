@@ -185,7 +185,7 @@
       <i class="fa fa-tachometer me-2"></i>
       <Link to="/">Administración</Link> /
       <Link to="/management/courses">Cursos</Link> /
-      {courseName || 'Secciones del Curso'}
+      {courseName || 'Secciones'}
     </h3>
   </div>
 

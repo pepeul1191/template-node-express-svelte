@@ -18,6 +18,7 @@ import Course from '../management/models/courses.js';
 import Level from '../management/models/level.js';
 import Section from '../management/models/sections.js';
 import SectionWorkerRole from '../management/models/sections_workers_roles.js';
+import SectionStudent from '../management/models/sections_students.js';
 
 // locations
 
@@ -268,6 +269,42 @@ WorkerRole.belongsToMany(Worker, {
   as: 'workers_in_sections'
 });
 
+// Section <-> Student (a través de SectionStudent)
+Section.belongsToMany(Student, {
+  through: SectionStudent,
+  foreignKey: 'section_id',
+  otherKey: 'student_id',
+  as: 'students'
+});
+
+Student.belongsToMany(Section, {
+  through: SectionStudent,
+  foreignKey: 'student_id',
+  otherKey: 'section_id',
+  as: 'sections'
+});
+
+// Relaciones directas con SectionStudent
+Section.hasMany(SectionStudent, {
+  foreignKey: 'section_id',
+  as: 'student_assignments'
+});
+
+SectionStudent.belongsTo(Section, {
+  foreignKey: 'section_id',
+  as: 'section'
+});
+
+Student.hasMany(SectionStudent, {
+  foreignKey: 'student_id',
+  as: 'section_assignments'
+});
+
+SectionStudent.belongsTo(Student, {
+  foreignKey: 'student_id',
+  as: 'student'
+});
+
 export {
   Department,
   Province,
@@ -286,4 +323,5 @@ export {
   Section,
   WorkerRole,
   SectionWorkerRole,
+  SectionStudent, 
 };

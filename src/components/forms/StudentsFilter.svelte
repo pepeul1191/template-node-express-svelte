@@ -45,10 +45,10 @@
   };
 </script>
 
-<form class="mb-4">
+<form class="mb-2">
   <div class="row">
 
-    <div class="col-md-3">
+    <div class={`col-md-${showSaveButton ? '6' : '3'}`}>
       <label for="name" class="form-label">Nombres o Apellidos</label>
       <input
         type="text"

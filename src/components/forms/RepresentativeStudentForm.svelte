@@ -149,7 +149,7 @@ Lista de Estudiantes<svelte:options accessors={true} />
   {/if}
 
   {#if studentsFounded.length > 0}
-    <div class="row">
+    <div class="row mt-4">
       {#each studentsFounded as item }
         {#if item.student}
           {@const rep = item.student}

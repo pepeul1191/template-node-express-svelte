@@ -18,6 +18,7 @@ import * as representativesController from '../controllers/representatives_contr
 import * as representativesStudentsRolesController from '../controllers/representatives_students_roles_controller.js';
 import * as sectionsController from '../controllers/sections_controller.js';
 import * as sectionsWorkersRolesController from '../controllers/sections_workers_roles_controller.js';
+import * as sectionsStudentsController from '../controllers/sections_students_controller.js';
 
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
@@ -104,5 +105,14 @@ router.get('/api/v1/sections-workers-roles/workers', requireAuth, sectionsWorker
 router.put('/api/v1/sections-workers-roles/:sectionId/workers', requireAuth, sectionsWorkersRolesController.saveWorkersBySection);
 router.get('/api/v1/sections-workers-roles/sections', requireAuth, sectionsWorkersRolesController.fetchSectionsByWorker);
 router.put('/api/v1/sections-workers-roles/:workerId/sections', requireAuth, sectionsWorkersRolesController.saveSectionsByWorker);
+// sections students routes
+router.get('/api/v1/sections/:sectionId/students', requireAuth, sectionsStudentsController.fetchStudentsBySection);
+router.post('/api/v1/sections/:sectionId/students', requireAuth, sectionsStudentsController.assignStudents);
+router.delete('/api/v1/sections/:sectionId/students', requireAuth, sectionsStudentsController.removeStudents);
+router.get('/api/v1/sections/:sectionId/students/:studentId/check', requireAuth, sectionsStudentsController.checkStudentInSection);
+// Vista inversa: secciones por estudiante ?????????????
+router.get('/api/v1/students/:studentId/sections', requireAuth, sectionsStudentsController.fetchSectionsByStudent); 
+// Opcional: listar todas las secciones con estudiantes ?????????????
+router.get('/api/v1/sections-with-students', requireAuth, sectionsStudentsController.fetchAllSectionsWithStudents);
 
 export default router;

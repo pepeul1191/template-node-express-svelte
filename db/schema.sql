@@ -262,6 +262,24 @@ CREATE TABLE `sections` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `sections_students`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sections_students` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `section_id` int unsigned NOT NULL,
+  `student_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_swr_unique_combination` (`section_id`,`student_id`),
+  KEY `fk_swr_student` (`student_id`),
+  CONSTRAINT `fk_swr2_section` FOREIGN KEY (`section_id`) REFERENCES `sections` (`id`),
+  CONSTRAINT `fk_swr_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `sections_workers_roles`
 --
 
@@ -480,5 +498,6 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20260314020814'),
   ('20260316153033'),
   ('20260316153628'),
-  ('20260316163800');
+  ('20260316163800'),
+  ('20260317045206');
 UNLOCK TABLES;
