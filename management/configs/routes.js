@@ -19,6 +19,8 @@ import * as representativesStudentsRolesController from '../controllers/represen
 import * as sectionsController from '../controllers/sections_controller.js';
 import * as sectionsWorkersRolesController from '../controllers/sections_workers_roles_controller.js';
 import * as sectionsStudentsController from '../controllers/sections_students_controller.js';
+import * as foldersController from '../controllers/folders_controller.js';
+import * as documentsController from '../controllers/documents_controller.js';
 
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
@@ -112,6 +114,17 @@ router.delete('/api/v1/sections/:sectionId/students', requireAuth, sectionsStude
 router.get('/api/v1/sections/:sectionId/students/:studentId/check', requireAuth, sectionsStudentsController.checkStudentInSection);
 // Vista inversa: secciones por estudiante ?????????????
 router.get('/api/v1/students/:studentId/sections', requireAuth, sectionsStudentsController.fetchSectionsByStudent); 
+router.get('/api/v1/courses/:courseId/materials', requireAuth, coursesController.fetchMaterials);
+// Obtener contenido de una carpeta específica
+router.get('/api/v1/folders/:folderId/contents', requireAuth, foldersController.fetchContents);
+// Crear carpeta en un curso
+router.post('/api/v1/courses/:courseId/folders', requireAuth, foldersController.create);
+// Eliminar carpeta
+router.delete('/api/v1/folders/:folderId', requireAuth, foldersController.remove);
+// Eliminar documento
+router.delete('/api/v1/documents/:documentId', requireAuth, documentsController.remove);
+// Registrar documento subido directamente al storage
+router.post('/api/v1/documents/register', requireAuth, documentsController.register);
 // Opcional: listar todas las secciones con estudiantes ?????????????
 router.get('/api/v1/sections-with-students', requireAuth, sectionsStudentsController.fetchAllSectionsWithStudents);
 

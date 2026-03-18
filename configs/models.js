@@ -19,6 +19,10 @@ import Level from '../management/models/level.js';
 import Section from '../management/models/sections.js';
 import SectionWorkerRole from '../management/models/sections_workers_roles.js';
 import SectionStudent from '../management/models/sections_students.js';
+import Folder from '../management/models/folder.js';
+import FolderCommonMaterial from '../management/models/folder_common_material.js';
+import FolderSeccionMaterial from '../management/models/folder_section_material.js';
+import Document from '../management/models/document.js';
 
 // locations
 
@@ -305,6 +309,89 @@ SectionStudent.belongsTo(Student, {
   as: 'student'
 });
 
+// ============================================
+// ASOCIACIONES DE CARPETAS Y DOCUMENTOS
+// ============================================
+
+// Auto-referencia para estructura jerárquica de carpetas
+Folder.belongsTo(Folder, {
+  as: 'parent',
+  foreignKey: 'parent_id',
+  onDelete: 'CASCADE'
+});
+
+Folder.hasMany(Folder, {
+  as: 'children',
+  foreignKey: 'parent_id',
+  onDelete: 'CASCADE'
+});
+
+// Relaciones polimórficas: Folder puede ser material común o de sección
+Folder.hasOne(FolderCommonMaterial, {
+  foreignKey: 'id',
+  as: 'commonMaterial',
+  onDelete: 'CASCADE'
+});
+
+FolderCommonMaterial.belongsTo(Folder, {
+  foreignKey: 'id',
+  as: 'folder'
+});
+
+Folder.hasOne(FolderSeccionMaterial, {
+  foreignKey: 'id',
+  as: 'sectionMaterial',
+  onDelete: 'CASCADE'
+});
+
+FolderSeccionMaterial.belongsTo(Folder, {
+  foreignKey: 'id',
+  as: 'folder'
+});
+
+// Relaciones con Course y Section
+FolderCommonMaterial.belongsTo(Course, {
+  foreignKey: 'course_id',
+  as: 'course'
+});
+
+Course.hasMany(FolderCommonMaterial, {
+  foreignKey: 'course_id',
+  as: 'commonMaterialFolders'
+});
+
+FolderSeccionMaterial.belongsTo(Section, {
+  foreignKey: 'section_id',
+  as: 'section'
+});
+
+Section.hasMany(FolderSeccionMaterial, {
+  foreignKey: 'section_id',
+  as: 'sectionMaterialFolders'
+});
+
+// Relaciones de Documentos
+Folder.hasMany(Document, {
+  foreignKey: 'folder_id',
+  as: 'documents',
+  onDelete: 'CASCADE'
+});
+
+Document.belongsTo(Folder, {
+  foreignKey: 'folder_id',
+  as: 'folder'
+});
+
+Document.belongsTo(Worker, {
+  foreignKey: 'uploaded_by',
+  as: 'uploader'
+});
+
+Worker.hasMany(Document, {
+  foreignKey: 'uploaded_by',
+  as: 'uploadedDocuments'
+});
+
 export {
   Department,
   Province,
@@ -324,4 +411,8 @@ export {
   WorkerRole,
   SectionWorkerRole,
   SectionStudent, 
+  Folder,
+  FolderCommonMaterial,
+  FolderSeccionMaterial,
+  Document,
 };

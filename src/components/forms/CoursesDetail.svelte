@@ -3,11 +3,14 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import axios from 'axios';
   import CourseForm from './CoursesForm.svelte';
+	import CourseMaterialForm from './CourseMaterialForm.svelte';
 
   const dispatch = createEventDispatcher();
   const API = typeof API_URL !== 'undefined' ? API_URL : window.API_URL || '';
 
   let mode = 'create';
+
+  let commonMaterialFormInstance; // instancia de commonMaterialFormInstance
 
   let form = {
     id:null,
@@ -88,7 +91,7 @@
     };
   }
 
-  export function showEdit(course){
+  export async function showEdit(course){
     mode = 'edit';
 
     form = {
@@ -100,6 +103,10 @@
       level_id:course.level_id,
       worker_id:course.worker_id
     };
+
+    commonMaterialFormInstance.courseId = course.id;
+    await commonMaterialFormInstance.loadContents(course.id);
+    commonMaterialFormInstance.setExtraParams();
   }
 
   const save = async () => {
@@ -162,6 +169,7 @@
   </div>
 
   <div class="tab-pane fade" id="tab-common-material" role="tabpanel" aria-labelledby="tab-common-material-tab">
-    Material del Curso (a implementar)
+    <CourseMaterialForm 
+      bind:this={commonMaterialFormInstance} />
   </div>
 </div>

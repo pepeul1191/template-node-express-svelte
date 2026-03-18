@@ -108,8 +108,10 @@
 
   const openEditModal = (record) => {
     modalTitle = 'Editar Curso';
-
+    console.log('EDIT')
+    console.log(record)
     if(courseFormInstance && typeof courseFormInstance.showEdit === 'function'){
+      console.log('IFFFFFFFFFFFF')
       courseFormInstance.showEdit(record);
     }
 

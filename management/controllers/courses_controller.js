@@ -170,3 +170,29 @@ export const deleteC = async (req, res) => {
     });
   }
 };
+
+/**
+ * Obtener el material de un curso (carpetas y documentos en raíz)
+ */
+export const fetchMaterials = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    
+    const materials = await courseService.getCourseMaterials(courseId);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Material del curso obtenido correctamente',
+      data: materials,
+      error: '',
+    });
+
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      success: false,
+      message: error.message || 'Error interno del servidor',
+      data: null,
+      error: error.error || error.message,
+    });
+  }
+};
