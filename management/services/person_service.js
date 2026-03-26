@@ -69,6 +69,9 @@ export const updatePerson = async (id, payload) => {
   try {
     const person = await Person.findByPk(id, { transaction });
 
+    //console.log('Found person:', person ? person.toJSON() : null);
+    //console.log('Payload received:', payload);
+
     if (!person) {
       throw {
         status: 404,

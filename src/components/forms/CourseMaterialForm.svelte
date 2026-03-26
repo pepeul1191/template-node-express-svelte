@@ -5,7 +5,7 @@
   import axios from 'axios';
   import UploadFile from '../widgets/UploadFile.svelte';
 
-  export let courseId;
+  export let course;
 
   const dispatch = createEventDispatcher();
   const API = typeof API_URL !== 'undefined' ? API_URL : window.API_URL || '';
@@ -35,7 +35,7 @@
       const jwt = localStorage.getItem('jwtToken');
       
       // Construir URL según si estamos en raíz o en una carpeta
-      let url = `${API}api/v1/courses/${courseId}/materials`;
+      let url = `${API}api/v1/courses/${course.id}/materials`;
       if (currentFolder) {
         url = `${API}api/v1/folders/${currentFolder.id}/contents`;
       }
@@ -73,20 +73,40 @@
     try {
       const jwt = localStorage.getItem('jwtToken');
       
-      const res = await axios.post(
-        `${FILES_URL}api/v1/courses/${courseId}/folders`,
+      const fileRes = await axios.post(
+        `${FILES_URL}api/v1/sub-folder`,
         {
-          title: newFolderTitle,
-          description: newFolderDescription
+          path: `courses/${course.id}-${course.name}/common-material/${newFolderTitle}`,
+          destination: "storage"
         },
         { headers: { Authorization: `Bearer ${jwt}` } }
       );
 
-      if (res.data.success) {
-        await loadContents();
-        newFolderTitle = '';
-        newFolderDescription = '';
-        showCreateFolder = false;
+      if (fileRes.data.success) {
+        const res = await axios.post(
+          `${BASE_URL}api/v1/courses/${course.id}/folders`,
+          {
+            title: newFolderTitle,
+            description: newFolderDescription
+          },
+          { headers: { Authorization: `Bearer ${jwt}` } }
+        );
+
+        if (res.data.success) {
+          await loadContents();
+          newFolderTitle = '';
+          newFolderDescription = '';
+          showCreateFolder = false;
+        }else{
+          await axios.delete(
+            `${FILES_URL}api/v1/sub-folder`,
+            {
+              path: `courses/${course.id}-${course.name}/common-material/${newFolderTitle}`,
+              destination: "storage"
+            },
+            { headers: { Authorization: `Bearer ${jwt}` } }
+          );
+        } 
       }
     } catch (err) {
       console.error('Error creating folder:', err);
@@ -338,7 +358,7 @@
     if (currentFolder) {
       return `${FILES_URL}/api/v1/storage/folder/${currentFolder.id}`;
     } else {
-      return `${FILES_URL}/api/v1/storage/course/${courseId}`;
+      return `${FILES_URL}/api/v1/storage/course/${course.id}`;
     }
   }
 
@@ -350,7 +370,7 @@
       params.folder_id = currentFolder.id;
     } else {
       params.context = 'course';
-      params.context_id = courseId;
+      params.context_id = course.id;
     }
     
     return params;

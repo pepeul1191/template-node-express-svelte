@@ -131,7 +131,7 @@ export const update = async (req, res) => {
     }
 
     const student = await studentService.updateStudent(id, { code });
-    await personService.updatePerson(id, person);
+    await personService.updatePerson(person.id, person);
 
     return res.status(200).json({
       success: true,

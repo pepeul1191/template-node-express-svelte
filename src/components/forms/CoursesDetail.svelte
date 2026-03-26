@@ -104,7 +104,7 @@
       worker_id:course.worker_id
     };
 
-    commonMaterialFormInstance.courseId = course.id;
+    commonMaterialFormInstance.course = course;
     await commonMaterialFormInstance.loadContents(course.id);
     commonMaterialFormInstance.setExtraParams();
   }
@@ -170,6 +170,6 @@
 
   <div class="tab-pane fade" id="tab-common-material" role="tabpanel" aria-labelledby="tab-common-material-tab">
     <CourseMaterialForm 
-      bind:this={commonMaterialFormInstance} />
+      bind:this={commonMaterialFormInstance}/>
   </div>
 </div>
