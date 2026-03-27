@@ -1,44 +1,45 @@
 -- migrate:up
 
--- =========================
--- TRIGGER: COURSE -> FOLDER ROOT
--- =========================
-CREATE TRIGGER trg_after_insert_courses
+DROP TRIGGER IF EXISTS trg_courses_after_insert;
+DROP TRIGGER IF EXISTS trg_courses_after_update;
+
+CREATE TRIGGER trg_courses_after_insert
 AFTER INSERT ON courses
 FOR EACH ROW
 BEGIN
-  DECLARE new_folder_id INT;
+    DECLARE new_folder_id INT;
 
-  INSERT INTO folders (parent_id, title, description)
-  VALUES (NULL, CONCAT('Material - ', NEW.name), 'Root folder for course');
+    INSERT INTO folders (parent_id, title, description)
+    VALUES (
+        NULL,
+        'root_course_folder',
+        CONCAT('carpeta raiz del material común el curso ', NEW.name)
+    );
 
-  SET new_folder_id = LAST_INSERT_ID();
+    SET new_folder_id = LAST_INSERT_ID();
 
-  INSERT INTO folder_common_materials (id, course_id)
-  VALUES (new_folder_id, NEW.id);
+    INSERT INTO folder_common_materials (id, course_id)
+    VALUES (new_folder_id, NEW.id);
 END;
 
--- =========================
--- TRIGGER: SECTION -> FOLDER ROOT
--- =========================
-CREATE TRIGGER trg_after_insert_sections
-AFTER INSERT ON sections
+CREATE TRIGGER trg_courses_after_update
+AFTER UPDATE ON courses
 FOR EACH ROW
 BEGIN
-  DECLARE new_folder_id INT;
-
-  INSERT INTO folders (parent_id, title, description)
-  VALUES (NULL, CONCAT('Material - ', NEW.name), 'Root folder for section');
-
-  SET new_folder_id = LAST_INSERT_ID();
-
-  INSERT INTO folder_seccion_materials (id, section_id)
-  VALUES (new_folder_id, NEW.id);
+    IF OLD.name <> NEW.name THEN
+        UPDATE folders f
+        INNER JOIN folder_common_materials fcm ON f.id = fcm.id
+        SET f.description = CONCAT(
+            'carpeta raiz del material común el curso ',
+            NEW.name
+        )
+        WHERE fcm.course_id = NEW.id
+          AND f.title = 'root_course_folder';
+    END IF;
 END;
-
 
 
 -- migrate:down
 
-DROP TRIGGER IF EXISTS trg_after_insert_courses;
-DROP TRIGGER IF EXISTS trg_after_insert_sections;
+DROP TRIGGER IF EXISTS trg_courses_after_insert;
+DROP TRIGGER IF EXISTS trg_courses_after_update;

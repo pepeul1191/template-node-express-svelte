@@ -2,13 +2,13 @@
 import sequelize from '../../configs/database.js';
 import Folder from '../models/folder.js';
 import FolderCommonMaterial from '../models/folder_common_material.js';
-import Document from '../models/document.js';
+import File from '../models/file.js';
 
 export const getFolderContents = async (folderId) => {
   const folder = await Folder.findByPk(folderId, {
     include: [{
-      model: Document,
-      as: 'documents',
+      model: File,
+      as: 'files',
       required: false
     }]
   });
@@ -21,10 +21,10 @@ export const getFolderContents = async (folderId) => {
     };
   }
 
-  return folder.documents || [];
+  return folder.files || [];
 };
 
-export const createFolder = async ({ courseId, title, description }) => {
+export const createFolder = async ({ courseId, title, description, parent_id }) => {
   const transaction = await sequelize.transaction();
 
   try {
@@ -50,7 +50,7 @@ export const createFolder = async ({ courseId, title, description }) => {
     const folder = await Folder.create({
       title,
       description,
-      parent_id: null, // Solo un nivel, siempre null
+      parent_id: parent_id,
       created: new Date(),
       updated: new Date()
     }, { transaction });
@@ -107,4 +107,28 @@ export const deleteFolder = async (folderId) => {
       error: error.error || error.message
     };
   }
+};
+
+export const getRootFolderId = async (courseId) => {
+  const folderCommonMaterial = await FolderCommonMaterial.findOne({
+    where: {
+      course_id: courseId
+    },
+    include: [
+      {
+        model: Folder,
+        as: 'folder',
+        where: {
+          parent_id: null
+        },
+        required: true
+      }
+    ]
+  });
+
+  if (!folderCommonMaterial) {
+    return null;
+  }
+
+  return folderCommonMaterial.folder.id;
 };

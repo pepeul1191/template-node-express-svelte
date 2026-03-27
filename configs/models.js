@@ -22,7 +22,7 @@ import SectionStudent from '../management/models/sections_students.js';
 import Folder from '../management/models/folder.js';
 import FolderCommonMaterial from '../management/models/folder_common_material.js';
 import FolderSeccionMaterial from '../management/models/folder_section_material.js';
-import Document from '../management/models/document.js';
+import File from '../management/models/file.js';
 
 // locations
 
@@ -369,27 +369,25 @@ Section.hasMany(FolderSeccionMaterial, {
   foreignKey: 'section_id',
   as: 'sectionMaterialFolders'
 });
-
-// Relaciones de Documentos
-Folder.hasMany(Document, {
+Folder.hasMany(File, {
   foreignKey: 'folder_id',
-  as: 'documents',
+  as: 'files',
   onDelete: 'CASCADE'
 });
 
-Document.belongsTo(Folder, {
+File.belongsTo(Folder, {
   foreignKey: 'folder_id',
   as: 'folder'
 });
 
-Document.belongsTo(Worker, {
+File.belongsTo(Worker, {
   foreignKey: 'uploaded_by',
   as: 'uploader'
 });
 
-Worker.hasMany(Document, {
+Worker.hasMany(File, {
   foreignKey: 'uploaded_by',
-  as: 'uploadedDocuments'
+  as: 'uploadedFiles'
 });
 
 export {
@@ -414,5 +412,5 @@ export {
   Folder,
   FolderCommonMaterial,
   FolderSeccionMaterial,
-  Document,
+  File,
 };

@@ -177,8 +177,9 @@ export const deleteC = async (req, res) => {
 export const fetchMaterials = async (req, res) => {
   try {
     const { courseId } = req.params;
-    
-    const materials = await courseService.getCourseMaterials(courseId);
+    const folderId = req.query.folder_id;
+
+    const materials = await courseService.getCourseMaterials(courseId, folderId);
 
     return res.status(200).json({
       success: true,

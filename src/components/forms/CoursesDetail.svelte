@@ -105,8 +105,8 @@
     };
 
     commonMaterialFormInstance.course = course;
-    await commonMaterialFormInstance.loadContents(course.id);
-    commonMaterialFormInstance.setExtraParams();
+    await commonMaterialFormInstance.loadContents();
+    // commonMaterialFormInstance.setExtraParams();
   }
 
   const save = async () => {

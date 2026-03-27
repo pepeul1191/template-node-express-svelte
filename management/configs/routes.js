@@ -20,7 +20,7 @@ import * as sectionsController from '../controllers/sections_controller.js';
 import * as sectionsWorkersRolesController from '../controllers/sections_workers_roles_controller.js';
 import * as sectionsStudentsController from '../controllers/sections_students_controller.js';
 import * as foldersController from '../controllers/folders_controller.js';
-import * as documentsController from '../controllers/documents_controller.js';
+import * as filesController from '../controllers/files_controller.js';
 
 import { requireAuth } from '../../configs/middlewares.js';
 import { redirectIfAuthenticated } from '../../configs/middlewares.js'; 
@@ -116,15 +116,16 @@ router.get('/api/v1/sections/:sectionId/students/:studentId/check', requireAuth,
 router.get('/api/v1/students/:studentId/sections', requireAuth, sectionsStudentsController.fetchSectionsByStudent); 
 router.get('/api/v1/courses/:courseId/materials', requireAuth, coursesController.fetchMaterials);
 // Obtener contenido de una carpeta específica
+router.get('/api/v1/folders/:courseId/root-folder-id', requireAuth, foldersController.fetchRootFolderId);
 router.get('/api/v1/folders/:folderId/contents', requireAuth, foldersController.fetchContents);
 // Crear carpeta en un curso
 router.post('/api/v1/courses/:courseId/folders', requireAuth, foldersController.create);
 // Eliminar carpeta
 router.delete('/api/v1/folders/:folderId', requireAuth, foldersController.remove);
 // Eliminar documento
-router.delete('/api/v1/documents/:documentId', requireAuth, documentsController.remove);
+router.delete('/api/v1/documents/:documentId', requireAuth, filesController.remove);
 // Registrar documento subido directamente al storage
-router.post('/api/v1/documents/register', requireAuth, documentsController.register);
+router.post('/api/v1/files', requireAuth, filesController.register);
 // Opcional: listar todas las secciones con estudiantes ?????????????
 router.get('/api/v1/sections-with-students', requireAuth, sectionsStudentsController.fetchAllSectionsWithStudents);
 

@@ -1,5 +1,5 @@
-// management/controllers/dpcuments_controller.js
-import * as service from '../services/document_service.js';
+// management/controllers/files_controller.js
+import * as service from '../services/file_service.js';
 
 export const remove = async (req, res) => {
   try {
@@ -27,11 +27,11 @@ export const remove = async (req, res) => {
 // Endpoint para registrar un documento subido directamente desde el frontend al storage
 export const register = async (req, res) => {
   try {
-    const { folder_id, title, url, uploaded_by } = req.body;
+    const { folder_id, name, url, uploaded_by } = req.body;
 
-    const document = await service.registerDocument({
+    const document = await service.registerFile({
       folder_id: folder_id || null, // Si es null, va a la raíz
-      title,
+      name,
       url,
       uploaded_by
     });
