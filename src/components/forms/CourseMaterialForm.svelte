@@ -29,6 +29,28 @@
   let editingDocument = null;
   let rootFolderId = null;
 
+  export function resetState() {
+    currentFolder = null;
+    folders = [];
+    files = [];
+
+    showCreateFolder = false;
+    showCreateFile = false;
+    showEditFolder = false;
+    showEditFile = false;
+
+    newFolderTitle = '';
+    newFolderDescription = '';
+    newFileTitle = '';
+
+    selectedFile = null;
+    editingFolder = null;
+    editingDocument = null;
+
+    loading = false;
+    uploading = false;
+  }
+
   // Cargar contenido (carpetas y documentos) según la carpeta actual
   async function setRootFolderId(){
     try {

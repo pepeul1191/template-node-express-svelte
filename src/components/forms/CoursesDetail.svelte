@@ -1,6 +1,6 @@
 <script>
   // src/components/forms/CourseDetail.svelte
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher, onMount, tick } from 'svelte';
   import axios from 'axios';
   import CourseForm from './CoursesForm.svelte';
 	import CourseMaterialForm from './CourseMaterialForm.svelte';
@@ -77,7 +77,22 @@
     }
   }
 
-  export function showCreate(){
+
+  async function activateFirstTab() {
+    await tick(); // espera a que el DOM se actualice
+
+    const triggerEl = document.querySelector('#tab-detail');
+
+    console.log('+++++++++++++++++++++++')
+
+    if (triggerEl && window.bootstrap) {
+      console.log('IFFFFFFFFFFFFFFFFF XDDDDDDDDDDDd')
+      const tab = new window.bootstrap.Tab(triggerEl);
+      tab.show();
+    }
+  }
+ 
+  export async function showCreate(){
     mode = 'create';
 
     form = {
@@ -89,6 +104,8 @@
       level_id:'',
       worker_id:''
     };
+
+    await activateFirstTab();
   }
 
   export async function showEdit(course){
@@ -105,8 +122,11 @@
     };
 
     commonMaterialFormInstance.course = course;
+    commonMaterialFormInstance.resetState();
     await commonMaterialFormInstance.loadContents();
     // commonMaterialFormInstance.setExtraParams();
+
+    await activateFirstTab();
   }
 
   const save = async () => {
